@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+import { colores, type Modelo } from '../lib/catalogo';
+
+interface Props {
+  modelo: Modelo;
+  categoria: string;
+  // Las primeras tarjetas de la pantalla cargan sin esperar al scroll.
+  prioridad?: boolean;
+}
+
+const { modelo, categoria, prioridad = false } = Astro.props;
+const [portada] = modelo.data.fotos;
+---
+
+<li data-categoria={modelo.data.categoria.id} data-color={modelo.data.color}>
+  <a href={`/catalogo/${modelo.id}/`} class="group block">
+    <div class="aspect-[4/5] overflow-hidden rounded-2xl bg-arena">
+      <Image
+        src={portada}
+        alt={`Bata ${modelo.data.nombre}`}
+        widths={[320, 480, 640]}
+        sizes="(min-width: 1024px) 280px, (min-width: 640px) 33vw, 50vw"
+        class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+        loading={prioridad ? 'eager' : 'lazy'}
+      />
+    </div>
+    <p class="etiqueta mt-3">{categoria}</p>
+    <h3 class="mt-1 text-lg leading-snug font-semibold group-hover:text-verde-oscuro">{modelo.data.nombre}</h3>
+    <p class="text-sm text-tinta-suave">{colores(modelo)}</p>
+  </a>
+</li>
