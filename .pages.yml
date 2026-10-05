@@ -8,7 +8,9 @@ media:
   # Astro resuelve las fotos del frontmatter de forma relativa al .md.
   output: ../../assets/modelos
   categories: [image]
-  rename: safe
+  # Nombre aleatorio: evita que dos fotos con el mismo nombre se pisen. La
+  # portada la define el orden de `fotos` en cada modelo, no el nombre.
+  rename: random
 
 settings:
   content:
