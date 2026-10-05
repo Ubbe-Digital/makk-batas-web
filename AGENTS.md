@@ -42,7 +42,7 @@ son pedidos ya entregados.
 | --- | --- |
 | Esquemas (Zod) | `src/content.config.ts` |
 | Modelos | `src/content/modelos/<slug>.md` (frontmatter + descripción) |
-| Fotos de los modelos | `src/assets/modelos/` (las históricas en `<slug>/01.jpeg`…; las del CMS sueltas con nombre aleatorio). La portada es la primera de `fotos` en el modelo |
+| Fotos de los modelos | `src/assets/modelos/<slug>/01.jpeg`, `02.jpeg`… (el CMS las sube sueltas y el workflow las ordena). La portada es la primera de `fotos` en el modelo |
 | Categorías | `src/content/categorias.json` |
 | Tipos de bordado | `src/content/bordados/*.md` (reusan fotos de los modelos) |
 | Contacto, envíos, pagos, tallas y precios | `src/data/sitio.ts` |
@@ -71,11 +71,15 @@ configuración está en `.pages.yml` y debe mantenerse alineada con
 
 - El CMS **debe trabajar sobre la rama `contenido`**, no sobre `main`.
 - Cada push a `contenido` dispara `publicar-contenido.yml`: fusiona en `main`,
-  reduce a 2000 px las fotos nuevas (`scripts/reducir-fotos.mjs`), corre
+  ordena las fotos, las reduce a 2000 px (`scripts/reducir-fotos.mjs`), corre
   `astro check` y el build, y si todo pasa sube a `main` y lanza el deploy. Si
   falla, `main` no cambia y se abre un issue.
-- Las fotos que sube el CMS caen sueltas en `src/assets/modelos/` con nombre
-  aleatorio (`rename: random`).
+- Pages CMS no puede subir a la carpeta de cada modelo: las fotos caen sueltas
+  en `src/assets/modelos/` con nombre aleatorio (`rename: random`).
+  `scripts/ordenar-fotos.mjs` (paso del workflow) las mueve a
+  `src/assets/modelos/<slug>/01.jpeg`, `02.jpeg`… y corrige las rutas en los
+  `.md`; si solo las usa un bordado, van a `modelos/_bordados/<slug>.<ext>`.
+  Así el repo queda con una carpeta por modelo sin que Makk lo cuide.
 - La URL de un modelo sale del nombre de su archivo: no renombrarlo una vez
   compartido.
 

@@ -64,6 +64,16 @@ jobs:
         if: steps.pendiente.outputs.hay == 'si'
         run: npm ci
 
+      # Pages CMS no puede subir a la carpeta de cada modelo: las deja sueltas.
+      - name: Ordenar fotos por modelo
+        if: steps.pendiente.outputs.hay == 'si'
+        run: |
+          node scripts/ordenar-fotos.mjs
+          if [ -n "$(git status --porcelain src)" ]; then
+            git add -A src
+            git commit -m 'catalogo: ordena las fotos por modelo'
+          fi
+
       - name: Reducir fotos a 2000 px
         if: steps.pendiente.outputs.hay == 'si'
         run: |
