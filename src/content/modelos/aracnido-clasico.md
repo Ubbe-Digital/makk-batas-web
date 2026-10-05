@@ -1,5 +1,5 @@
 ---
-nombre: Arácnido clásico
+nombre: Spiderman clásico
 categoria: personajes
 color: azul
 contraste: rojo
@@ -8,6 +8,6 @@ fotos:
   - ../../assets/modelos/aracnido-clasico/01.jpeg
 destacado: true
 orden: 50
+disponible: true
 ---
-
 Azul con hombros, cuello, puños y cinturón rojos. La araña va bordada en la espalda y los ojos del héroe en el pecho. Se hace en tallas de niño y de adulto, ideal para combinar.
