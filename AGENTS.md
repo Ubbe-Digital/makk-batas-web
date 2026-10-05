@@ -80,6 +80,14 @@ configuración está en `.pages.yml` y debe mantenerse alineada con
   `src/assets/modelos/<slug>/01.jpeg`, `02.jpeg`… y corrige las rutas en los
   `.md`; si solo las usa un bordado, van a `modelos/_bordados/<slug>.<ext>`.
   Así el repo queda con una carpeta por modelo sin que Makk lo cuide.
+- `main` no se puede proteger: el repo es privado en el plan gratuito de GitHub
+  (no hay protección de ramas ni rulesets). Para que Makk no abra `main` por
+  error, usar el enlace directo a la rama:
+  https://app.pagescms.org/ubbe-digital/makk-batas/contenido
+  Si un commit "(via Pages CMS)" llega a `main`, `avisar-cms-en-main.yml` abre
+  un issue. Si el repo pasa a un plan de pago, proteger `main` exigiendo PR y
+  hacer que `publicar-contenido.yml` fusione por PR (el `GITHUB_TOKEN` no puede
+  saltarse la protección).
 - La URL de un modelo sale del nombre de su archivo: no renombrarlo una vez
   compartido.
 
