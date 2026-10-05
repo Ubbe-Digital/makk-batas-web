@@ -30,7 +30,11 @@ const mensajeBase = `Hola MAKK, me interesa la bata "${modelo.data.nombre}" (${u
 const { fotos } = modelo.data;
 ---
 
-<Base titulo={modelo.data.nombre} descripcion={`Bata ${modelo.data.nombre}: ${colores(modelo).toLowerCase()}. ${modelo.data.bordado}. Hecha a pedido por ${sitio.nombre}.`}>
+<Base
+  titulo={modelo.data.nombre}
+  imagen={fotos[0]}
+  imagenAlt={`Bata ${modelo.data.nombre}`}
+  descripcion={`Bata ${modelo.data.nombre}: ${colores(modelo).toLowerCase()}. ${modelo.data.bordado}. Hecha a pedido por ${sitio.nombre}.`}>
   <div class="contenedor pt-6">
     <nav aria-label="Ruta" class="text-sm text-tinta-suave">
       <a href="/catalogo/" class="hover:text-verde-oscuro">Catálogo</a>
