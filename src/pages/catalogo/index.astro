@@ -6,13 +6,18 @@ import { capitalizar, getCategorias, getModelos } from '../../lib/catalogo';
 const categorias = await getCategorias();
 const modelos = await getModelos();
 const nombreCategoria = new Map(categorias.map((c) => [c.id, c.data.nombre]));
+const portada = modelos.find((m) => m.id === 'aracnido-clasico') ?? modelos[0];
 const colores = [...new Set(modelos.map((m) => m.data.color))].sort((a, b) => a.localeCompare(b, 'es'));
 
 const chip =
   'rounded-full border border-tinta/15 bg-white px-4 py-2 text-sm font-medium transition-colors hover:border-verde aria-pressed:border-verde aria-pressed:bg-verde aria-pressed:text-white';
 ---
 
-<Base titulo="Catálogo" descripcion="Todos los modelos de batas de baño de MAKK Creaciones, hechas a pedido en tallas 2 a XXXL.">
+<Base
+  titulo="Catálogo"
+  imagen={portada?.data.fotos[0]}
+  imagenAlt="Batas de baño bordadas de MAKK Creaciones"
+  descripcion="Todos los modelos de batas de baño de MAKK Creaciones, hechas a pedido en tallas 2 a XXXL.">
   <section class="contenedor pt-10">
     <h1 class="text-4xl font-semibold">Catálogo</h1>
     <p class="mt-3 max-w-2xl text-tinta-suave">
