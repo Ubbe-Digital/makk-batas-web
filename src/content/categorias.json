@@ -1,0 +1,20 @@
+[
+  {
+    "id": "personajes",
+    "nombre": "Personajes",
+    "descripcion": "Batas inspiradas en personajes, con el bordado y el nombre de quien la va a usar.",
+    "orden": 1
+  },
+  {
+    "id": "deportes",
+    "nombre": "Deportes",
+    "descripcion": "Para los fanáticos: colores y escudos del equipo o del deporte favorito.",
+    "orden": 2
+  },
+  {
+    "id": "clasicas",
+    "nombre": "Clásicas personalizadas",
+    "descripcion": "Dos colores a elección con nombre, iniciales o monograma bordado.",
+    "orden": 3
+  }
+]

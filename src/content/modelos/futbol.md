@@ -1,0 +1,14 @@
+---
+nombre: Fútbol gris y verde
+categoria: deportes
+color: gris
+contraste: verde azulado
+bordado: Balón e iniciales en el pecho
+fotos:
+  - ../../assets/modelos/futbol/01.jpeg
+  - ../../assets/modelos/futbol/02.jpeg
+  - ../../assets/modelos/futbol/03.jpeg
+orden: 20
+---
+
+Cuerpo gris con cuello y cinturón verde azulado. El balón va bordado en el pecho, con las iniciales o el número del jugador.

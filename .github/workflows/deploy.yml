@@ -1,0 +1,118 @@
+# Deploy del sitio al VPS. Mismo esquema que leve-market-app.
+#
+# Se dispara con cada push a `main`, lo que incluye el merge de cualquier PR.
+# `main` es la rama de produccion: lo que llega aca lo ven los clientes, sin
+# staging intermedio. Se trabaja en ramas feat/* y se mergea por PR.
+name: Deploy (rama main)
+
+on:
+  push:
+    branches: ['main']
+    # Solo documentacion: no hace falta recompilar. OJO: no ignorar '**/*.md',
+    # el catalogo vive en src/content/**/*.md.
+    paths-ignore:
+      - 'README.md'
+      - 'AGENTS.md'
+      - 'CLAUDE.md'
+      - 'TAREAS.md'
+      - 'recursos/**'
+      - '.gitignore'
+  workflow_dispatch:
+
+# Dos deploys simultaneos publicarian sobre el mismo directorio. Sin
+# cancel-in-progress: cortar a mitad de la publicacion deja assets mezclados.
+concurrency:
+  group: deploy-makk-batas
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Configurar clave SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          # Pinning del host: no aceptar a ciegas cualquier servidor.
+          echo "${{ secrets.VPS_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Compilar y publicar
+        env:
+          APP_DIR: ${{ vars.APP_DIR || '/opt/makk_batas/app' }}
+          WEB_ROOT: ${{ vars.WEB_ROOT || '/opt/web_apps/makk-batas' }}
+          BACKUP_DIR: ${{ vars.BACKUP_DIR || '/opt/web_apps/makk-batas.prev' }}
+        run: |
+          ssh -i ~/.ssh/id_deploy -o BatchMode=yes \
+            "${{ secrets.VPS_SSH_USER }}@${{ secrets.VPS_SSH_HOST }}" \
+            "APP_DIR='$APP_DIR' WEB_ROOT='$WEB_ROOT' BACKUP_DIR='$BACKUP_DIR' bash -s" <<'REMOTE'
+          set -euo pipefail
+
+          echo "==> actualizando codigo en $APP_DIR"
+          cd "$APP_DIR"
+          git fetch origin main
+          # reset --hard en vez de pull: si el clon diverge, el pull falla.
+          git reset --hard origin/main
+
+          # El toolchain se valida antes de tocar nada (ver docs de Leve Market,
+          # deploy-vps.md §9.3: node vive en /usr/local, no en un home).
+          echo "==> toolchain"
+          command -v node >/dev/null 2>&1 || { echo "node no esta en el PATH de $(whoami)" >&2; exit 1; }
+          NODE_MAJOR=$(node -p 'process.versions.node.split(".")[0]')
+          if [ "$NODE_MAJOR" -lt 22 ]; then
+            echo "Node $(node -v) es insuficiente: Astro 7 exige >=22.12" >&2
+            exit 1
+          fi
+          echo "node $(node -v) / npm $(npm -v)"
+
+          # npm ci solo cuando cambian las dependencias.
+          LOCK_HASH=$(sha256sum package-lock.json | cut -d' ' -f1)
+          HASH_FILE="$HOME/.makk-batas.lock-hash"
+          if [ ! -d node_modules ] || [ "$(cat "$HASH_FILE" 2>/dev/null || true)" != "$LOCK_HASH" ]; then
+            echo "==> dependencias cambiaron: npm ci"
+            npm ci
+            echo "$LOCK_HASH" > "$HASH_FILE"
+          else
+            echo "==> dependencias sin cambios: se omite la instalacion"
+          fi
+
+          echo "==> build"
+          npm run build
+
+          # Un build vacio o a medias no se publica.
+          test -s dist/index.html || { echo "build invalido: falta dist/index.html" >&2; exit 1; }
+
+          echo "==> respaldo de la version en linea"
+          rm -rf "$BACKUP_DIR"
+          cp -a "$WEB_ROOT" "$BACKUP_DIR" 2>/dev/null || true
+
+          echo "==> publicando"
+          # Se sincroniza el contenido; el directorio no se borra. Dos pasadas:
+          # primero se agregan los assets nuevos y despues se borran los viejos,
+          # para que ninguna pagina apunte a un asset que todavia no existe.
+          mkdir -p "$WEB_ROOT"
+          if command -v rsync >/dev/null 2>&1; then
+            rsync -a          dist/ "$WEB_ROOT"/
+            rsync -a --delete dist/ "$WEB_ROOT"/
+          else
+            cp -a dist/. "$WEB_ROOT"/
+          fi
+
+          # reload, no restart: este nginx sirve tambien Leve Market y el ERP.
+          docker exec nginx nginx -s reload
+          REMOTE
+
+      - name: Verificar desde fuera
+        env:
+          PUBLIC_URL: ${{ vars.PUBLIC_URL || 'https://batas.ubbedigital.com' }}
+        run: |
+          for i in $(seq 1 10); do
+            CODE=$(curl -s -o /dev/null -w '%{http_code}' "$PUBLIC_URL/" || true)
+            if [ "$CODE" = "200" ]; then echo "El sitio responde 200 (intento $i)"; exit 0; fi
+            sleep 3
+          done
+          echo "El sitio no respondio 200 tras 30s (ultimo codigo: $CODE)" >&2
+          exit 1

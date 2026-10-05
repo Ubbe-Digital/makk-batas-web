@@ -1,0 +1,146 @@
+---
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+
+import { Image } from 'astro:assets';
+import IconoChat from '../components/IconoChat.astro';
+import logo from '../assets/logo.png';
+import { enlaceWhatsApp, sitio } from '../data/sitio';
+import { version } from '../../package.json';
+
+interface Props {
+  titulo?: string;
+  descripcion?: string;
+}
+
+const { titulo, descripcion = sitio.descripcion } = Astro.props;
+const tituloCompleto = titulo ? `${titulo} · ${sitio.nombre}` : `${sitio.nombre} · Batas de baño hechas a mano`;
+const ruta = Astro.url.pathname;
+
+const enlaces = [
+  { href: '/catalogo/', texto: 'Catálogo' },
+  { href: '/bordados/', texto: 'Bordados' },
+  { href: '/como-pedir/', texto: 'Cómo pedir' },
+  { href: '/contacto/', texto: 'Contacto' },
+];
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="app-version" content={version} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{tituloCompleto}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="canonical" href={new URL(ruta, Astro.site)} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#15966f" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_VE" />
+    <meta property="og:site_name" content={sitio.nombre} />
+    <meta property="og:title" content={tituloCompleto} />
+    <meta property="og:description" content={descripcion} />
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <header class="sticky top-0 z-30 border-b border-tinta/10 bg-papel/90 backdrop-blur">
+      <div class="contenedor flex h-16 items-center justify-between gap-4">
+        <a href="/" class="flex items-center gap-3" aria-label={`${sitio.nombre}, inicio`}>
+          <Image src={logo} alt="" width={40} height={40} class="size-10" loading="eager" />
+          <span class="font-display text-xl font-semibold tracking-tight">MAKK</span>
+        </a>
+        <nav aria-label="Principal" class="hidden md:block">
+          <ul class="flex items-center gap-1 text-sm font-medium">
+            {
+              enlaces.map((e) => (
+                <li>
+                  <a
+                    href={e.href}
+                    class:list={[
+                      'rounded-full px-4 py-2 transition-colors hover:bg-arena',
+                      ruta.startsWith(e.href) && 'bg-arena text-verde-oscuro',
+                    ]}
+                    aria-current={ruta.startsWith(e.href) ? 'page' : undefined}
+                  >
+                    {e.texto}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+        <a href={enlaceWhatsApp('Hola MAKK, quiero información sobre las batas.')} class="boton-principal hidden py-2 sm:inline-flex">
+          <IconoChat class="size-4" />
+          WhatsApp
+        </a>
+      </div>
+      <nav aria-label="Principal" class="border-t border-tinta/10 md:hidden">
+        <ul class="contenedor flex justify-between text-sm font-medium">
+          {
+            enlaces.map((e) => (
+              <li>
+                <a
+                  href={e.href}
+                  class:list={['block px-1 py-3', ruta.startsWith(e.href) && 'text-verde-oscuro underline underline-offset-8']}
+                  aria-current={ruta.startsWith(e.href) ? 'page' : undefined}
+                >
+                  {e.texto}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </header>
+
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="mt-24 bg-tinta text-papel/80">
+      <div class="contenedor grid gap-10 py-14 sm:grid-cols-3">
+        <div>
+          <p class="font-display text-2xl text-papel">{sitio.nombre}</p>
+          <p class="mt-2 text-sm">{sitio.lema}. Batas hechas a mano en {sitio.ubicacion}.</p>
+        </div>
+        <div class="text-sm">
+          <p class="font-semibold text-papel">Contacto</p>
+          <ul class="mt-3 space-y-2">
+            {
+              sitio.telefonos.map((t) => (
+                <li>
+                  <a href={`tel:+58${t.replace(/\D/g, '').slice(1)}`} class="hover:text-crema">
+                    {t}
+                  </a>
+                </li>
+              ))
+            }
+            <li>
+              <a href={sitio.instagram} class="hover:text-crema">Instagram {sitio.instagramUsuario}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="text-sm">
+          <p class="font-semibold text-papel">Envíos</p>
+          <p class="mt-3">{sitio.envioLocal}.</p>
+          <p class="mt-2">Al resto de Venezuela por {sitio.enviosNacionales.join(', ')}.</p>
+        </div>
+      </div>
+      <p class="contenedor border-t border-papel/10 py-6 text-xs text-papel/50">
+        © {new Date().getFullYear()} {sitio.nombre}
+      </p>
+    </footer>
+
+    <a
+      href={enlaceWhatsApp('Hola MAKK, quiero información sobre las batas.')}
+      class="fixed right-4 bottom-4 z-40 flex size-14 items-center justify-center rounded-full bg-verde text-white shadow-lg shadow-tinta/20 transition-colors hover:bg-verde-oscuro sm:hidden"
+      aria-label="Escribir por WhatsApp"
+    >
+      <IconoChat class="size-6" />
+    </a>
+  </body>
+</html>

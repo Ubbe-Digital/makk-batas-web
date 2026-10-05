@@ -1,0 +1,103 @@
+---
+import ModeloCard from '../../components/ModeloCard.astro';
+import Base from '../../layouts/Base.astro';
+import { capitalizar, getCategorias, getModelos } from '../../lib/catalogo';
+
+const categorias = await getCategorias();
+const modelos = await getModelos();
+const nombreCategoria = new Map(categorias.map((c) => [c.id, c.data.nombre]));
+const colores = [...new Set(modelos.map((m) => m.data.color))].sort((a, b) => a.localeCompare(b, 'es'));
+
+const chip =
+  'rounded-full border border-tinta/15 bg-white px-4 py-2 text-sm font-medium transition-colors hover:border-verde aria-pressed:border-verde aria-pressed:bg-verde aria-pressed:text-white';
+---
+
+<Base titulo="Catálogo" descripcion="Todos los modelos de batas de baño de MAKK Creaciones, hechas a pedido en tallas 2 a XXXL.">
+  <section class="contenedor pt-10">
+    <h1 class="text-4xl font-semibold">Catálogo</h1>
+    <p class="mt-3 max-w-2xl text-tinta-suave">
+      Todos los modelos se hacen a pedido, en tallas 2 a XXXL y en los colores que prefieras. Las fotos son pedidos ya
+      entregados.
+    </p>
+
+    <div id="filtros" class="mt-8 space-y-4" hidden>
+      <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Categoría">
+        <button type="button" class={chip} data-filtro="categoria" data-valor="" aria-pressed="true">Todas</button>
+        {
+          categorias.map((c) => (
+            <button type="button" class={chip} data-filtro="categoria" data-valor={c.id} aria-pressed="false">
+              {c.data.nombre}
+            </button>
+          ))
+        }
+      </div>
+      <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Color">
+        <button type="button" class={chip} data-filtro="color" data-valor="" aria-pressed="true">Todos los colores</button>
+        {
+          colores.map((c) => (
+            <button type="button" class={chip} data-filtro="color" data-valor={c} aria-pressed="false">
+              {capitalizar(c)}
+            </button>
+          ))
+        }
+      </div>
+      <p class="text-sm text-tinta-suave" aria-live="polite"><span id="conteo">{modelos.length}</span> modelos</p>
+    </div>
+
+    <ul id="modelos" class="mt-8 grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+      {
+        modelos.map((m, i) => (
+          <ModeloCard modelo={m} categoria={nombreCategoria.get(m.data.categoria.id) ?? ''} prioridad={i < 4} />
+        ))
+      }
+    </ul>
+    <p id="vacio" class="mt-8 text-tinta-suave" hidden>
+      No hay modelos con esa combinación. Escríbenos: también hacemos diseños a pedido.
+    </p>
+  </section>
+</Base>
+
+<script>
+  // Sin JavaScript se ve el catálogo completo; los filtros solo aparecen con él.
+  const filtros = document.querySelector<HTMLElement>('#filtros')!;
+  const tarjetas = [...document.querySelectorAll<HTMLElement>('#modelos > li')];
+  const conteo = document.querySelector('#conteo')!;
+  const vacio = document.querySelector<HTMLElement>('#vacio')!;
+  const botones = [...filtros.querySelectorAll<HTMLButtonElement>('button[data-filtro]')];
+
+  const params = new URLSearchParams(location.search);
+  const estado = { categoria: params.get('categoria') ?? '', color: params.get('color') ?? '' };
+
+  function aplicar() {
+    let visibles = 0;
+    for (const t of tarjetas) {
+      const ve =
+        (!estado.categoria || t.dataset.categoria === estado.categoria) && (!estado.color || t.dataset.color === estado.color);
+      t.hidden = !ve;
+      if (ve) visibles++;
+    }
+    for (const b of botones) {
+      const clave = b.dataset.filtro as keyof typeof estado;
+      b.setAttribute('aria-pressed', String(estado[clave] === b.dataset.valor));
+    }
+    conteo.textContent = String(visibles);
+    vacio.hidden = visibles > 0;
+
+    const url = new URL(location.href);
+    for (const [clave, valor] of Object.entries(estado)) {
+      if (valor) url.searchParams.set(clave, valor);
+      else url.searchParams.delete(clave);
+    }
+    history.replaceState(null, '', url);
+  }
+
+  for (const b of botones) {
+    b.addEventListener('click', () => {
+      estado[b.dataset.filtro as keyof typeof estado] = b.dataset.valor ?? '';
+      aplicar();
+    });
+  }
+
+  filtros.hidden = false;
+  aplicar();
+</script>

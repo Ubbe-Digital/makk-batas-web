@@ -1,0 +1,46 @@
+# Vuelta atras manual, sin recompilar.
+#
+# Restaura la copia que el deploy guarda antes de publicar, asi que solo sirve
+# para deshacer el deploy inmediatamente anterior. Para volver mas atras,
+# revertir el commit en `main` y dejar que el deploy normal corra.
+name: Rollback
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-makk-batas
+  cancel-in-progress: false
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Configurar clave SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          echo "${{ secrets.VPS_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Restaurar la version anterior
+        env:
+          WEB_ROOT: ${{ vars.WEB_ROOT || '/opt/web_apps/makk-batas' }}
+          BACKUP_DIR: ${{ vars.BACKUP_DIR || '/opt/web_apps/makk-batas.prev' }}
+        run: |
+          ssh -i ~/.ssh/id_deploy -o BatchMode=yes \
+            "${{ secrets.VPS_SSH_USER }}@${{ secrets.VPS_SSH_HOST }}" \
+            "WEB_ROOT='$WEB_ROOT' BACKUP_DIR='$BACKUP_DIR' bash -s" <<'REMOTE'
+          set -euo pipefail
+          test -d "$BACKUP_DIR" || { echo "no hay version anterior en $BACKUP_DIR" >&2; exit 1; }
+          if command -v rsync >/dev/null 2>&1; then
+            rsync -a --delete "$BACKUP_DIR"/ "$WEB_ROOT"/
+          else
+            cp -a "$BACKUP_DIR"/. "$WEB_ROOT"/
+          fi
+          docker exec nginx nginx -s reload
+          echo "rollback aplicado"
+          REMOTE

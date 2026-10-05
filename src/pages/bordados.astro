@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { enlaceWhatsApp } from '../data/sitio';
+
+const bordados = (await getCollection('bordados')).sort((a, b) => a.data.orden - b.data.orden);
+const conContenido = await Promise.all(bordados.map(async (b) => ({ ...b, Content: (await render(b)).Content })));
+---
+
+<Base titulo="Bordados" descripcion="Los bordados que puedes elegir para tu bata: personajes, nombres, iniciales y escudos.">
+  <section class="contenedor pt-10">
+    <h1 class="text-4xl font-semibold">Bordados</h1>
+    <p class="mt-3 max-w-2xl text-tinta-suave">
+      Cada bata lleva un bordado a elección. Estos son los más pedidos; si tienes otra idea, escríbenos y lo vemos.
+    </p>
+
+    <ul class="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        conContenido.map(({ data, Content }) => (
+          <li>
+            <Image
+              src={data.foto}
+              alt={`Ejemplo de bordado: ${data.nombre}`}
+              widths={[400, 600, 800]}
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              class="aspect-square w-full rounded-2xl bg-arena object-cover"
+            />
+            <h2 class="mt-4 text-xl font-semibold">{data.nombre}</h2>
+            <p class="etiqueta mt-1">{data.donde}</p>
+            <div class="mt-2 text-sm text-tinta-suave">
+              <Content />
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-16 rounded-3xl bg-arena/70 p-8 text-center">
+      <p class="font-display text-2xl">¿Tienes otro diseño en mente?</p>
+      <a href={enlaceWhatsApp('Hola MAKK, quiero consultar un bordado personalizado.')} class="boton-principal mt-5">
+        Consultar por WhatsApp
+      </a>
+    </div>
+  </section>
+</Base>

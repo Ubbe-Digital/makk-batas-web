@@ -1,0 +1,40 @@
+# Verificacion de cada PR antes del merge.
+#
+# Compila el sitio igual que el deploy: un modelo mal cargado (sin foto, foto
+# inexistente, categoria que no existe) rompe el esquema de las content
+# collections y el PR queda en rojo antes de llegar a `main`.
+name: CI
+
+on:
+  pull_request:
+    branches: ['main']
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Tipos (astro check)
+        run: npm run check
+
+      - name: Build
+        run: npm run build
+
+      - name: El build genero el sitio
+        run: test -s dist/index.html
