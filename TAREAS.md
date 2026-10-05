@@ -5,12 +5,29 @@ https://claude.ai/code/artifact/c9f6888c-6041-4155-a5e6-9b2c5a51936d
 
 ## Fase 2: gestión del catálogo por Makk (CMS)
 
-- [ ] **Elegir e integrar el CMS.** Makk necesita gestionar sin ayuda los
-      modelos: nombre, descripción, fotos (portadas de cuerpo entero, sin
-      marcas de agua), categoría y bordados. Evaluar un CMS basado en Git
-      (Keystatic o Decap) que escriba en `src/content/`: cada cambio es un
-      commit a `main` y el deploy no cambia. Definir cómo inicia sesión Makk
-      (cuenta de GitHub propia o login del CMS).
+- [x] **Elegir e integrar el CMS** (2026-10-05). Pages CMS
+      (https://app.pagescms.org), configurado en `.pages.yml`: modelos y tipos
+      de bordado. Escribe en la rama `contenido`; `publicar-contenido.yml` la
+      fusiona en `main` si el sitio compila, ordena las fotos por modelo, las
+      reduce a 2000 px y lanza el deploy. Detalle en `AGENTS.md` ("Pages CMS").
+      Los colaboradores entran por correo, sin cuenta de GitHub.
+- [ ] **Terminar de poner en marcha el CMS.**
+  - [ ] Confirmar que el deploy lanzado por `publicar-contenido.yml` publica
+        los cambios (la primera prueba coincidió con un incidente de GitHub
+        Actions y el deploy quedó en cola).
+  - [ ] Probar una foto grande de celular: que se ordene y se reduzca.
+  - [ ] Probar elegir en el campo de un bordado una foto que ya está en la
+        carpeta de un modelo: que la ruta quede bien escrita.
+  - [ ] Limpiar el contenido de prueba: el modelo `clasica-negro-y-rojo` y la
+        carpeta vacía `src/assets/modelos/clasica-negro-rojo/`.
+  - [ ] Invitar un colaborador por correo y observar cómo inicia sesión, qué
+        ramas puede elegir y con qué nombre queda el commit
+        (`commit.identity: user`); luego invitar al resto y darles el enlace
+        directo a la rama `contenido`.
+  - [ ] Comprobar que la app de Pages CMS en GitHub esté instalada solo en este
+        repo.
+  - [ ] Aviso por correo cuando falla una publicación (ver "Más adelante"):
+        hoy el aviso es un issue que solo ve Kevin.
 - [ ] **Agregar personajes nuevos.** Makk planea sumar más personajes, así que
       dar de alta uno debe ser simple y no depender de un desarrollador.
       Decidir si el personaje es solo el nombre del modelo o un dato propio
@@ -63,6 +80,15 @@ Clarity (mapas de calor; complemento opcional más adelante) y Twilio Segment
 - [ ] **Carrito y pago en línea**, si los datos de uso lo justifican.
 - [ ] **Cotizador de bordado personalizado.**
 - [ ] **Reseñas de clientes.**
+
+## Notas de infraestructura
+
+- `main` no se puede proteger: el repo es privado en el plan gratuito de
+  GitHub (sin protección de ramas ni rulesets). `avisar-cms-en-main.yml` abre un
+  issue si el CMS escribe en `main`. Si el repo pasa a un plan de pago, proteger
+  `main` y hacer que `publicar-contenido.yml` fusione por PR.
+- El 2026-10-19 `ubuntu-latest` pasa a Ubuntu 26: revisar la primera corrida de
+  los workflows después de esa fecha.
 
 ## Pendiente de contenido
 
