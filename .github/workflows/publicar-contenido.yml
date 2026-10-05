@@ -115,3 +115,63 @@ jobs:
           else
             gh issue create --title "$titulo" --body "Los cambios de la rama \`contenido\` no se publicaron: el sitio no compila con ellos o hay un conflicto con \`main\`. Detalle: $url"
           fi
+
+      # Makk no tiene cuenta de GitHub y no ve el issue de arriba. Este paso le
+      # escribe por correo. Queda inactivo mientras falte algun secreto del
+      # repo (Settings > Secrets and variables > Actions):
+      #   SMTP_URL    servidor, ej. smtps://smtp.ejemplo.com:465
+      #               (o smtp://smtp.ejemplo.com:587 para STARTTLS)
+      #   SMTP_USER   usuario del servidor
+      #   SMTP_PASS   clave del servidor
+      #   AVISO_DE    remitente, ej. avisos@ubbedigital.com
+      #   AVISO_PARA  destinatarios separados por coma (Makk y Kevin)
+      - name: Avisar por correo si fallo
+        if: failure()
+        continue-on-error: true
+        env:
+          SMTP_URL: ${{ secrets.SMTP_URL }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          AVISO_DE: ${{ secrets.AVISO_DE }}
+          AVISO_PARA: ${{ secrets.AVISO_PARA }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          for v in SMTP_URL SMTP_USER SMTP_PASS AVISO_DE AVISO_PARA; do
+            if [ -z "${!v}" ]; then
+              echo "Falta el secreto $v: no se envia el correo."
+              exit 0
+            fi
+          done
+
+          mensaje=$(mktemp)
+          cat > "$mensaje" <<MAIL
+          From: Catalogo MAKK <$AVISO_DE>
+          To: $AVISO_PARA
+          Subject: Un cambio del catalogo no se publico
+          MIME-Version: 1.0
+          Content-Type: text/plain; charset=UTF-8
+          Content-Transfer-Encoding: 8bit
+
+          Hola,
+
+          Un cambio que se guardó en el panel del catálogo no se pudo publicar en
+          el sitio. No se perdió nada: lo guardado sigue en el panel y el sitio
+          publicado se queda como estaba.
+
+          Kevin ya fue avisado y lo revisa. No hace falta que hagas nada; si
+          sigues editando, los nuevos cambios se publicarán junto con el pendiente
+          cuando se resuelva.
+
+          Detalle técnico (para Kevin): $RUN_URL
+          MAIL
+          # El heredoc va indentado para leerse dentro del YAML: se quita la sangria.
+          sed -i 's/^          //' "$mensaje"
+
+          args=()
+          IFS=',' read -ra para <<< "$AVISO_PARA"
+          for d in "${para[@]}"; do args+=(--mail-rcpt "$(echo "$d" | xargs)"); done
+
+          curl --silent --show-error --fail --ssl-reqd \
+            --url "$SMTP_URL" --user "$SMTP_USER:$SMTP_PASS" \
+            --mail-from "$AVISO_DE" "${args[@]}" --upload-file "$mensaje"
+          echo "Correo enviado a $AVISO_PARA"

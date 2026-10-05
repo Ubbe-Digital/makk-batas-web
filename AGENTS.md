@@ -73,7 +73,9 @@ configuración está en `.pages.yml` y debe mantenerse alineada con
 - Cada push a `contenido` dispara `publicar-contenido.yml`: fusiona en `main`,
   ordena las fotos, las reduce a 2000 px (`scripts/reducir-fotos.mjs`), corre
   `astro check` y el build, y si todo pasa sube a `main` y lanza el deploy. Si
-  falla, `main` no cambia y se abre un issue.
+  falla, `main` no cambia y se abre un issue; además, si el repo tiene los
+  secretos `SMTP_URL`, `SMTP_USER`, `SMTP_PASS`, `AVISO_DE` y `AVISO_PARA`, se
+  envía un correo (Makk no ve los issues). Sin ellos ese paso no hace nada.
 - Pages CMS no puede subir a la carpeta de cada modelo: las fotos caen sueltas
   en `src/assets/modelos/` con nombre aleatorio (`rename: random`).
   `scripts/ordenar-fotos.mjs` (paso del workflow) las mueve a
