@@ -1,5 +1,5 @@
 ---
-nombre: Guerrero naranja
+nombre: Dragon Ball
 categoria: personajes
 color: naranja
 contraste: azul
@@ -10,6 +10,6 @@ fotos:
   - ../../assets/modelos/guerrero-naranja/03.jpeg
 destacado: true
 orden: 10
+disponible: true
 ---
-
 Cuerpo naranja con cuello, puños y cinturón azules, como el traje de entrenamiento del personaje. Lleva el símbolo bordado en el pecho y debajo el nombre de quien la usa.

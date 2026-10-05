@@ -1,0 +1,107 @@
+# Publica los cambios que Makk hace desde Pages CMS.
+#
+# Pages CMS escribe en la rama `contenido`, nunca en `main`. Cada push a esa
+# rama se fusiona en `main` solo si el sitio compila con los cambios; asi un
+# campo faltante o una foto inexistente no llegan a produccion. Si falla, `main`
+# queda intacta y se abre un issue.
+#
+# Los pushes hechos con GITHUB_TOKEN no disparan otros workflows, por eso el
+# deploy se lanza a mano al final (workflow_dispatch si esta permitido).
+name: Publicar contenido (rama contenido)
+
+on:
+  push:
+    branches: ['contenido']
+
+# Un solo publicador a la vez: dos fusiones simultaneas se pisarian en `main`.
+concurrency:
+  group: publicar-contenido
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+  issues: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Identidad de git
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Hay algo que publicar?
+        id: pendiente
+        run: |
+          if [ "$(git rev-list --count main..origin/contenido)" -eq 0 ]; then
+            echo "hay=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "hay=si" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Fusionar contenido en main (local, sin subir todavia)
+        if: steps.pendiente.outputs.hay == 'si'
+        run: |
+          git merge --no-ff origin/contenido -m 'catalogo: publica los cambios del CMS'
+
+      - uses: actions/setup-node@v4
+        if: steps.pendiente.outputs.hay == 'si'
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
+      - name: Instalar dependencias
+        if: steps.pendiente.outputs.hay == 'si'
+        run: npm ci
+
+      - name: Reducir fotos a 2000 px
+        if: steps.pendiente.outputs.hay == 'si'
+        run: |
+          node scripts/reducir-fotos.mjs
+          if [ -n "$(git status --porcelain src/assets)" ]; then
+            git add src/assets
+            git commit -m 'catalogo: reduce las fotos nuevas a 2000 px'
+          fi
+
+      - name: Tipos (astro check)
+        if: steps.pendiente.outputs.hay == 'si'
+        run: npm run check
+
+      - name: Build
+        if: steps.pendiente.outputs.hay == 'si'
+        run: npm run build
+
+      - name: El build genero el sitio
+        if: steps.pendiente.outputs.hay == 'si'
+        run: test -s dist/index.html
+
+      - name: Subir a main y lanzar el deploy
+        if: steps.pendiente.outputs.hay == 'si'
+        run: |
+          git push origin HEAD:main
+          # Deja `contenido` al dia con main. Si Makk guardo algo mientras
+          # tanto el push se rechaza y ese cambio entra en la siguiente corrida.
+          git push origin HEAD:contenido || echo 'contenido avanzo: se publicara en la siguiente corrida'
+          gh workflow run deploy.yml --ref main
+
+      - name: Avisar si fallo
+        if: failure()
+        run: |
+          titulo='Fallo la publicacion del catalogo'
+          url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          existente=$(gh issue list --state open --search "\"$titulo\" in:title" --json number --jq '.[0].number')
+          if [ -n "$existente" ]; then
+            gh issue comment "$existente" --body "Volvio a fallar: $url"
+          else
+            gh issue create --title "$titulo" --body "Los cambios de la rama \`contenido\` no se publicaron: el sitio no compila con ellos o hay un conflicto con \`main\`. Detalle: $url"
+          fi

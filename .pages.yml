@@ -1,0 +1,120 @@
+# Configuracion de Pages CMS (https://pagescms.org): el panel con el que Makk
+# gestiona el catalogo. Escribe en `src/content/` y `src/assets/`, igual que un
+# desarrollador; los esquemas viven en `src/content.config.ts` y deben
+# mantenerse alineados con los campos de este archivo.
+
+media:
+  input: src/assets/modelos
+  # Astro resuelve las fotos del frontmatter de forma relativa al .md.
+  output: ../../assets/modelos
+  categories: [image]
+  # Nombre aleatorio: evita que dos fotos con el mismo nombre se pisen. La
+  # portada la define el orden de `fotos` en cada modelo, no el nombre.
+  rename: random
+
+settings:
+  content:
+    # Conserva campos que el panel no conoce en vez de reescribir el archivo.
+    merge: true
+  commit:
+    templates:
+      create: 'catalogo: agrega {path} (via Pages CMS)'
+      update: 'catalogo: actualiza {path} (via Pages CMS)'
+      delete: 'catalogo: elimina {path} (via Pages CMS)'
+
+content:
+  - name: modelos
+    label: Modelos
+    type: collection
+    path: src/content/modelos
+    # La URL sale del nombre del archivo: no cambiarlo despues de compartirlo.
+    filename: '{primary}.md'
+    format: yaml-frontmatter
+    view:
+      primary: nombre
+      fields: [nombre, categoria, color, disponible, destacado]
+      sort: [orden]
+    fields:
+      - name: nombre
+        label: Nombre del modelo
+        type: string
+        required: true
+        description: 'Nombre descriptivo, sin marcas (ej. "Guerrero naranja").'
+      - name: categoria
+        label: Categoria
+        type: select
+        required: true
+        options:
+          values:
+            - { value: personajes, label: Personajes }
+            - { value: deportes, label: Deportes }
+            - { value: clasicas, label: Clasicas personalizadas }
+      - name: color
+        label: Color del cuerpo
+        type: string
+        required: true
+        description: 'Una palabra en minuscula (ej. "azul"); alimenta el filtro del catalogo.'
+      - name: contraste
+        label: Color de cuello, punos y cinturon
+        type: string
+        required: true
+      - name: bordado
+        label: Bordado
+        type: string
+        required: true
+      - name: fotos
+        label: Fotos
+        type: image
+        list: true
+        required: true
+        description: 'La primera es la portada: cuerpo entero y sin marcas de agua.'
+      - name: destacado
+        label: Mostrar en "Los mas pedidos"
+        type: boolean
+        default: false
+      - name: disponible
+        label: Visible en el sitio
+        type: boolean
+        default: true
+        description: 'Apagado lo oculta sin borrarlo.'
+      - name: orden
+        label: Orden
+        type: number
+        default: 100
+        description: 'Menor numero aparece primero.'
+      - name: body
+        label: Descripcion
+        type: text
+        required: true
+
+  - name: bordados
+    label: Tipos de bordado
+    type: collection
+    path: src/content/bordados
+    filename: '{primary}.md'
+    format: yaml-frontmatter
+    view:
+      primary: nombre
+      fields: [nombre, donde]
+      sort: [orden]
+    fields:
+      - name: nombre
+        label: Nombre
+        type: string
+        required: true
+      - name: foto
+        label: Foto
+        type: image
+        required: true
+      - name: donde
+        label: Donde se borda
+        type: string
+        required: true
+      - name: orden
+        label: Orden
+        type: number
+        required: true
+      - name: body
+        label: Descripcion
+        type: text
+        required: true
