@@ -1,5 +1,5 @@
 ---
-nombre: Clásica Negro y Rojo
+nombre: Clásica negro y rojo
 categoria: clasicas
 color: Negro
 contraste: Rojo
