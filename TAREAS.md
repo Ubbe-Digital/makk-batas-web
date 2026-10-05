@@ -26,8 +26,9 @@ https://claude.ai/code/artifact/c9f6888c-6041-4155-a5e6-9b2c5a51936d
         directo a la rama `contenido`.
   - [ ] Comprobar que la app de Pages CMS en GitHub esté instalada solo en este
         repo.
-  - [ ] Aviso por correo cuando falla una publicación (ver "Más adelante"):
-        hoy el aviso es un issue que solo ve Kevin.
+  - [ ] Activar el aviso por correo cuando falla una publicación: el paso ya
+        está en `publicar-contenido.yml` y se activa con los secretos SMTP
+        (ver ese archivo). Hoy el aviso es un issue que solo ve Kevin.
 - [ ] **Agregar personajes nuevos.** Makk planea sumar más personajes, así que
       dar de alta uno debe ser simple y no depender de un desarrollador.
       Decidir si el personaje es solo el nombre del modelo o un dato propio
