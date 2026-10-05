@@ -21,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
+      # Este job no hace checkout: sin esto `gh` falla con "not a git repository".
+      GH_REPO: ${{ github.repository }}
       MENSAJE: ${{ github.event.head_commit.message }}
       COMMIT_URL: ${{ github.event.head_commit.url }}
     steps:
