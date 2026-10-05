@@ -17,10 +17,14 @@ settings:
     # Conserva campos que el panel no conoce en vez de reescribir el archivo.
     merge: true
   commit:
+    # Los colaboradores por correo escriben con la identidad de la app: con
+    # `user` el commit lleva su nombre y correo como committer.
+    identity: user
+    # Deben terminar en "(via Pages CMS)": avisar-cms-en-main.yml lo busca.
     templates:
-      create: 'catalogo: agrega {path} (via Pages CMS)'
-      update: 'catalogo: actualiza {path} (via Pages CMS)'
-      delete: 'catalogo: elimina {path} (via Pages CMS)'
+      create: 'catalogo: {userName} agrega {path} (via Pages CMS)'
+      update: 'catalogo: {userName} actualiza {path} (via Pages CMS)'
+      delete: 'catalogo: {userName} elimina {path} (via Pages CMS)'
 
 content:
   - name: modelos
