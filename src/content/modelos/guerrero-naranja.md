@@ -1,5 +1,5 @@
 ---
-nombre: Dragon Ball
+nombre: Dragon Ball - Gokú
 categoria: personajes
 color: naranja
 contraste: azul
