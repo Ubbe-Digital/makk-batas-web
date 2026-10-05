@@ -1,0 +1,16 @@
+---
+nombre: Clásica con escudo
+categoria: clasicas
+color: vinotinto
+contraste: beige
+bordado: Escudo e iniciales en el pecho
+fotos:
+  - ../../assets/modelos/clasica-escudo/01.jpeg
+  - ../../assets/modelos/clasica-escudo/02.jpeg
+  - ../../assets/modelos/clasica-escudo/03.jpeg
+  - ../../assets/modelos/clasica-escudo/04.jpeg
+destacado: true
+orden: 10
+---
+
+Vinotinto con cuello, puños y cinturón beige. Un escudo bordado acompaña las iniciales; también se puede sumar una bandera.

@@ -1,0 +1,132 @@
+---
+import { Image } from 'astro:assets';
+import IconoChat from '../components/IconoChat.astro';
+import ModeloCard from '../components/ModeloCard.astro';
+import Base from '../layouts/Base.astro';
+import { getCategorias, getModelos } from '../lib/catalogo';
+import { enlaceWhatsApp, sitio } from '../data/sitio';
+
+const categorias = await getCategorias();
+const modelos = await getModelos();
+const nombreCategoria = new Map(categorias.map((c) => [c.id, c.data.nombre]));
+const destacados = modelos.filter((m) => m.data.destacado).slice(0, 8);
+
+// Portada de cada categoría: la primera foto de su primer modelo.
+const portadas = categorias.map((c) => {
+  const suyos = modelos.filter((m) => m.data.categoria.id === c.id);
+  return { categoria: c, foto: suyos[0]?.data.fotos[0], cantidad: suyos.length };
+});
+
+const heroe = modelos.find((m) => m.id === 'aracnido-clasico') ?? modelos[0];
+
+const pasos = [
+  { titulo: 'Elige el modelo', texto: 'Mira el catálogo y escoge la bata que más te guste.' },
+  { titulo: 'Personalízala', texto: 'Dinos la talla, los dos colores y el nombre o las iniciales a bordar.' },
+  { titulo: 'Recíbela', texto: `La confeccionamos en ${sitio.confeccion} y te la llevamos.` },
+];
+---
+
+<Base>
+  <section class="contenedor grid items-center gap-10 pt-10 pb-16 md:grid-cols-2 md:pt-16">
+    <div>
+      <p class="etiqueta">Hecho a mano en Los Teques</p>
+      <h1 class="mt-4 text-4xl leading-tight font-semibold sm:text-5xl">Batas de baño bordadas con tu nombre</h1>
+      <p class="mt-5 max-w-md text-lg text-tinta-suave">
+        Elige el modelo, los colores y el bordado. Las hacemos a pedido, en tallas de niño a adulto.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/catalogo/" class="boton-principal">Ver catálogo</a>
+        <a href={enlaceWhatsApp('Hola MAKK, quiero información sobre las batas.')} class="boton-secundario">
+          <IconoChat class="size-4" />
+          Escribir por WhatsApp
+        </a>
+      </div>
+    </div>
+    {
+      heroe && (
+        <div class="overflow-hidden rounded-3xl bg-white">
+          <Image
+            src={heroe.data.fotos[0]}
+            alt={`Bata ${heroe.data.nombre}, en versión de adulto y de niño`}
+            widths={[480, 720, 960]}
+            sizes="(min-width: 768px) 50vw, 100vw"
+            class="mx-auto max-h-[32rem] w-auto object-contain"
+            loading="eager"
+          />
+        </div>
+      )
+    }
+  </section>
+
+  <section class="border-y border-tinta/10 bg-arena/60">
+    <ol class="contenedor grid gap-8 py-12 sm:grid-cols-3">
+      {
+        pasos.map((p, i) => (
+          <li class="flex gap-4">
+            <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-verde font-display text-lg text-white">
+              {i + 1}
+            </span>
+            <div>
+              <h2 class="text-lg font-semibold">{p.titulo}</h2>
+              <p class="mt-1 text-sm text-tinta-suave">{p.texto}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="contenedor pt-20">
+    <h2 class="text-3xl font-semibold">Categorías</h2>
+    <ul class="mt-8 grid gap-5 sm:grid-cols-3">
+      {
+        portadas.map(({ categoria, foto, cantidad }) => (
+          <li>
+            <a href={`/catalogo/?categoria=${categoria.id}`} class="group relative block overflow-hidden rounded-2xl bg-tinta">
+              {foto && (
+                <Image
+                  src={foto}
+                  alt=""
+                  widths={[400, 600]}
+                  sizes="(min-width: 640px) 33vw, 100vw"
+                  class="aspect-[4/3] w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105"
+                />
+              )}
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-tinta/90 to-transparent p-5 pt-16 text-white">
+                <h3 class="text-xl font-semibold">{categoria.data.nombre}</h3>
+                <p class="text-sm text-white/80">{cantidad} {cantidad === 1 ? 'modelo' : 'modelos'}</p>
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="contenedor pt-20">
+    <div class="flex items-end justify-between gap-4">
+      <h2 class="text-3xl font-semibold">Los más pedidos</h2>
+      <a href="/catalogo/" class="text-sm font-semibold text-verde-oscuro hover:underline">Ver todo el catálogo →</a>
+    </div>
+    <ul class="mt-8 grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
+      {destacados.map((m) => <ModeloCard modelo={m} categoria={nombreCategoria.get(m.data.categoria.id) ?? ''} />)}
+    </ul>
+  </section>
+
+  <section class="contenedor pt-20">
+    <div class="grid gap-6 rounded-3xl bg-verde p-8 text-white sm:grid-cols-3 sm:p-10">
+      <div>
+        <p class="font-display text-xl">Delivery gratis</p>
+        <p class="mt-1 text-sm text-white/85">En todos Los Altos Mirandinos.</p>
+      </div>
+      <div>
+        <p class="font-display text-xl">Envíos a toda Venezuela</p>
+        <p class="mt-1 text-sm text-white/85">Por {sitio.enviosNacionales.join(', ')}.</p>
+      </div>
+      <div>
+        <p class="font-display text-xl">Pago fácil</p>
+        <p class="mt-1 text-sm text-white/85">{sitio.pagos.join(' o ')}.</p>
+      </div>
+    </div>
+  </section>
+</Base>
