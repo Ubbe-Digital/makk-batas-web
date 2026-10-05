@@ -6,7 +6,7 @@ import IconoChat from '../../components/IconoChat.astro';
 import ModeloCard from '../../components/ModeloCard.astro';
 import Base from '../../layouts/Base.astro';
 import { colores, getModelos, type Modelo } from '../../lib/catalogo';
-import { enlaceWhatsApp, gruposDeTalla, mostrarPrecios, sitio, tallas } from '../../data/sitio';
+import { enlaceCompartirWhatsApp, enlaceWhatsApp, gruposDeTalla, mostrarPrecios, sitio, tallas } from '../../data/sitio';
 
 export const getStaticPaths = (async () => {
   const modelos = await getModelos();
@@ -27,6 +27,8 @@ const categoria = await getEntry(modelo.data.categoria);
 const nombreCategoria = categoria?.data.nombre ?? '';
 const url = new URL(`/catalogo/${modelo.id}/`, Astro.site).href;
 const mensajeBase = `Hola MAKK, me interesa la bata "${modelo.data.nombre}" (${url}). ¿Me pueden dar el precio?`;
+// El enlace va solo en la última línea para que WhatsApp arme la vista previa con la foto.
+const mensajeCompartir = `Mira esta bata de ${sitio.nombre}: ${modelo.data.nombre}\n${url}`;
 const { fotos } = modelo.data;
 ---
 
@@ -81,6 +83,24 @@ const { fotos } = modelo.data;
         <div class="mt-4 text-tinta-suave">
           <Content />
         </div>
+        <a href={enlaceCompartirWhatsApp(mensajeCompartir)} class="boton-secundario mt-5 py-2">
+          <svg
+            class="size-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"></path>
+          </svg>
+          Compartir por WhatsApp
+        </a>
 
         <dl class="mt-6 divide-y divide-tinta/10 border-y border-tinta/10 text-sm">
           <div class="flex justify-between gap-4 py-3">

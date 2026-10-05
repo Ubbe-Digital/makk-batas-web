@@ -36,3 +36,8 @@ export const tallas = gruposDeTalla.flatMap((g) => g.tallas);
 export function enlaceWhatsApp(mensaje: string) {
   return `https://wa.me/${sitio.whatsapp}?text=${encodeURIComponent(mensaje)}`;
 }
+
+// Sin número: WhatsApp abre la lista de chats para elegir a quién mandarlo.
+export function enlaceCompartirWhatsApp(mensaje: string) {
+  return `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+}
