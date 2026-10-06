@@ -5,7 +5,7 @@ color: turquesa
 contraste: rosa
 bordado: Nombre en letra cursiva
 fotos:
-  - ../../assets/modelos/clasica-turquesa/01.jpeg
+  - ../../assets/modelos/clasica-turquesa-y-rosa/01.jpeg
 orden: 30
 ---
 

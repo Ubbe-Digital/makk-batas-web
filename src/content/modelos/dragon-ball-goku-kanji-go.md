@@ -5,13 +5,13 @@ color: naranja
 contraste: azul
 bordado: Símbolo del personaje y nombre en el pecho
 fotos:
-  - ../../assets/modelos/guerrero-naranja/04.jpeg
-  - ../../assets/modelos/guerrero-naranja/05.jpeg
-  - ../../assets/modelos/guerrero-naranja/06.jpeg
-  - ../../assets/modelos/guerrero-naranja/07.jpeg
-  - ../../assets/modelos/guerrero-naranja/08.jpeg
-  - ../../assets/modelos/guerrero-naranja/09.jpeg
-  - ../../assets/modelos/guerrero-naranja/01.jpeg
+  - ../../assets/modelos/dragon-ball-goku-kanji-go/04.jpeg
+  - ../../assets/modelos/dragon-ball-goku-kanji-go/05.jpeg
+  - ../../assets/modelos/dragon-ball-goku-kanji-go/06.jpeg
+  - ../../assets/modelos/dragon-ball-goku-kanji-go/07.jpeg
+  - ../../assets/modelos/dragon-ball-goku-kanji-go/08.jpeg
+  - ../../assets/modelos/dragon-ball-goku-kanji-go/09.jpeg
+  - ../../assets/modelos/dragon-ball-goku-kanji-go/01.jpeg
 destacado: true
 orden: 10
 disponible: true

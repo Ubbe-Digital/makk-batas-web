@@ -5,7 +5,7 @@ color: azul
 contraste: rojo
 bordado: Araña en la espalda y ojos en el pecho
 fotos:
-  - ../../assets/modelos/aracnido-clasico/01.jpeg
+  - ../../assets/modelos/spiderman-clasico/01.jpeg
 destacado: true
 orden: 50
 disponible: true

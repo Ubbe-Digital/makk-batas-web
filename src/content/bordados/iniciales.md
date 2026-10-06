@@ -1,6 +1,6 @@
 ---
 nombre: Iniciales
-foto: ../../assets/modelos/clasica-iniciales/01.jpeg
+foto: ../../assets/modelos/clasica-con-iniciales/01.jpeg
 donde: Pecho
 orden: 3
 ---

@@ -5,9 +5,9 @@ color: gris
 contraste: verde azulado
 bordado: Balón e iniciales en el pecho
 fotos:
-  - ../../assets/modelos/futbol/01.jpeg
-  - ../../assets/modelos/futbol/02.jpeg
-  - ../../assets/modelos/futbol/03.jpeg
+  - ../../assets/modelos/futbol-gris-y-verde/01.jpeg
+  - ../../assets/modelos/futbol-gris-y-verde/02.jpeg
+  - ../../assets/modelos/futbol-gris-y-verde/03.jpeg
 orden: 20
 ---
 

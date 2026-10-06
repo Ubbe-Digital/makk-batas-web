@@ -5,7 +5,7 @@ color: azul
 contraste: rojo
 bordado: Personaje y nombre en el pecho
 fotos:
-  - ../../assets/modelos/plomero/01.jpeg
+  - ../../assets/modelos/super-mario-azul-y-rojo/01.jpeg
 orden: 60
 destacado: false
 disponible: true

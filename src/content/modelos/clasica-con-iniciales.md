@@ -5,7 +5,7 @@ color: gris
 contraste: gris claro
 bordado: Iniciales en letra cursiva
 fotos:
-  - ../../assets/modelos/clasica-iniciales/01.jpeg
+  - ../../assets/modelos/clasica-con-iniciales/01.jpeg
 orden: 20
 ---
 

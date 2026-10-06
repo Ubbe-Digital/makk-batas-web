@@ -1,6 +1,6 @@
 ---
 nombre: Escudo deportivo
-foto: ../../assets/modelos/toro-rojo-negro/04.jpeg
+foto: ../../assets/modelos/chicago-bulls/04.jpeg
 donde: Pecho, manga o espalda
 orden: 5
 ---

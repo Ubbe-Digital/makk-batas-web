@@ -5,8 +5,8 @@ color: azul
 contraste: rosa
 bordado: Logo de la película en blanco
 fotos:
-  - ../../assets/modelos/aloha-azul/01.jpeg
-  - ../../assets/modelos/aloha-azul/02.jpeg
+  - ../../assets/modelos/lilo-y-stich-azul-y-rosa/01.jpeg
+  - ../../assets/modelos/lilo-y-stich-azul-y-rosa/02.jpeg
 destacado: true
 orden: 40
 disponible: true
