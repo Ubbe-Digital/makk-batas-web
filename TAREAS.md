@@ -38,8 +38,9 @@ https://claude.ai/code/artifact/c9f6888c-6041-4155-a5e6-9b2c5a51936d
       sale del nombre del archivo (`guerrero-naranja.md` →
       `/catalogo/guerrero-naranja/`). Cambiar la URL rompe los enlaces ya
       compartidos por WhatsApp: el CMS no debería permitirlo, o debería dejar
-      una redirección. Revisar también los nombres provisionales actuales
-      ("Guerrero naranja", "Gatita rosa", "Aloha azul y rosa"…).
+      una redirección. Los modelos antiguos conservan su URL descriptiva aunque
+      hoy lleven el nombre oficial (`guerrero-naranja` muestra "Dragon Ball -
+      Gokú"): decidir si se deja así.
 
 ## Fase 3: analítica con Umami
 
