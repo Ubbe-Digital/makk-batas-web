@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro';
-import { Image } from 'astro:assets';
+import { getImage, Image } from 'astro:assets';
 import { getEntry, render } from 'astro:content';
 import IconoChat from '../../components/IconoChat.astro';
 import ModeloCard from '../../components/ModeloCard.astro';
@@ -30,6 +30,8 @@ const mensajeBase = `Hola MAKK, me interesa la bata "${modelo.data.nombre}" (${u
 // El enlace va solo en la última línea para que WhatsApp arme la vista previa con la foto.
 const mensajeCompartir = `Mira esta bata de ${sitio.nombre}: ${modelo.data.nombre}\n${url}`;
 const { fotos } = modelo.data;
+// Versión a tamaño completo para el visor con zoom; la galería usa las reducidas.
+const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, format: 'webp', quality: 85 })));
 ---
 
 <Base
@@ -50,14 +52,21 @@ const { fotos } = modelo.data;
           {
             fotos.map((foto, i) => (
               <li id={`foto-${i + 1}`} class="w-full shrink-0 snap-center">
-                <Image
-                  src={foto}
-                  alt={`Bata ${modelo.data.nombre}, foto ${i + 1} de ${fotos.length}`}
-                  widths={[480, 720, 960, 1280]}
-                  sizes="(min-width: 1024px) 60vw, 100vw"
-                  class="aspect-[4/5] w-full rounded-2xl bg-arena object-cover"
-                  loading={i === 0 ? 'eager' : 'lazy'}
-                />
+                <a
+                  href={ampliadas[i].src}
+                  data-pswp-width={ampliadas[i].attributes.width}
+                  data-pswp-height={ampliadas[i].attributes.height}
+                  aria-label={`Ampliar foto ${i + 1} de ${fotos.length}`}
+                  class="block cursor-zoom-in overflow-hidden rounded-2xl bg-arena">
+                  <Image
+                    src={foto}
+                    alt={`Bata ${modelo.data.nombre}, foto ${i + 1} de ${fotos.length}`}
+                    widths={[480, 720, 960, 1280]}
+                    sizes="(min-width: 1024px) 60vw, 100vw"
+                    class="aspect-[3/4] w-full object-contain"
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                  />
+                </a>
               </li>
             ))
           }
@@ -186,6 +195,8 @@ const { fotos } = modelo.data;
 </Base>
 
 <script>
+  import PhotoSwipeLightbox from 'photoswipe/lightbox';
+  import 'photoswipe/style.css';
   import { enlaceWhatsApp } from '../../data/sitio';
 
   // Arma el mensaje de WhatsApp con lo que el cliente va completando.
@@ -207,8 +218,34 @@ const { fotos } = modelo.data;
   form.addEventListener('input', actualizar);
   form.addEventListener('submit', (e) => e.preventDefault());
 
-  // Las miniaturas desplazan la galería sin mover la página.
   const galeria = document.querySelector<HTMLElement>('#galeria')!;
+
+  // Visor con zoom (pellizco, rueda, doble toque), arrastre y flechas.
+  const visor = new PhotoSwipeLightbox({
+    gallery: '#galeria',
+    children: 'a[data-pswp-width]',
+    pswpModule: () => import('photoswipe'),
+    bgOpacity: 1,
+    // Las fotos se muestran completas, no recortadas: la animacion de apertura
+    // desde la miniatura no coincidiria con su encuadre.
+    showHideAnimationType: 'fade',
+    wheelToZoom: true,
+    secondaryZoomLevel: 2,
+    maxZoomLevel: 4,
+    closeTitle: 'Cerrar',
+    zoomTitle: 'Ampliar',
+    arrowPrevTitle: 'Anterior',
+    arrowNextTitle: 'Siguiente',
+    errorMsg: 'No se pudo cargar la foto',
+  });
+  // Al cerrar, la galería queda en la foto que se estaba viendo.
+  visor.on('close', () => {
+    const actual = galeria.querySelectorAll<HTMLElement>(':scope > li')[visor.pswp?.currIndex ?? 0];
+    if (actual) galeria.scrollTo({ left: actual.offsetLeft - galeria.offsetLeft });
+  });
+  visor.init();
+
+  // Las miniaturas desplazan la galería sin mover la página.
   for (const a of document.querySelectorAll<HTMLAnchorElement>('[data-miniatura]')) {
     a.addEventListener('click', (e) => {
       const destino = document.querySelector<HTMLElement>(a.hash);
