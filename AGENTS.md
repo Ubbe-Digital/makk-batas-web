@@ -87,8 +87,16 @@ configuración está en `.pages.yml` y debe mantenerse alineada con
   un issue. Si el repo pasa a un plan de pago, proteger `main` exigiendo PR y
   hacer que `publicar-contenido.yml` fusione por PR (el `GITHUB_TOKEN` no puede
   saltarse la protección).
-- La URL de un modelo sale del nombre de su archivo: no renombrarlo una vez
-  compartido.
+- La URL de un modelo es el nombre de su archivo (`<slug>.md` →
+  `/catalogo/<slug>/`) y se crea a partir del nombre del modelo. Si se renombra
+  el archivo (desde el CMS o con `git mv`), `scripts/redirecciones.mjs` lee el
+  renombrado del historial de git y `astro.config.mjs` genera la redirección
+  desde la URL vieja: los enlaces ya compartidos siguen funcionando. Requiere
+  historial completo (el CI y el deploy lo traen). Al renombrar un modelo,
+  renombrar también su carpeta de fotos `src/assets/modelos/<slug>/` y sus
+  rutas, para que coincida con lo que crea `ordenar-fotos.mjs`.
+- Las redirecciones son páginas con meta-refresh, no un 301: las vistas previas
+  de enlaces viejos en WhatsApp no siguen la redirección.
 
 ## Deploy
 

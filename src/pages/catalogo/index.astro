@@ -6,7 +6,7 @@ import { capitalizar, getCategorias, getModelos } from '../../lib/catalogo';
 const categorias = await getCategorias();
 const modelos = await getModelos();
 const nombreCategoria = new Map(categorias.map((c) => [c.id, c.data.nombre]));
-const portada = modelos.find((m) => m.id === 'aracnido-clasico') ?? modelos[0];
+const portada = modelos.find((m) => m.id === 'spiderman-clasico') ?? modelos[0];
 const colores = [...new Set(modelos.map((m) => m.data.color))].sort((a, b) => a.localeCompare(b, 'es'));
 
 const chip =
