@@ -1,5 +1,5 @@
 ---
-nombre: Gatita blanca y roja
+nombre: Hello Kitty blanca y roja
 categoria: personajes
 color: blanco
 contraste: rojo
@@ -8,6 +8,6 @@ fotos:
   - ../../assets/modelos/gatita-blanca/01.jpeg
 destacado: true
 orden: 30
+disponible: true
 ---
-
 Cuerpo blanco con cuello, puños y cinturón rojos. La gatita con su lazo fucsia va bordada en el pecho, junto al nombre.
