@@ -15,13 +15,13 @@ const [portada] = modelo.data.fotos;
 
 <li data-categoria={modelo.data.categoria.id} data-color={modelo.data.color}>
   <a href={`/catalogo/${modelo.id}/`} class="group block">
-    <div class="aspect-[4/5] overflow-hidden rounded-2xl bg-arena">
+    <div class="aspect-[3/4] overflow-hidden rounded-2xl bg-arena">
       <Image
         src={portada}
         alt={`Bata ${modelo.data.nombre}`}
         widths={[320, 480, 640]}
         sizes="(min-width: 1024px) 280px, (min-width: 640px) 33vw, 50vw"
-        class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+        class="size-full object-contain transition-transform duration-500 group-hover:scale-105"
         loading={prioridad ? 'eager' : 'lazy'}
       />
     </div>

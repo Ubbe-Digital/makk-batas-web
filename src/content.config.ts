@@ -10,10 +10,11 @@ const modelos = defineCollection({
     z.object({
       nombre: z.string(),
       categoria: reference('categorias'),
-      // Color del cuerpo; es el que usa el filtro del catálogo.
-      color: z.string(),
+      // Color del cuerpo; es el que usa el filtro del catálogo. Se normaliza
+      // porque el CMS es texto libre: "Negro" y "negro" serian dos filtros.
+      color: z.string().trim().toLowerCase(),
       // Color de cuello, puños y cinturón.
-      contraste: z.string(),
+      contraste: z.string().trim().toLowerCase(),
       bordado: z.string(),
       // La primera es la portada.
       fotos: z.array(image()).min(1),
