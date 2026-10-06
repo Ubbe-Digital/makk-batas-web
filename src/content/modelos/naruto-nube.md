@@ -5,10 +5,10 @@ color: Negro
 contraste: Rojo
 bordado: Naruto
 fotos:
-  - ../../assets/modelos/mux32aqa-uhxopeaq.jpg
-  - ../../assets/modelos/mux32uvb-igqtyjbu.jpg
-  - ../../assets/modelos/mux338hu-k4h22gbh.jpg
-  - ../../assets/modelos/mux33klf-kyir1zkw.jpg
+  - ../../assets/modelos/naruto-nube/01.jpg
+  - ../../assets/modelos/naruto-nube/02.jpg
+  - ../../assets/modelos/naruto-nube/03.jpg
+  - ../../assets/modelos/naruto-nube/04.jpg
 destacado: false
 disponible: true
 orden: 100
