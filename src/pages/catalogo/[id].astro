@@ -76,8 +76,17 @@ const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, fo
             <ul class="mt-3 flex gap-3" aria-label="Fotos">
               {fotos.map((foto, i) => (
                 <li>
-                  <a href={`#foto-${i + 1}`} data-miniatura class="block overflow-hidden rounded-lg ring-verde ring-offset-2 hover:ring-2">
-                    <Image src={foto} alt={`Ver foto ${i + 1}`} width={160} class="size-16 object-cover sm:size-20" />
+                  <a
+                    href={`#foto-${i + 1}`}
+                    data-miniatura
+                    aria-current={i === 0 ? 'true' : undefined}
+                    class="group block overflow-hidden rounded-lg ring-verde ring-offset-2 hover:ring-2 aria-[current=true]:ring-2">
+                    <Image
+                      src={foto}
+                      alt={`Ver foto ${i + 1}`}
+                      width={160}
+                      class="size-16 object-cover opacity-60 transition-opacity group-hover:opacity-100 group-aria-[current=true]:opacity-100 sm:size-20"
+                    />
                   </a>
                 </li>
               ))}
@@ -244,6 +253,21 @@ const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, fo
     if (actual) galeria.scrollTo({ left: actual.offsetLeft - galeria.offsetLeft });
   });
   visor.init();
+
+  // La miniatura de la foto que se está viendo queda marcada.
+  const miniaturas = [...document.querySelectorAll<HTMLAnchorElement>('[data-miniatura]')];
+  const diapositivas = [...galeria.querySelectorAll<HTMLElement>(':scope > li')];
+  const marcar = new IntersectionObserver(
+    (entradas) => {
+      for (const e of entradas) {
+        if (!e.isIntersecting) continue;
+        const actual = diapositivas.indexOf(e.target as HTMLElement);
+        miniaturas.forEach((m, i) => (i === actual ? m.setAttribute('aria-current', 'true') : m.removeAttribute('aria-current')));
+      }
+    },
+    { root: galeria, threshold: 0.6 },
+  );
+  diapositivas.forEach((d) => marcar.observe(d));
 
   // Las miniaturas desplazan la galería sin mover la página.
   for (const a of document.querySelectorAll<HTMLAnchorElement>('[data-miniatura]')) {
