@@ -5,12 +5,12 @@ color: naranja
 contraste: azul
 bordado: Símbolo del personaje y nombre en el pecho
 fotos:
-  - ../../assets/modelos/muxb1e8p-pbvele9o.jpeg
-  - ../../assets/modelos/muxb1ofu-b4payxeh.jpeg
-  - ../../assets/modelos/muxb1yxt-on0alo8p.jpeg
-  - ../../assets/modelos/muxb26ty-m93p3jhi.jpeg
-  - ../../assets/modelos/muxb3kf6-9ndapxuq.jpeg
-  - ../../assets/modelos/muxb3u4p-3bd61avp.jpeg
+  - ../../assets/modelos/guerrero-naranja/04.jpeg
+  - ../../assets/modelos/guerrero-naranja/05.jpeg
+  - ../../assets/modelos/guerrero-naranja/06.jpeg
+  - ../../assets/modelos/guerrero-naranja/07.jpeg
+  - ../../assets/modelos/guerrero-naranja/08.jpeg
+  - ../../assets/modelos/guerrero-naranja/09.jpeg
   - ../../assets/modelos/guerrero-naranja/01.jpeg
 destacado: true
 orden: 10
