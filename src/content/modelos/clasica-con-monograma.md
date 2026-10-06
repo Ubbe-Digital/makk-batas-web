@@ -5,7 +5,7 @@ color: blanco
 contraste: fucsia
 bordado: Monograma con la inicial
 fotos:
-  - ../../assets/modelos/clasica-monograma/01.jpeg
+  - ../../assets/modelos/clasica-con-monograma/01.jpeg
 orden: 50
 ---
 

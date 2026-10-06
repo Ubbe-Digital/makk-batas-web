@@ -1,6 +1,6 @@
 ---
 nombre: Nombre en letra cursiva
-foto: ../../assets/modelos/clasica-turquesa/01.jpeg
+foto: ../../assets/modelos/clasica-turquesa-y-rosa/01.jpeg
 donde: Pecho
 orden: 2
 ---

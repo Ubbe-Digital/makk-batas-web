@@ -34,13 +34,12 @@ https://claude.ai/code/artifact/c9f6888c-6041-4155-a5e6-9b2c5a51936d
       Decidir si el personaje es solo el nombre del modelo o un dato propio
       (por ejemplo una colección `personajes` a la que apunten los modelos),
       y cómo se nombra cada uno.
-- [ ] **Nombres y URLs.** Cambiar el nombre de un modelo no cambia su URL, que
-      sale del nombre del archivo (`guerrero-naranja.md` →
-      `/catalogo/guerrero-naranja/`). Cambiar la URL rompe los enlaces ya
-      compartidos por WhatsApp: el CMS no debería permitirlo, o debería dejar
-      una redirección. Los modelos antiguos conservan su URL descriptiva aunque
-      hoy lleven el nombre oficial (`guerrero-naranja` muestra "Dragon Ball -
-      Gokú"): decidir si se deja así.
+- [x] **Nombres y URLs** (2026-10-06). La URL de cada modelo sigue su nombre y
+      al renombrar un archivo se genera sola la redirección desde la URL vieja
+      (`scripts/redirecciones.mjs`, a partir del historial de git). Se
+      renombraron los 16 modelos cuya URL no coincidía con su nombre. Mejora
+      posible: servir un 301 desde nginx en vez de la redirección con
+      meta-refresh (el vhost lo gestiona el repo `infrastructure`).
 
 ## Fase 3: analítica con Umami
 

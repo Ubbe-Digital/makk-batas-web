@@ -5,7 +5,7 @@ color: blanco
 contraste: rojo
 bordado: Gatita con lazo y nombre en el pecho
 fotos:
-  - ../../assets/modelos/gatita-blanca/01.jpeg
+  - ../../assets/modelos/hello-kitty-blanca-y-roja/01.jpeg
 destacado: true
 orden: 30
 disponible: true

@@ -1,6 +1,6 @@
 ---
 nombre: Escudo con iniciales
-foto: ../../assets/modelos/clasica-escudo/03.jpeg
+foto: ../../assets/modelos/clasica-con-escudo/03.jpeg
 donde: Pecho y manga
 orden: 4
 ---

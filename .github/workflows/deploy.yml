@@ -54,6 +54,11 @@ jobs:
           echo "==> actualizando codigo en $APP_DIR"
           cd "$APP_DIR"
           git fetch origin main
+          # Las redirecciones de modelos renombrados se leen del historial: un
+          # clon superficial no las generaria.
+          if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+            git fetch --unshallow origin
+          fi
           # reset --hard en vez de pull: si el clon diverge, el pull falla.
           git reset --hard origin/main
 

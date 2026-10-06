@@ -1,6 +1,6 @@
 ---
 nombre: Personaje con nombre
-foto: ../../assets/modelos/guerrero-naranja/02.jpeg
+foto: ../../assets/modelos/dragon-ball-goku-kanji-go/02.jpeg
 donde: Pecho
 orden: 1
 ---

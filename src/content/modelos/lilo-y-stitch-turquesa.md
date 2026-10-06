@@ -5,7 +5,7 @@ color: turquesa
 contraste: rosa
 bordado: Logo de la película en fucsia
 fotos:
-  - ../../assets/modelos/aloha-turquesa/01.jpeg
+  - ../../assets/modelos/lilo-y-stitch-turquesa/01.jpeg
 orden: 41
 destacado: false
 disponible: true
