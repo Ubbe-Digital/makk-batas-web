@@ -43,7 +43,7 @@ content:
         label: Nombre del modelo
         type: string
         required: true
-        description: 'Nombre descriptivo, sin marcas (ej. "Guerrero naranja").'
+        description: 'Nombre del modelo (ej. "Hello Kitty rosa y blanco").'
       - name: categoria
         label: Categoria
         type: select

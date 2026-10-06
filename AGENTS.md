@@ -26,10 +26,7 @@ npm run preview          # sirve dist/
 2. **No se publican precios** (decisión del 2026-10-05). Cada modelo dice
    "Consultar precio" y el precio se da por WhatsApp. La tabla por talla ya
    existe en `src/data/sitio.ts`; para publicarla basta `mostrarPrecios = true`.
-3. **Personajes sin marcas en los textos.** Los modelos de personajes llevan
-   nombres descriptivos ("Guerrero naranja", "Gatita rosa"), no los nombres
-   comerciales de los personajes.
-4. **Nunca deshagas trabajo ajeno** (`git reset --hard`, `git clean`,
+3. **Nunca deshagas trabajo ajeno** (`git reset --hard`, `git clean`,
    `git checkout -- .` sobre cambios que no hiciste).
 
 ## El catálogo
