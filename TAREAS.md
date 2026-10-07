@@ -99,6 +99,26 @@ clics), Google Analytics 4 (demasiado para empezar, usa cookies), Microsoft
 Clarity (mapas de calor; complemento opcional más adelante) y Twilio Segment
 (reparte datos hacia otras herramientas; no aplica).
 
+## Mejoras de la web (auditoría del 2026-10-07)
+
+- [x] **Auditoría con Lighthouse y correcciones del sitio** (PR #24): catálogo
+      sin saltos de diseño (CLS 0,21 a 0, rendimiento 82 a 96), accesibilidad
+      100 en las tres páginas medidas, contraste AA, puntos del carrusel
+      tocables, fuentes precargadas, `robots.txt`, datos estructurados y
+      `utm_source=whatsapp` al compartir un modelo.
+- [ ] **Aplicar en el VPS el PR de nginx** (`infrastructure` #1): cabeceras de
+      seguridad con una CSP ya probada contra el sitio, caché de sesiones TLS,
+      `server_tokens off` y `/favicon.ico`. Pasos y verificación en el PR.
+      Después, subir el HSTS de 30 días a un año.
+- [ ] **Subir las fotos originales** (no las reenviadas por WhatsApp): varias
+      miden 563 px y el zoom del visor se pixela. Es un tema de contenido.
+- [ ] Opcional: **CLS de la portada** (0,094, "bueno" pero justo): el cambio de
+      tipografía empuja el carrusel en móvil. Se arregla con la API de fuentes
+      de Astro y un fallback ajustado.
+- [ ] Opcional: **CDN** (Cloudflare, plan gratis) delante del sitio para acercar
+      el contenido a Venezuela y tener brotli y HTTP/3. Implica mover el DNS de
+      Namecheap; decidir cuando Umami muestre cuánto tráfico llega y desde dónde.
+
 ## Más adelante (sin fase asignada)
 
 - [ ] **Precios visibles.** En la v1 cada modelo dice "Consultar precio". La
