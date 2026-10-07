@@ -6,7 +6,7 @@ import IconoChat from '../components/IconoChat.astro';
 import ModeloCard from '../components/ModeloCard.astro';
 import Base from '../layouts/Base.astro';
 import { getCategorias, getModelos } from '../lib/catalogo';
-import { enlaceWhatsApp, sitio } from '../data/sitio';
+import { enlaceWhatsApp, pasosPedido, sitio } from '../data/sitio';
 
 const categorias = await getCategorias();
 const modelos = await getModelos();
@@ -33,11 +33,6 @@ const negocio = {
 
 const fotosPortada = (await getEntry('portada', 'principal'))!.data.fotos;
 
-const pasos = [
-  { titulo: 'Elige el modelo', texto: 'Mira el catálogo y escoge la bata que más te guste.' },
-  { titulo: 'Personalízala', texto: 'Dinos la talla, los dos colores y el nombre o las iniciales a bordar.' },
-  { titulo: 'Recíbela', texto: `La confeccionamos en ${sitio.confeccion} y te la llevamos.` },
-];
 ---
 
 <Base imagen={fotosPortada[0]} imagenAlt="Batas de baño bordadas de MAKK Creaciones">
@@ -67,9 +62,9 @@ const pasos = [
   </section>
 
   <section class="border-y border-tinta/10 bg-arena/60">
-    <ol class="contenedor grid gap-8 py-12 sm:grid-cols-3">
+    <ol class="contenedor grid gap-8 pt-12 pb-6 sm:grid-cols-2 lg:grid-cols-4">
       {
-        pasos.map((p, i) => (
+        pasosPedido.map((p, i) => (
           <li class="flex gap-4">
             <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-verde font-display text-lg text-white">
               {i + 1}
@@ -82,6 +77,11 @@ const pasos = [
         ))
       }
     </ol>
+    <p class="contenedor pb-12 text-sm">
+      <a href="/como-pedir/" class="font-semibold text-verde-oscuro underline underline-offset-4 hover:text-verde">
+        Ver tallas, formas de pago y envíos
+      </a>
+    </p>
   </section>
 
   <section class="contenedor pt-20">

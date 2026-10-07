@@ -9,7 +9,11 @@ export default defineConfig({
   site: 'https://batas.ubbedigital.com',
   integrations: [sitemap()],
   // URLs viejas de modelos renombrados (se leen del historial de git).
-  redirects: redireccionesDeModelos(),
+  redirects: {
+    // La página de contacto se fundió con "Cómo pedir".
+    '/contacto': '/como-pedir/#contacto',
+    ...redireccionesDeModelos(),
+  },
   vite: {
     plugins: [tailwindcss()],
     // Nada en línea (scripts ni imágenes como data:): permite una política de
