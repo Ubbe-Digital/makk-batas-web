@@ -5,9 +5,9 @@ color: naranja
 contraste: azul
 bordado: Kanji Kame
 fotos:
-  - ../../assets/modelos/muxcgi5u-cqyxnwok.jpeg
-  - ../../assets/modelos/muxcgpzr-jeahoghr.jpeg
-  - ../../assets/modelos/muxcgxgv-atdk0nhg.jpeg
+  - ../../assets/modelos/dragon-ball-goku-kanji-kame/01.jpeg
+  - ../../assets/modelos/dragon-ball-goku-kanji-kame/02.jpeg
+  - ../../assets/modelos/dragon-ball-goku-kanji-kame/03.jpeg
 destacado: false
 disponible: true
 orden: 100
