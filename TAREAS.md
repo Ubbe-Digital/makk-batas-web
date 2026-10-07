@@ -149,6 +149,8 @@ Clarity (mapas de calor; complemento opcional más adelante) y Twilio Segment
   `<meta http-equiv>` en `Base.astro` (sin `frame-ancestors`).
   `main` está protegido por ruleset y `publicar-contenido.yml` fusiona por PR
   (ver `AGENTS.md`).
+- **Ruleset "Proteger main" activo** (2026-10-07) y probado: un commit en `contenido`
+  llegó a `main` por PR de `publicar-contenido.yml`.
 - **Migración hecha** (2026-10-07): el sitio sirve desde Pages en
   `batas.ubbedigital.com` (CNAME a `ubbe-digital.github.io`).
 - [ ] **Revisar la migración y decidir si el VPS se desmantela del todo.**
