@@ -7,7 +7,7 @@ bordado: Logo de la película en blanco
 fotos:
   - ../../assets/modelos/lilo-y-stich-azul-y-rosa/01.jpeg
   - ../../assets/modelos/lilo-y-stich-azul-y-rosa/02.jpeg
-destacado: true
+destacado: false
 orden: 40
 disponible: true
 ---
