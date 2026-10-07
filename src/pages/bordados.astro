@@ -38,7 +38,11 @@ const conContenido = await Promise.all(bordados.map(async (b) => ({ ...b, Conten
 
     <div class="mt-16 rounded-3xl bg-arena/70 p-8 text-center">
       <p class="font-display text-2xl">¿Tienes otro diseño en mente?</p>
-      <a href={enlaceWhatsApp('Hola MAKK, quiero consultar un bordado personalizado.')} class="boton-principal mt-5">
+      <a
+        href={enlaceWhatsApp('Hola MAKK, quiero consultar un bordado personalizado.')}
+        class="boton-principal mt-5"
+        data-umami-event="whatsapp"
+        data-umami-event-origen="bordado-personalizado">
         Consultar por WhatsApp
       </a>
     </div>

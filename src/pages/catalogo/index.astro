@@ -28,20 +28,56 @@ const chip =
 
     <div id="filtros" class="mt-8 space-y-4" hidden>
       <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Categoría">
-        <button type="button" class={chip} data-filtro="categoria" data-valor="" aria-pressed="true">Todas</button>
+        <button
+          type="button"
+          class={chip}
+          data-filtro="categoria"
+          data-valor=""
+          aria-pressed="true"
+          data-umami-event="filtro"
+          data-umami-event-tipo="categoria"
+          data-umami-event-valor="todas">
+          Todas
+        </button>
         {
           categorias.map((c) => (
-            <button type="button" class={chip} data-filtro="categoria" data-valor={c.id} aria-pressed="false">
+            <button
+              type="button"
+              class={chip}
+              data-filtro="categoria"
+              data-valor={c.id}
+              aria-pressed="false"
+              data-umami-event="filtro"
+              data-umami-event-tipo="categoria"
+              data-umami-event-valor={c.id}>
               {c.data.nombre}
             </button>
           ))
         }
       </div>
       <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Color">
-        <button type="button" class={chip} data-filtro="color" data-valor="" aria-pressed="true">Todos los colores</button>
+        <button
+          type="button"
+          class={chip}
+          data-filtro="color"
+          data-valor=""
+          aria-pressed="true"
+          data-umami-event="filtro"
+          data-umami-event-tipo="color"
+          data-umami-event-valor="todos">
+          Todos los colores
+        </button>
         {
           colores.map((c) => (
-            <button type="button" class={chip} data-filtro="color" data-valor={c} aria-pressed="false">
+            <button
+              type="button"
+              class={chip}
+              data-filtro="color"
+              data-valor={c}
+              aria-pressed="false"
+              data-umami-event="filtro"
+              data-umami-event-tipo="color"
+              data-umami-event-valor={c}>
               {capitalizar(c)}
             </button>
           ))

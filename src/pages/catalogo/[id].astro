@@ -101,7 +101,11 @@ const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, fo
         <div class="mt-4 text-tinta-suave">
           <Content />
         </div>
-        <a href={enlaceCompartirWhatsApp(mensajeCompartir)} class="boton-secundario mt-5 py-2">
+        <a
+          href={enlaceCompartirWhatsApp(mensajeCompartir)}
+          class="boton-secundario mt-5 py-2"
+          data-umami-event="compartir-whatsapp"
+          data-umami-event-modelo={modelo.data.nombre}>
           <svg
             class="size-4"
             viewBox="0 0 24 24"
@@ -179,7 +183,12 @@ const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, fo
               class="mt-1 block w-full rounded-lg border border-tinta/15 bg-white px-3 py-2"
             />
           </label>
-          <a id="enviar" href={enlaceWhatsApp(mensajeBase)} class="boton-principal w-full">
+          <a
+            id="enviar"
+            href={enlaceWhatsApp(mensajeBase)}
+            class="boton-principal w-full"
+            data-umami-event="consultar-precio"
+            data-umami-event-modelo={modelo.data.nombre}>
             <IconoChat class="size-4" />
             Consultar precio por WhatsApp
           </a>
