@@ -39,3 +39,25 @@ jobs:
           else
             gh issue create --title "$titulo" --body "$cuerpo"
           fi
+
+      # Mismo chat de Telegram que publicar-contenido.yml; inactivo sin secretos.
+      - name: Avisar por Telegram
+        continue-on-error: true
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "Faltan los secretos de Telegram: no se envia el aviso."
+            exit 0
+          fi
+          texto=$(printf '%s\n\n%s\n\n%s' \
+            "⚠️ Catálogo MAKK: un cambio del panel se guardó en la rama principal (main) en vez de contenido." \
+            "Hay que entrar siempre por: https://app.pagescms.org/ubbe-digital/makk-batas/contenido" \
+            "Detalle técnico (Kevin): $COMMIT_URL")
+          curl --silent --show-error --fail \
+            --data-urlencode "chat_id=$TELEGRAM_CHAT_ID" \
+            --data-urlencode "text=$texto" \
+            --data-urlencode "disable_web_page_preview=true" \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" > /dev/null
+          echo "Aviso enviado a Telegram"

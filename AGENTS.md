@@ -72,8 +72,8 @@ configuración está en `.pages.yml` y debe mantenerse alineada con
   ordena las fotos, las reduce a 2000 px (`scripts/reducir-fotos.mjs`), corre
   `astro check` y el build, y si todo pasa sube a `main` y lanza el deploy. Si
   falla, `main` no cambia y se abre un issue; además, si el repo tiene los
-  secretos `SMTP_URL`, `SMTP_USER`, `SMTP_PASS`, `AVISO_DE` y `AVISO_PARA`, se
-  envía un correo (Makk no ve los issues). Sin ellos ese paso no hace nada.
+  secretos `TELEGRAM_BOT_TOKEN` y `TELEGRAM_CHAT_ID`, avisa por Telegram al
+  grupo de Makk y Kevin (Makk no ve los issues). Sin ellos ese paso no hace nada.
 - Las fotos de la portada tienen su propia fuente de media (`portada` en `.pages.yml`, carpeta `src/assets/portada/`); `ordenar-fotos.mjs` no las toca. Cada campo de imagen elige su fuente con `options.media`.
 - Pages CMS no puede subir a la carpeta de cada modelo: las fotos caen sueltas
   en `src/assets/modelos/` con nombre aleatorio (`rename: random`).
