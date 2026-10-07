@@ -97,12 +97,37 @@ jobs:
 
       - name: Subir a main y lanzar el deploy
         if: steps.pendiente.outputs.hay == 'si'
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          git push origin HEAD:main
+          # `main` puede avanzar mientras se valida (un PR fusionado a mano): el
+          # push se rechaza. Se incorpora lo nuevo y se valida otra vez, hasta
+          # 3 veces; un conflicto real falla el job y abre el issue.
+          for intento in 1 2 3; do
+            if git push origin HEAD:main; then publicado=si; break; fi
+            echo "main avanzo (intento $intento): se incorpora y se valida de nuevo"
+            git fetch origin main
+            git merge origin/main -m 'catalogo: incorpora cambios recientes de main'
+            npm run check
+            npm run build
+          done
+          [ "${publicado:-no}" = si ] || { echo 'No se pudo subir a main' >&2; exit 1; }
           # Deja `contenido` al dia con main. Si Makk guardo algo mientras
           # tanto el push se rechaza y ese cambio entra en la siguiente corrida.
           git push origin HEAD:contenido || echo 'contenido avanzo: se publicara en la siguiente corrida'
           gh workflow run deploy.yml --ref main
+
+      # Una publicacion que sale bien resuelve el fallo anterior: sus cambios
+      # van incluidos, porque cada corrida fusiona todo `contenido`.
+      - name: Cerrar el aviso de fallo anterior
+        if: steps.pendiente.outputs.hay == 'si'
+        continue-on-error: true
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          for n in $(gh issue list --state open --search '"Fallo la publicacion del catalogo" in:title' --json number --jq '.[].number'); do
+            gh issue close "$n" --comment "Publicado en la corrida siguiente: $RUN_URL"
+          done
 
       - name: Avisar si fallo
         if: failure()
