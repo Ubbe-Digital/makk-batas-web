@@ -106,10 +106,15 @@ Clarity (mapas de calor; complemento opcional más adelante) y Twilio Segment
       100 en las tres páginas medidas, contraste AA, puntos del carrusel
       tocables, fuentes precargadas, `robots.txt`, datos estructurados y
       `utm_source=whatsapp` al compartir un modelo.
-- [ ] **Aplicar en el VPS el PR de nginx** (`infrastructure` #1): cabeceras de
-      seguridad con una CSP ya probada contra el sitio, caché de sesiones TLS,
-      `server_tokens off` y `/favicon.ico`. Pasos y verificación en el PR.
-      Después, subir el HSTS de 30 días a un año.
+- [x] **nginx con cabeceras de seguridad** (`infrastructure` #1, aplicado el
+      2026-10-07): HSTS, `nosniff`, `Referrer-Policy`, `X-Frame-Options`,
+      `Permissions-Policy` y una CSP, más caché de sesiones TLS (de 0 a 5
+      conexiones reutilizadas de 6), `server_tokens off`, `Vary` y
+      `/favicon.ico`. Verificado en producción con Chrome: 0 violaciones de la
+      CSP en 5 páginas y Umami enviando datos (`gateway.umami.is`, 200).
+- [ ] **Subir el HSTS de 30 días a un año** (`max-age=31536000` en
+      `seguridad-estatico.inc`, repo `infrastructure`) cuando lleve unas
+      semanas sin problemas.
 - [ ] **Subir las fotos originales** (no las reenviadas por WhatsApp): varias
       miden 563 px y el zoom del visor se pixela. Es un tema de contenido.
 - [ ] Opcional: **CLS de la portada** (0,094, "bueno" pero justo): el cambio de
