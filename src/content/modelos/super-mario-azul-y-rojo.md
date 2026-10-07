@@ -1,9 +1,9 @@
 ---
-nombre: Super Mario azul y rojo
+nombre: Super Mario Bros
 categoria: personajes
 color: azul
 contraste: rojo
-bordado: Personaje y nombre en el pecho
+bordado: Cara de Mario y nombre en el pecho
 fotos:
   - ../../assets/modelos/super-mario-azul-y-rojo/01.jpeg
 orden: 60
