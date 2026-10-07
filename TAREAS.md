@@ -147,10 +147,27 @@ Clarity (mapas de calor; complemento opcional más adelante) y Twilio Segment
   propio caché de 10 minutos y no deja cambiarlo. Opcional: una CSP por
   `<meta http-equiv>` en `Base.astro`. Con el repo público se puede proteger
   `main` y hacer que `publicar-contenido.yml` fusione por PR.
-- **Pasos de la migración:** secretos de Telegram en el repo nuevo → activar
-  Actions → Settings > Pages (fuente "GitHub Actions") → repo público →
-  invitar al CMS → CNAME en Namecheap → "Enforce HTTPS" → archivar
-  `MAKK-Batas` y quitar el vhost del VPS con `sitio`.
+- **Migración hecha** (2026-10-07): el sitio sirve desde Pages en
+  `batas.ubbedigital.com` (CNAME a `ubbe-digital.github.io`).
+- [ ] **Revisar la migración y decidir si el VPS se desmantela del todo.**
+      Hasta decidirlo, **no borrar** del VPS el vhost de `batas`, `/opt/makk_batas`
+      ni `/opt/web_apps/makk-batas*`, y dejar `MAKK-Batas` (repo viejo,
+      privado) archivado, **nunca público** (tiene un correo personal y la
+      tabla de precios en el historial).
+  - [ ] Secretos de Telegram en este repo.
+  - [ ] Probar una edición del CMS de punta a punta (`contenido` →
+        `publicar-contenido.yml` → `deploy.yml`) y que Makk use el enlace nuevo.
+  - [ ] Archivar `MAKK-Batas`.
+  - [ ] Confirmar que Umami registra visitas y eventos desde el dominio.
+- **Volver al VPS** (si Pages no convence): (1) restaurar `deploy.yml` y
+  `rollback.yml` desde el commit `df70a2e` (`git checkout df70a2e -- .github/workflows/deploy.yml .github/workflows/rollback.yml`)
+  y los secretos `VPS_SSH_*`/`VPS_KNOWN_HOSTS`; (2) en Namecheap, reemplazar el
+  CNAME de `batas` por un registro A a `104.237.2.115`; (3) comprobar el vhost
+  de nginx con `sitio`; (4) quitar el dominio en Settings > Pages. Si el repo
+  sigue siendo público, no hay que subir nada sensible al VPS (el workflow usa
+  secretos de Actions). El VPS clona el repo viejo (`MAKK-Batas`): hay que
+  apuntarlo a `makk-batas-web` (`git remote set-url origin …` en
+  `/opt/makk_batas/app`).
 - El 2026-10-19 `ubuntu-latest` pasa a Ubuntu 26: revisar la primera corrida de
   los workflows después de esa fecha.
 
