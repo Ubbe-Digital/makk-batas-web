@@ -59,20 +59,21 @@ https://claude.ai/code/artifact/c9f6888c-6041-4155-a5e6-9b2c5a51936d
       flotante, portada, contacto, como-pedir, bordado-personalizado) y
       `filtro` (con tipo y valor). Con la analítica activa, el pie dice qué se
       mide.
-- [ ] **Elegir dónde corre Umami y activarlo** (Umami decidido el 2026-10-05:
-      simple, de código abierto y sin cookies, así que no hace falta banner).
-  - Nube (Hobby, gratis): hasta 100 mil eventos al mes, 1 sitio y 6 meses de
-    datos; el plan Pro ($20/mes) sube a 1 millón de eventos, 20 sitios y 2 años.
-    Verificado el 2026-10-07; revisar precios al decidir.
-  - Propio en vps2: Docker (`docker.umami.is/umami-software/umami`) más una base
-    nueva en el Postgres que ya existe (Umami solo admite PostgreSQL >= 12.14),
-    publicado con `sitio nuevo <dominio> proxy umami:3000` desde el repo
-    `infrastructure`, con un subdominio nuevo en Namecheap. El usuario inicial
-    es `admin` / `umami`: cambiar la clave de inmediato. Sirve para todos los
-    sitios de Ubbe Digital y no tiene límites.
-  - Al activarlo: crear el sitio en Umami, pegar `scriptUrl` y `websiteId` en
-    `src/data/sitio.ts`, y hacer que el enlace del perfil de Instagram lleve
-    `?utm_source=instagram` (Umami lo registra solo).
+- [x] **Umami activado en la nube** (2026-10-07), plan Hobby gratis: hasta 100
+      mil eventos al mes, 1 sitio y 6 meses de datos (el plan Pro, $20/mes, sube
+      a 1 millón de eventos, 20 sitios y 2 años; revisar precios si hace falta).
+      Si se necesita más capacidad o más sitios, se pasa al vps2: Docker
+      (`docker.umami.is/umami-software/umami`) más una base nueva en el Postgres
+      existente (solo admite PostgreSQL >= 12.14), publicado con
+      `sitio nuevo <dominio> proxy umami:3000` desde el repo `infrastructure` y
+      un subdominio nuevo en Namecheap. Los datos de la nube se quedan allá.
+- [ ] **Verificar la analítica y usarla.**
+  - [ ] Comprobar en Umami que llegan visitas y los eventos (`consultar-precio`,
+        `whatsapp`, `compartir-whatsapp`, `filtro`) tras el primer deploy.
+  - [ ] Cambiar el enlace del perfil de Instagram a
+        `https://batas.ubbedigital.com/?utm_source=instagram` (Umami lo
+        registra solo).
+  - [ ] En ~2 semanas, revisar qué modelos reciben más "consultar precio".
 
 Los pedidos se cierran en WhatsApp, así que el sitio nunca ve una venta. La
 métrica que importa es **cuántas personas tocan "Consultar precio por WhatsApp"

@@ -23,8 +23,8 @@ export const sitio = {
 // (Settings > Websites > Edit > Tracking code).
 export const analitica = {
   // Ej.: 'https://analitica.ubbedigital.com/script.js' o 'https://cloud.umami.is/script.js'
-  scriptUrl: '',
-  websiteId: '',
+  scriptUrl: 'https://cloud.umami.is/script.js',
+  websiteId: 'c8ea129f-299e-4445-b346-f14c7ba89615',
 };
 
 // Decisión del 2026-10-05: la v1 no publica precios ("Consultar precio").
