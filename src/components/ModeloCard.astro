@@ -7,9 +7,14 @@ interface Props {
   categoria: string;
   // Las primeras tarjetas de la pantalla cargan sin esperar al scroll.
   prioridad?: boolean;
+  // La imagen que seguramente es el LCP de la página.
+  principal?: boolean;
+  // Nivel del título: 2 si la página no tiene otro h2 antes (catálogo), 3 bajo un h2.
+  nivel?: 2 | 3;
 }
 
-const { modelo, categoria, prioridad = false } = Astro.props;
+const { modelo, categoria, prioridad = false, principal = false, nivel = 3 } = Astro.props;
+const Titulo = `h${nivel}` as 'h2' | 'h3';
 const [portada] = modelo.data.fotos;
 ---
 
@@ -23,10 +28,11 @@ const [portada] = modelo.data.fotos;
         sizes="(min-width: 1024px) 280px, (min-width: 640px) 33vw, 50vw"
         class="size-full object-contain transition-transform duration-500 group-hover:scale-105"
         loading={prioridad ? 'eager' : 'lazy'}
+        fetchpriority={principal ? 'high' : undefined}
       />
     </div>
     <p class="etiqueta mt-3">{categoria}</p>
-    <h3 class="mt-1 text-lg leading-snug font-semibold group-hover:text-verde-oscuro">{modelo.data.nombre}</h3>
+    <Titulo class="mt-1 text-lg leading-snug font-semibold group-hover:text-verde-oscuro">{modelo.data.nombre}</Titulo>
     <p class="text-sm text-tinta-suave">{colores(modelo)}</p>
   </a>
 </li>

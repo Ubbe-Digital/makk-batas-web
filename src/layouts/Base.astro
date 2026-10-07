@@ -1,6 +1,8 @@
 ---
 import '@fontsource-variable/fraunces';
 import '@fontsource-variable/inter';
+import frauncesUrl from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2?url';
+import interUrl from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import '../styles/global.css';
 
 import type { ImageMetadata } from 'astro';
@@ -43,6 +45,9 @@ const enlaces = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* Se precargan para que el texto no cambie de tipografía (y de alto) después de pintar. */}
+    <link rel="preload" as="font" type="font/woff2" href={frauncesUrl} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={interUrl} crossorigin />
     <meta name="app-version" content={version} />
     <meta name="generator" content={Astro.generator} />
     <title>{tituloCompleto}</title>
@@ -81,7 +86,7 @@ const enlaces = [
     <header class="sticky top-0 z-30 border-b border-tinta/10 bg-papel/90 backdrop-blur">
       <div class="contenedor flex h-16 items-center justify-between gap-4">
         <a href="/" class="flex items-center gap-3" aria-label={`${sitio.nombre}, inicio`}>
-          <Image src={logo} alt="" width={40} height={40} class="size-10" loading="eager" />
+          <Image src={logo} alt="" width={40} height={40} densities={[1.5, 2, 3]} class="size-10" loading="eager" />
           <span class="font-display text-xl font-semibold tracking-tight">MAKK</span>
         </a>
         <nav aria-label="Principal" class="hidden md:block">

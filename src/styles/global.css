@@ -5,7 +5,9 @@
   --font-display: "Fraunces Variable", Georgia, serif;
   --font-sans: "Inter Variable", system-ui, sans-serif;
 
-  --color-verde: #15966f;
+  /* El verde del logo (#15966f) da 3.5:1 sobre el papel y 3.7:1 con texto blanco: se oscurece
+     un poco para llegar a 4.6:1 y 4.9:1 (WCAG AA). */
+  --color-verde: #118060;
   --color-verde-oscuro: #0d5c45;
   --color-crema: #f7eeb5;
   --color-papel: #fbf8f0;

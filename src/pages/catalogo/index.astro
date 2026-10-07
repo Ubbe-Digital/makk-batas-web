@@ -26,7 +26,9 @@ const chip =
       entregados.
     </p>
 
-    <div id="filtros" class="mt-8 space-y-4" hidden>
+    {/* Los filtros se ven desde el primer pintado (si aparecieran con JS empujarían la cuadrícula: CLS); sin JS no sirven y se ocultan. */}
+    <noscript><style>#filtros{display:none}</style></noscript>
+    <div id="filtros" class="mt-8 space-y-4">
       <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Categoría">
         <button
           type="button"
@@ -89,7 +91,7 @@ const chip =
     <ul id="modelos" class="mt-8 grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
       {
         modelos.map((m, i) => (
-          <ModeloCard modelo={m} categoria={nombreCategoria.get(m.data.categoria.id) ?? ''} prioridad={i < 4} />
+          <ModeloCard modelo={m} categoria={nombreCategoria.get(m.data.categoria.id) ?? ''} prioridad={i < 4} principal={i === 0} nivel={2} />
         ))
       }
     </ul>
@@ -100,7 +102,7 @@ const chip =
 </Base>
 
 <script>
-  // Sin JavaScript se ve el catálogo completo; los filtros solo aparecen con él.
+  // Sin JavaScript se ve el catálogo completo y los filtros se ocultan (<noscript> arriba).
   const filtros = document.querySelector<HTMLElement>('#filtros')!;
   const tarjetas = [...document.querySelectorAll<HTMLElement>('#modelos > li')];
   const conteo = document.querySelector('#conteo')!;
@@ -140,6 +142,5 @@ const chip =
     });
   }
 
-  filtros.hidden = false;
   aplicar();
 </script>

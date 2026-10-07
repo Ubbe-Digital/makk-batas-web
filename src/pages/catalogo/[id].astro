@@ -28,7 +28,10 @@ const nombreCategoria = categoria?.data.nombre ?? '';
 const url = new URL(`/catalogo/${modelo.id}/`, Astro.site).href;
 const mensajeBase = `Hola MAKK, me interesa la bata "${modelo.data.nombre}" (${url}). ¿Me pueden dar el precio?`;
 // El enlace va solo en la última línea para que WhatsApp arme la vista previa con la foto.
-const mensajeCompartir = `Mira esta bata de ${sitio.nombre}: ${modelo.data.nombre}\n${url}`;
+// WhatsApp no envía referente: el utm_source es la única forma de que Umami distinga las visitas
+// que llegan por un enlace compartido. El enlace de la consulta (arriba) va a MAKK, no lleva utm.
+const urlCompartida = `${url}?utm_source=whatsapp&utm_medium=compartir`;
+const mensajeCompartir = `Mira esta bata de ${sitio.nombre}: ${modelo.data.nombre}\n${urlCompartida}`;
 const { fotos } = modelo.data;
 // Versión a tamaño completo para el visor con zoom; la galería usa las reducidas.
 const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, format: 'webp', quality: 85 })));

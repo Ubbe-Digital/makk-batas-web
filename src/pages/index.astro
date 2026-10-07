@@ -19,6 +19,18 @@ const portadas = categorias.map((c) => {
   return { categoria: c, foto: suyos[0]?.data.fotos[0], cantidad: suyos.length };
 });
 
+// Datos estructurados para que Google entienda que es un negocio local.
+const negocio = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: sitio.nombre,
+  description: sitio.descripcion,
+  url: Astro.site?.href,
+  telephone: `+${sitio.whatsapp}`,
+  address: { '@type': 'PostalAddress', addressLocality: 'Los Teques', addressRegion: 'Miranda', addressCountry: 'VE' },
+  sameAs: [sitio.instagram],
+};
+
 const fotosPortada = (await getEntry('portada', 'principal'))!.data.fotos;
 
 const pasos = [
@@ -29,8 +41,11 @@ const pasos = [
 ---
 
 <Base imagen={fotosPortada[0]} imagenAlt="Batas de baño bordadas de MAKK Creaciones">
-  <section class="contenedor grid items-center gap-10 pt-10 pb-16 md:grid-cols-2 md:pt-16">
-    <div>
+  <script type="application/ld+json" set:html={JSON.stringify(negocio)} />
+
+  <section class="contenedor grid gap-10 pt-10 pb-16 md:grid-cols-2 md:pt-16">
+    {/* La columna de texto mide lo mismo que el carrusel y centra su contenido: si la tipografía cambia al cargar, el carrusel no se mueve (CLS). */}
+    <div class="md:flex md:flex-col md:justify-center">
       <p class="etiqueta">Hecho a mano en Los Teques</p>
       <h1 class="mt-4 text-4xl leading-tight font-semibold sm:text-5xl">Batas de baño bordadas con tu nombre</h1>
       <p class="mt-5 max-w-md text-lg text-tinta-suave">
@@ -110,15 +125,15 @@ const pasos = [
     <div class="grid gap-6 rounded-3xl bg-verde p-8 text-white sm:grid-cols-3 sm:p-10">
       <div>
         <p class="font-display text-xl">Delivery gratis</p>
-        <p class="mt-1 text-sm text-white/85">En todos Los Altos Mirandinos.</p>
+        <p class="mt-1 text-sm text-white">En todos Los Altos Mirandinos.</p>
       </div>
       <div>
         <p class="font-display text-xl">Envíos a toda Venezuela</p>
-        <p class="mt-1 text-sm text-white/85">Por {sitio.enviosNacionales.join(', ')}.</p>
+        <p class="mt-1 text-sm text-white">Por {sitio.enviosNacionales.join(', ')}.</p>
       </div>
       <div>
         <p class="font-display text-xl">Pago fácil</p>
-        <p class="mt-1 text-sm text-white/85">{sitio.pagos.join(' o ')}.</p>
+        <p class="mt-1 text-sm text-white">{sitio.pagos.join(' o ')}.</p>
       </div>
     </div>
   </section>
