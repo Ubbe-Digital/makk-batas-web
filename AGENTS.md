@@ -82,12 +82,17 @@ configuración está en `.pages.yml` y debe mantenerse alineada con
   `src/assets/modelos/<slug>/01.jpeg`, `02.jpeg`… y corrige las rutas en los
   `.md`; si solo las usa un bordado, van a `modelos/_bordados/<slug>.<ext>`.
   Así el repo queda con una carpeta por modelo sin que Makk lo cuide.
-- Para que Makk no abra `main` por error, usar el enlace directo a la rama:
+- `main` está protegido con el ruleset **Proteger main** (Settings > Rules):
+  exige PR y que pase el check `build`, y bloquea el borrado y el push forzado.
+  Kevin (admin) puede fusionar un PR saltándose los requisitos, pero no empujar
+  directo. GitHub Actions no puede estar en la lista de excepciones del ruleset,
+  por eso `publicar-contenido.yml` fusiona **por PR**: sube una rama
+  `publicar/<run>`, abre el PR, publica el estado `build` tras validar (los PR de
+  `GITHUB_TOKEN` no corren el CI) y lo fusiona. Requiere la opción "Allow
+  GitHub Actions to create and approve pull requests". Si el CMS intenta escribir
+  en `main`, GitHub lo rechaza; el enlace directo a la rama evita el error:
   https://app.pagescms.org/ubbe-digital/makk-batas-web/contenido
-  Si un commit "(via Pages CMS)" llega a `main`, `avisar-cms-en-main.yml` abre
-  un issue. Como el repo es público se puede proteger `main` (ruleset que exija
-  PR); pendiente: `publicar-contenido.yml` tendría que fusionar por PR, porque
-  el `GITHUB_TOKEN` no puede saltarse la protección.
+  (`avisar-cms-en-main.yml` queda como respaldo si el ruleset se desactiva).
 - La URL de un modelo es el nombre de su archivo (`<slug>.md` →
   `/catalogo/<slug>/`) y se crea a partir del nombre del modelo. Si se renombra
   el archivo (desde el CMS o con `git mv`), `scripts/redirecciones.mjs` lee el

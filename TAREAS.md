@@ -146,8 +146,9 @@ Clarity (mapas de calor; complemento opcional más adelante) y Twilio Segment
   nuevo `makk-batas-web`). Se pierden las cabeceras que ponía nginx (HSTS,
   `X-Frame-Options`, CSP, `Cache-Control` largo para `/_astro/*`): Pages pone su
   propio caché de 10 minutos y no deja cambiarlo. La CSP volvió como
-  `<meta http-equiv>` en `Base.astro` (sin `frame-ancestors`). Con el repo público se puede proteger
-  `main` y hacer que `publicar-contenido.yml` fusione por PR.
+  `<meta http-equiv>` en `Base.astro` (sin `frame-ancestors`).
+  `main` está protegido por ruleset y `publicar-contenido.yml` fusiona por PR
+  (ver `AGENTS.md`).
 - **Migración hecha** (2026-10-07): el sitio sirve desde Pages en
   `batas.ubbedigital.com` (CNAME a `ubbe-digital.github.io`).
 - [ ] **Revisar la migración y decidir si el VPS se desmantela del todo.**
