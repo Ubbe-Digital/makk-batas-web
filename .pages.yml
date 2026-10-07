@@ -3,14 +3,23 @@
 # desarrollador; los esquemas viven en `src/content.config.ts` y deben
 # mantenerse alineados con los campos de este archivo.
 
+# Dos fuentes de fotos; cada campo de imagen elige la suya con `options.media`.
 media:
-  input: src/assets/modelos
-  # Astro resuelve las fotos del frontmatter de forma relativa al .md.
-  output: ../../assets/modelos
-  categories: [image]
-  # Nombre aleatorio: evita que dos fotos con el mismo nombre se pisen. La
-  # portada la define el orden de `fotos` en cada modelo, no el nombre.
-  rename: random
+  - name: modelos
+    label: Fotos de modelos
+    input: src/assets/modelos
+    # Astro resuelve las fotos del frontmatter de forma relativa al .md.
+    output: ../../assets/modelos
+    categories: [image]
+    # Nombre aleatorio: evita que dos fotos con el mismo nombre se pisen. La
+    # portada de cada modelo la define el orden de `fotos`, no el nombre.
+    rename: random
+  - name: portada
+    label: Fotos de la portada
+    input: src/assets/portada
+    output: ../../assets/portada
+    categories: [image]
+    rename: random
 
 settings:
   content:
@@ -27,6 +36,21 @@ settings:
       delete: 'catalogo: {userName} elimina {path} (via Pages CMS)'
 
 content:
+  - name: portada
+    label: Portada (carrusel)
+    type: file
+    path: src/content/portada/principal.md
+    format: yaml-frontmatter
+    fields:
+      - name: fotos
+        label: Fotos del carrusel
+        type: image
+        list: true
+        options:
+          media: portada
+        required: true
+        description: 'Se muestran en orden, a la derecha del titulo. La primera tambien es la imagen que sale al compartir el sitio por WhatsApp.'
+
   - name: modelos
     label: Modelos
     type: collection
@@ -70,6 +94,8 @@ content:
         label: Fotos
         type: image
         list: true
+        options:
+          media: modelos
         required: true
         description: 'La primera es la portada: cuerpo entero y sin marcas de agua.'
       - name: destacado
@@ -109,6 +135,8 @@ content:
       - name: foto
         label: Foto
         type: image
+        options:
+          media: modelos
         required: true
       - name: donde
         label: Donde se borda

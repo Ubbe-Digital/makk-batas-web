@@ -1,5 +1,7 @@
 ---
 import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import CarruselPortada from '../components/CarruselPortada.astro';
 import IconoChat from '../components/IconoChat.astro';
 import ModeloCard from '../components/ModeloCard.astro';
 import Base from '../layouts/Base.astro';
@@ -17,7 +19,7 @@ const portadas = categorias.map((c) => {
   return { categoria: c, foto: suyos[0]?.data.fotos[0], cantidad: suyos.length };
 });
 
-const heroe = modelos.find((m) => m.id === 'spiderman-clasico') ?? modelos[0];
+const fotosPortada = (await getEntry('portada', 'principal'))!.data.fotos;
 
 const pasos = [
   { titulo: 'Elige el modelo', texto: 'Mira el catálogo y escoge la bata que más te guste.' },
@@ -26,7 +28,7 @@ const pasos = [
 ];
 ---
 
-<Base imagen={heroe?.data.fotos[0]} imagenAlt="Batas de baño bordadas de MAKK Creaciones">
+<Base imagen={fotosPortada[0]} imagenAlt="Batas de baño bordadas de MAKK Creaciones">
   <section class="contenedor grid items-center gap-10 pt-10 pb-16 md:grid-cols-2 md:pt-16">
     <div>
       <p class="etiqueta">Hecho a mano en Los Teques</p>
@@ -42,20 +44,7 @@ const pasos = [
         </a>
       </div>
     </div>
-    {
-      heroe && (
-        <div class="overflow-hidden rounded-3xl bg-white">
-          <Image
-            src={heroe.data.fotos[0]}
-            alt={`Bata ${heroe.data.nombre}, en versión de adulto y de niño`}
-            widths={[480, 720, 960]}
-            sizes="(min-width: 768px) 50vw, 100vw"
-            class="mx-auto max-h-[32rem] w-auto object-contain"
-            loading="eager"
-          />
-        </div>
-      )
-    }
+    <CarruselPortada fotos={fotosPortada} alt="Batas de baño bordadas de MAKK Creaciones" />
   </section>
 
   <section class="border-y border-tinta/10 bg-arena/60">

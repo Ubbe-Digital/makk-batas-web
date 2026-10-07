@@ -40,6 +40,7 @@ son pedidos ya entregados.
 | Esquemas (Zod) | `src/content.config.ts` |
 | Modelos | `src/content/modelos/<slug>.md` (frontmatter + descripción) |
 | Fotos de los modelos | `src/assets/modelos/<slug>/01.jpeg`, `02.jpeg`… (el CMS las sube sueltas y el workflow las ordena). La portada es la primera de `fotos` en el modelo |
+| Carrusel de la portada | `src/content/portada/principal.md` (lista `fotos`) y `src/assets/portada/`. La primera foto también es la imagen al compartir `/` y `/catalogo/` |
 | Categorías | `src/content/categorias.json` |
 | Tipos de bordado | `src/content/bordados/*.md` (reusan fotos de los modelos) |
 | Contacto, envíos, pagos, tallas y precios | `src/data/sitio.ts` |
@@ -73,6 +74,7 @@ configuración está en `.pages.yml` y debe mantenerse alineada con
   falla, `main` no cambia y se abre un issue; además, si el repo tiene los
   secretos `SMTP_URL`, `SMTP_USER`, `SMTP_PASS`, `AVISO_DE` y `AVISO_PARA`, se
   envía un correo (Makk no ve los issues). Sin ellos ese paso no hace nada.
+- Las fotos de la portada tienen su propia fuente de media (`portada` en `.pages.yml`, carpeta `src/assets/portada/`); `ordenar-fotos.mjs` no las toca. Cada campo de imagen elige su fuente con `options.media`.
 - Pages CMS no puede subir a la carpeta de cada modelo: las fotos caen sueltas
   en `src/assets/modelos/` con nombre aleatorio (`rename: random`).
   `scripts/ordenar-fotos.mjs` (paso del workflow) las mueve a
