@@ -126,8 +126,10 @@ Settings > Pages la fuente es "GitHub Actions" y el dominio es
   bueno en `ref` (recompila ese commit), o revertir el commit en `main`.
 - `deploy.yml` ignora solo la documentación por nombre. **No ignorar `**/*.md`**:
   el catálogo es Markdown.
-- `<meta name="app-version">` lleva la versión de `package.json`; sirve para
-  comprobar qué hay publicado: `curl -s https://batas.ubbedigital.com/ | grep app-version`.
+- `<meta name="app-version">` y el pie de página llevan `v<versión> · <sha>`
+  (la versión de `package.json` y el commit publicado, de `GITHUB_SHA`; en local
+  dice `dev`). El SHA cambia en cada deploy, también con los cambios del CMS.
+  Para comprobar qué hay publicado: `curl -s https://batas.ubbedigital.com/ | grep app-version`.
 - Pages no deja configurar cabeceras HTTP (caché, CSP, HSTS). HTTPS forzado sí
   se activa en Settings > Pages.
 - **El repo es público**: no subir secretos, datos de clientes ni precios. Los
