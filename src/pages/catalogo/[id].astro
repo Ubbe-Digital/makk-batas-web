@@ -5,7 +5,7 @@ import { getEntry, render } from 'astro:content';
 import IconoChat from '../../components/IconoChat.astro';
 import ModeloCard from '../../components/ModeloCard.astro';
 import Base from '../../layouts/Base.astro';
-import { colores, getModelos, type Modelo } from '../../lib/catalogo';
+import { colores, getModelos, paraQuien, type Modelo } from '../../lib/catalogo';
 import {
   enlaceCompartirWhatsApp,
   enlaceWhatsApp,
@@ -193,6 +193,10 @@ const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, fo
           <div class="flex justify-between gap-4 py-3">
             <dt class="text-tinta-suave">Colores de la foto</dt>
             <dd class="text-right font-medium">{colores(modelo)}</dd>
+          </div>
+          <div class="flex justify-between gap-4 py-3">
+            <dt class="text-tinta-suave">Para</dt>
+            <dd class="text-right font-medium">{paraQuien(modelo)}</dd>
           </div>
           <div class="flex justify-between gap-4 py-3">
             <dt class="text-tinta-suave">Bordado</dt>

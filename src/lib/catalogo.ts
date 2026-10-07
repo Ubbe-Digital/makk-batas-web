@@ -27,3 +27,14 @@ export function capitalizar(texto: string) {
 export function colores(modelo: Modelo) {
   return `${capitalizar(modelo.data.color)} con ${modelo.data.contraste}`;
 }
+
+export const destinatarios = [
+  { id: 'hombre', nombre: 'Hombre' },
+  { id: 'mujer', nombre: 'Mujer' },
+] as const;
+
+/** "Hombre", "Mujer" o "Hombre y mujer". */
+export function paraQuien(modelo: Modelo) {
+  const nombres = destinatarios.filter((d) => modelo.data.para.includes(d.id)).map((d) => d.nombre);
+  return capitalizar(nombres.join(' y ').toLocaleLowerCase('es'));
+}

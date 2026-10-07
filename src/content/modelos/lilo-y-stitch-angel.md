@@ -4,6 +4,8 @@ categoria: personajes
 color: azul
 contraste: rosa
 bordado: Logo de Ángel
+para:
+  - mujer
 fotos:
   - ../../assets/modelos/lilo-y-stitch-angel/01.jpeg
   - ../../assets/modelos/lilo-y-stitch-angel/02.jpeg

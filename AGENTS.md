@@ -54,7 +54,8 @@ son pedidos ya entregados.
    Si vienen de un celular, reducirlas a 2000 px de lado mayor antes.
 2. Crear `src/content/modelos/<slug>.md` copiando uno existente. `categoria`
    debe ser un id de `categorias.json`; `color` es el del cuerpo y alimenta el
-   filtro del catálogo.
+   filtro del catálogo; `para` (`hombre`, `mujer` o los dos) alimenta el filtro
+   "Para" (si falta, el modelo sale en ambos).
 3. `npm run check && npm run build`: una foto que no existe o un campo que
    falta rompe el build, no llega a producción.
 

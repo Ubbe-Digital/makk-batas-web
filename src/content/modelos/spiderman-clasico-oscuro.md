@@ -4,6 +4,8 @@ categoria: personajes
 color: azul oscuro
 contraste: rojo
 bordado: Araña en la espalda y araña con red redonda en el pecho
+para:
+  - hombre
 fotos:
   - ../../assets/modelos/spiderman-clasico-oscuro/01.jpeg
   - ../../assets/modelos/spiderman-clasico-oscuro/02.jpeg

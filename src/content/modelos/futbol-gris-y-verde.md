@@ -4,6 +4,8 @@ categoria: deportes
 color: gris
 contraste: verde azulado
 bordado: Balón e iniciales en el pecho
+para:
+  - hombre
 fotos:
   - ../../assets/modelos/futbol-gris-y-verde/01.jpeg
   - ../../assets/modelos/futbol-gris-y-verde/02.jpeg

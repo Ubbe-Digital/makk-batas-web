@@ -4,6 +4,8 @@ categoria: personajes
 color: naranja
 contraste: azul
 bordado: Kanji Kame
+para:
+  - hombre
 fotos:
   - ../../assets/modelos/dragon-ball-goku-kanji-kame/01.jpeg
   - ../../assets/modelos/dragon-ball-goku-kanji-kame/02.jpeg

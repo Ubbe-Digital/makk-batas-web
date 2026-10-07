@@ -4,6 +4,9 @@ categoria: clasicas
 color: vinotinto
 contraste: beige
 bordado: Escudo e iniciales en el pecho
+para:
+  - hombre
+  - mujer
 fotos:
   - ../../assets/modelos/clasica-con-escudo/01.jpeg
   - ../../assets/modelos/clasica-con-escudo/02.jpeg

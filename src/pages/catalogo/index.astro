@@ -2,7 +2,7 @@
 import { getEntry } from 'astro:content';
 import ModeloCard from '../../components/ModeloCard.astro';
 import Base from '../../layouts/Base.astro';
-import { capitalizar, getCategorias, getModelos } from '../../lib/catalogo';
+import { capitalizar, destinatarios, getCategorias, getModelos } from '../../lib/catalogo';
 
 const categorias = await getCategorias();
 const modelos = await getModelos();
@@ -53,6 +53,34 @@ const chip =
               data-umami-event-tipo="categoria"
               data-umami-event-valor={c.id}>
               {c.data.nombre}
+            </button>
+          ))
+        }
+      </div>
+      <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Para quién">
+        <button
+          type="button"
+          class={chip}
+          data-filtro="para"
+          data-valor=""
+          aria-pressed="true"
+          data-umami-event="filtro"
+          data-umami-event-tipo="para"
+          data-umami-event-valor="todos">
+          Para todos
+        </button>
+        {
+          destinatarios.map((d) => (
+            <button
+              type="button"
+              class={chip}
+              data-filtro="para"
+              data-valor={d.id}
+              aria-pressed="false"
+              data-umami-event="filtro"
+              data-umami-event-tipo="para"
+              data-umami-event-valor={d.id}>
+              {d.nombre}
             </button>
           ))
         }
@@ -110,13 +138,15 @@ const chip =
   const botones = [...filtros.querySelectorAll<HTMLButtonElement>('button[data-filtro]')];
 
   const params = new URLSearchParams(location.search);
-  const estado = { categoria: params.get('categoria') ?? '', color: params.get('color') ?? '' };
+  const estado = { categoria: params.get('categoria') ?? '', para: params.get('para') ?? '', color: params.get('color') ?? '' };
 
   function aplicar() {
     let visibles = 0;
     for (const t of tarjetas) {
       const ve =
-        (!estado.categoria || t.dataset.categoria === estado.categoria) && (!estado.color || t.dataset.color === estado.color);
+        (!estado.categoria || t.dataset.categoria === estado.categoria) &&
+        (!estado.para || (t.dataset.para ?? '').split(' ').includes(estado.para)) &&
+        (!estado.color || t.dataset.color === estado.color);
       t.hidden = !ve;
       if (ve) visibles++;
     }

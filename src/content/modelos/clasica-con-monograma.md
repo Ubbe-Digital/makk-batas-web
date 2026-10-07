@@ -4,6 +4,8 @@ categoria: clasicas
 color: blanco
 contraste: fucsia
 bordado: Monograma con la inicial
+para:
+  - mujer
 fotos:
   - ../../assets/modelos/clasica-con-monograma/01.jpeg
 orden: 50
