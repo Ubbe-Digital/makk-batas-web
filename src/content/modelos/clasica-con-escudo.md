@@ -9,8 +9,8 @@ fotos:
   - ../../assets/modelos/clasica-con-escudo/02.jpeg
   - ../../assets/modelos/clasica-con-escudo/03.jpeg
   - ../../assets/modelos/clasica-con-escudo/04.jpeg
-destacado: true
+destacado: false
 orden: 10
+disponible: true
 ---
-
 Vinotinto con cuello, puños y cinturón beige. Un escudo bordado acompaña las iniciales; también se puede sumar una bandera.
