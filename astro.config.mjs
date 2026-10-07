@@ -12,5 +12,8 @@ export default defineConfig({
   redirects: redireccionesDeModelos(),
   vite: {
     plugins: [tailwindcss()],
+    // Nada en línea (scripts ni imágenes como data:): permite una política de
+    // seguridad de contenido (CSP) sin 'unsafe-inline' en script-src.
+    build: { assetsInlineLimit: 0 },
   },
 });
