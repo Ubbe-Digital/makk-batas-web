@@ -5,11 +5,11 @@ color: azul
 contraste: rojo
 bordado: Ojos de Spiderman y araña en la espalda
 fotos:
-  - ../../assets/modelos/spiderman-logo-redondo/07.jpeg
-  - ../../assets/modelos/spiderman-logo-redondo/04.jpeg
-  - ../../assets/modelos/spiderman-logo-redondo/05.jpeg
-  - ../../assets/modelos/spiderman-logo-redondo/06.jpeg
-  - ../../assets/modelos/spiderman-logo-redondo/08.jpeg
+  - ../../assets/modelos/spiderman-diseno-ojos/07.jpeg
+  - ../../assets/modelos/spiderman-diseno-ojos/04.jpeg
+  - ../../assets/modelos/spiderman-diseno-ojos/05.jpeg
+  - ../../assets/modelos/spiderman-diseno-ojos/06.jpeg
+  - ../../assets/modelos/spiderman-diseno-ojos/08.jpeg
 orden: 51
 destacado: true
 disponible: true
