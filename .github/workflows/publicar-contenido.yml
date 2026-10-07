@@ -5,8 +5,14 @@
 # campo faltante o una foto inexistente no llegan a produccion. Si falla, `main`
 # queda intacta y se abre un issue.
 #
-# Los pushes hechos con GITHUB_TOKEN no disparan otros workflows, por eso el
-# deploy se lanza a mano al final (workflow_dispatch si esta permitido).
+# `main` esta protegido (ruleset "Proteger main": exige PR y el estado `build`),
+# asi que la fusion va por un PR de rama temporal, no por push directo. Lo que
+# hace GITHUB_TOKEN no dispara otros workflows (ni el CI del PR ni el deploy):
+# el estado `build` lo publica este job tras validar, y el deploy se lanza a
+# mano al final con workflow_dispatch.
+#
+# Requiere en Settings > Actions > General: "Allow GitHub Actions to create and
+# approve pull requests".
 name: Publicar contenido (rama contenido)
 
 on:
@@ -22,6 +28,8 @@ permissions:
   contents: write
   actions: write
   issues: write
+  pull-requests: write
+  statuses: write
 
 jobs:
   publicar:
@@ -95,26 +103,53 @@ jobs:
         if: steps.pendiente.outputs.hay == 'si'
         run: test -s dist/index.html
 
-      - name: Subir a main y lanzar el deploy
+      - name: Publicar en main por PR y lanzar el deploy
         if: steps.pendiente.outputs.hay == 'si'
         env:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          # `main` puede avanzar mientras se valida (un PR fusionado a mano): el
-          # push se rechaza. Se incorpora lo nuevo y se valida otra vez, hasta
-          # 3 veces; un conflicto real falla el job y abre el issue.
+          # `main` esta protegido (ruleset): no admite push directo. Se publica
+          # por un PR desde una rama temporal. Los PR creados con GITHUB_TOKEN no
+          # disparan el CI, asi que el estado `build` que exige el ruleset lo
+          # publica este job, despues de validar (astro check + build arriba).
+          publicado=no
           for intento in 1 2 3; do
-            if git push origin HEAD:main; then publicado=si; break; fi
-            echo "main avanzo (intento $intento): se incorpora y se valida de nuevo"
+            # `main` puede avanzar mientras se valida (un PR fusionado a mano):
+            # se incorpora y se valida otra vez. Un conflicto real falla el job
+            # y abre el issue.
             git fetch origin main
-            git merge origin/main -m 'catalogo: incorpora cambios recientes de main'
-            npm run check
-            npm run build
+            if ! git merge-base --is-ancestor origin/main HEAD; then
+              echo "main avanzo (intento $intento): se incorpora y se valida de nuevo"
+              git merge origin/main -m 'catalogo: incorpora cambios recientes de main'
+              npm run check
+              npm run build
+            fi
+
+            rama="publicar/${GITHUB_RUN_ID}-${intento}"
+            git push origin "HEAD:refs/heads/$rama"
+            sha=$(git rev-parse HEAD)
+            pr=$(gh pr create --base main --head "$rama" \
+              --title 'catalogo: publica los cambios del CMS' \
+              --body "Cambios de la rama \`contenido\`, validados (astro check y build) por $RUN_URL")
+            gh api -X POST "repos/$GITHUB_REPOSITORY/statuses/$sha" \
+              -f state=success -f context=build \
+              -f description='Validado por publicar-contenido.yml' -f target_url="$RUN_URL"
+
+            # GitHub tarda unos segundos en calcular si el PR se puede fusionar.
+            for espera in 1 2 3 4 5 6; do
+              if gh pr merge "$pr" --merge --delete-branch; then publicado=si; break; fi
+              sleep 5
+            done
+            [ "$publicado" = si ] && break
+            echo "No se pudo fusionar el PR (intento $intento)"
+            gh pr close "$pr" --delete-branch || true
           done
-          [ "${publicado:-no}" = si ] || { echo 'No se pudo subir a main' >&2; exit 1; }
+          [ "$publicado" = si ] || { echo 'No se pudo publicar en main' >&2; exit 1; }
+
           # Deja `contenido` al dia con main. Si Makk guardo algo mientras
           # tanto el push se rechaza y ese cambio entra en la siguiente corrida.
-          git push origin HEAD:contenido || echo 'contenido avanzo: se publicara en la siguiente corrida'
+          git fetch origin main
+          git push origin origin/main:refs/heads/contenido || echo 'contenido avanzo: se publicara en la siguiente corrida'
           gh workflow run deploy.yml --ref main
 
       # Una publicacion que sale bien resuelve el fallo anterior: sus cambios
