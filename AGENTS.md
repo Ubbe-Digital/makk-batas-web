@@ -104,9 +104,16 @@ configuración está en `.pages.yml` y debe mantenerse alineada con
 
 `src/layouts/Base.astro` carga el script de Umami solo si `analitica.scriptUrl`
 y `analitica.websiteId` (en `src/data/sitio.ts`) tienen valor; vacíos, el sitio
-no carga nada. Los botones se miden con atributos `data-umami-event` (ver
-`TAREAS.md`); al agregar un botón de WhatsApp nuevo, ponerle
-`data-umami-event="whatsapp"` y `data-umami-event-origen`.
+no carga nada. Los eventos se declaran con atributos (ver `TAREAS.md`):
+
+- **Enlaces** (`<a>`): `data-evento="..."` y `data-evento-<dato>="..."`; los
+  registra un script de `Base.astro` sin esperar la red. **Nunca**
+  `data-umami-event` en un enlace: el rastreador de Umami hace `preventDefault`
+  y navega recién cuando termina su petición, y con una red lenta el botón
+  parece muerto (WhatsApp tardaba varios segundos en abrir).
+- **Botones** que no navegan (los filtros): `data-umami-event` funciona bien.
+- Al agregar un botón de WhatsApp nuevo: `data-evento="whatsapp"` y
+  `data-evento-origen="..."`.
 
 ## Deploy
 

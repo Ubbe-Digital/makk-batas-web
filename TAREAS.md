@@ -54,7 +54,8 @@ https://claude.ai/code/artifact/c9f6888c-6041-4155-a5e6-9b2c5a51936d
 - [x] **Código del sitio listo para Umami** (2026-10-07). `Base.astro` carga
       el script solo si `analitica` (en `src/data/sitio.ts`) tiene `scriptUrl` y
       `websiteId`; mide solo el dominio publicado y respeta "No rastrear". Los
-      botones llevan `data-umami-event`: `consultar-precio` (con el modelo),
+      botones llevan `data-evento` (enlaces, con un script propio que no frena la
+      navegación) o `data-umami-event` (filtros): `consultar-precio` (con el modelo),
       `compartir-whatsapp` (con el modelo), `whatsapp` (con el origen: cabecera,
       flotante, portada, contacto, como-pedir, bordado-personalizado) y
       `filtro` (con tipo y valor). Con la analítica activa, el pie dice qué se

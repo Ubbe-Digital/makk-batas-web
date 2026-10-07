@@ -112,8 +112,8 @@ const enlaces = [
         <a
           href={enlaceWhatsApp('Hola MAKK, quiero información sobre las batas.')}
           class="boton-principal hidden py-2 sm:inline-flex"
-          data-umami-event="whatsapp"
-          data-umami-event-origen="cabecera">
+          data-evento="whatsapp"
+          data-evento-origen="cabecera">
           <IconoChat class="size-4" />
           WhatsApp
         </a>
@@ -182,12 +182,39 @@ const enlaces = [
 
     <a
       href={enlaceWhatsApp('Hola MAKK, quiero información sobre las batas.')}
-      data-umami-event="whatsapp"
-      data-umami-event-origen="flotante"
+      data-evento="whatsapp"
+      data-evento-origen="flotante"
       class="fixed right-4 bottom-4 z-40 flex size-14 items-center justify-center rounded-full bg-verde text-white shadow-lg shadow-tinta/20 transition-colors hover:bg-verde-oscuro sm:hidden"
       aria-label="Escribir por WhatsApp"
     >
       <IconoChat class="size-6" />
     </a>
+    <script>
+      // Eventos de Umami en los enlaces (data-evento y data-evento-*). NO se usa
+      // data-umami-event en enlaces: con él, el rastreador hace preventDefault y
+      // navega solo cuando termina su petición de red; con una red lenta el botón
+      // parece muerto y la gente hace clic varias veces (varios eventos). Aquí el
+      // evento se envía sin esperar (Umami usa keepalive) y el enlace navega ya.
+      const ESPERA_MS = 4000;
+      document.addEventListener('click', (e) => {
+        const el = (e.target as Element).closest<HTMLElement>('[data-evento]');
+        if (!el) return;
+        // Segundo clic mientras WhatsApp todavía se está abriendo: se ignora.
+        if (el.getAttribute('aria-busy') === 'true') {
+          e.preventDefault();
+          return;
+        }
+        const datos: Record<string, string> = {};
+        for (const [clave, valor] of Object.entries(el.dataset)) {
+          if (clave.startsWith('evento') && clave !== 'evento') datos[clave.slice(6).toLowerCase()] = valor ?? '';
+        }
+        (window as unknown as { umami?: { track: (nombre: string, datos?: object) => void } }).umami?.track(el.dataset.evento!, datos);
+        // Señal de que el clic funcionó (en escritorio WhatsApp tarda en abrir).
+        if (el.tagName === 'A' && !(e.ctrlKey || e.metaKey || e.shiftKey)) {
+          el.setAttribute('aria-busy', 'true');
+          setTimeout(() => el.removeAttribute('aria-busy'), ESPERA_MS);
+        }
+      });
+    </script>
   </body>
 </html>

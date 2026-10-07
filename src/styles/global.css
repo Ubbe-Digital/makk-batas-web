@@ -55,3 +55,9 @@
 @utility etiqueta {
   @apply text-xs font-semibold tracking-widest text-verde uppercase;
 }
+
+/* Enlace que ya recibio el clic (ver el script de Base.astro): atenuado y con cursor de espera. */
+a[aria-busy='true'] {
+  opacity: 0.6;
+  cursor: progress;
+}
