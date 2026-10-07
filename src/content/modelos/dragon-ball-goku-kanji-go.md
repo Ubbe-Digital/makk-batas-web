@@ -6,6 +6,7 @@ contraste: azul
 bordado: Kanji Go
 para:
   - hombre
+  - mujer
 fotos:
   - ../../assets/modelos/dragon-ball-goku-kanji-go/04.jpeg
   - ../../assets/modelos/dragon-ball-goku-kanji-go/05.jpeg
