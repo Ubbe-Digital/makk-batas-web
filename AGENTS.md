@@ -131,7 +131,10 @@ Settings > Pages la fuente es "GitHub Actions" y el dominio es
   dice `dev`). El SHA cambia en cada deploy, también con los cambios del CMS.
   Para comprobar qué hay publicado: `curl -s https://batas.ubbedigital.com/ | grep app-version`.
 - Pages no deja configurar cabeceras HTTP (caché, CSP, HSTS). HTTPS forzado sí
-  se activa en Settings > Pages.
+  se activa en Settings > Pages. La CSP va en un `<meta http-equiv>` de
+  `Base.astro` (variable `csp`): solo permite lo propio y Umami. **Al agregar un
+  servicio externo** (mapa, video, fuente, otro script) hay que sumarlo ahí, o
+  el navegador lo bloquea. Un `<meta>` no admite `frame-ancestors`.
 - **El repo es público**: no subir secretos, datos de clientes ni precios. Los
   secretos de Actions (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`) viven en
   Settings > Secrets, no en el código.

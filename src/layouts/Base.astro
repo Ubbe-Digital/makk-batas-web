@@ -37,6 +37,21 @@ const vistaPrevia = imagen
   : await getImage({ src: logo, width: 600, format: 'png' });
 const vistaPreviaAlt = imagen ? (imagenAlt ?? tituloCompleto) : `Logo de ${sitio.nombre}`;
 
+// Política de seguridad de contenido (CSP). Pages no deja poner cabeceras HTTP, así que va en un <meta>
+// (que ignora frame-ancestors). Solo se permite lo propio y Umami; el sitio no tiene scripts en línea.
+// Si se agrega un servicio externo (mapa, video, fuente), hay que sumarlo aquí o el navegador lo bloquea.
+const csp = [
+  "default-src 'self'",
+  "script-src 'self' https://cloud.umami.is",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data:",
+  "font-src 'self'",
+  "connect-src 'self' https://gateway.umami.is",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join('; ');
+
 const enlaces = [
   { href: '/catalogo/', texto: 'Catálogo' },
   { href: '/bordados/', texto: 'Bordados' },
@@ -49,6 +64,7 @@ const enlaces = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content={csp} />
     {/* Se precargan para que el texto no cambie de tipografía (y de alto) después de pintar. */}
     <link rel="preload" as="font" type="font/woff2" href={frauncesUrl} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={interUrl} crossorigin />
