@@ -38,7 +38,11 @@ const pasos = [
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
         <a href="/catalogo/" class="boton-principal">Ver catálogo</a>
-        <a href={enlaceWhatsApp('Hola MAKK, quiero información sobre las batas.')} class="boton-secundario">
+        <a
+          href={enlaceWhatsApp('Hola MAKK, quiero información sobre las batas.')}
+          class="boton-secundario"
+          data-umami-event="whatsapp"
+          data-umami-event-origen="portada">
           <IconoChat class="size-4" />
           Escribir por WhatsApp
         </a>

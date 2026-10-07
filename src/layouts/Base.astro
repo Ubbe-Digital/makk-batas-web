@@ -7,7 +7,7 @@ import type { ImageMetadata } from 'astro';
 import { getImage, Image } from 'astro:assets';
 import IconoChat from '../components/IconoChat.astro';
 import logo from '../assets/logo.png';
-import { enlaceWhatsApp, sitio } from '../data/sitio';
+import { analitica, enlaceWhatsApp, sitio } from '../data/sitio';
 import { version } from '../../package.json';
 
 interface Props {
@@ -64,6 +64,18 @@ const enlaces = [
     <meta property="og:image:height" content={String(vistaPrevia.attributes.height)} />
     <meta property="og:image:alt" content={vistaPreviaAlt} />
     <meta name="twitter:card" content={imagen ? 'summary_large_image' : 'summary'} />
+    {
+      analitica.scriptUrl && analitica.websiteId && (
+        // Solo mide el dominio publicado (no localhost ni vistas previas) y respeta "No rastrear".
+        <script
+          defer
+          src={analitica.scriptUrl}
+          data-website-id={analitica.websiteId}
+          data-domains={Astro.site?.hostname}
+          data-do-not-track="true"
+        />
+      )
+    }
   </head>
   <body class="flex min-h-dvh flex-col">
     <header class="sticky top-0 z-30 border-b border-tinta/10 bg-papel/90 backdrop-blur">
@@ -92,7 +104,11 @@ const enlaces = [
             }
           </ul>
         </nav>
-        <a href={enlaceWhatsApp('Hola MAKK, quiero información sobre las batas.')} class="boton-principal hidden py-2 sm:inline-flex">
+        <a
+          href={enlaceWhatsApp('Hola MAKK, quiero información sobre las batas.')}
+          class="boton-principal hidden py-2 sm:inline-flex"
+          data-umami-event="whatsapp"
+          data-umami-event-origen="cabecera">
           <IconoChat class="size-4" />
           WhatsApp
         </a>
@@ -151,11 +167,18 @@ const enlaces = [
       </div>
       <p class="contenedor border-t border-papel/10 py-6 text-xs text-papel/50">
         © {new Date().getFullYear()} {sitio.nombre}
+        {
+          analitica.scriptUrl && analitica.websiteId && (
+            <span> · Medimos las visitas y los clics de forma anónima y sin cookies.</span>
+          )
+        }
       </p>
     </footer>
 
     <a
       href={enlaceWhatsApp('Hola MAKK, quiero información sobre las batas.')}
+      data-umami-event="whatsapp"
+      data-umami-event-origen="flotante"
       class="fixed right-4 bottom-4 z-40 flex size-14 items-center justify-center rounded-full bg-verde text-white shadow-lg shadow-tinta/20 transition-colors hover:bg-verde-oscuro sm:hidden"
       aria-label="Escribir por WhatsApp"
     >

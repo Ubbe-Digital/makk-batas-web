@@ -100,6 +100,14 @@ configuración está en `.pages.yml` y debe mantenerse alineada con
 - Las redirecciones son páginas con meta-refresh, no un 301: las vistas previas
   de enlaces viejos en WhatsApp no siguen la redirección.
 
+### Analítica (Umami)
+
+`src/layouts/Base.astro` carga el script de Umami solo si `analitica.scriptUrl`
+y `analitica.websiteId` (en `src/data/sitio.ts`) tienen valor; vacíos, el sitio
+no carga nada. Los botones se miden con atributos `data-umami-event` (ver
+`TAREAS.md`); al agregar un botón de WhatsApp nuevo, ponerle
+`data-umami-event="whatsapp"` y `data-umami-event-origen`.
+
 ## Deploy
 
 Push a `main` (merge de un PR) → `deploy.yml` → SSH al VPS como `deploy` →

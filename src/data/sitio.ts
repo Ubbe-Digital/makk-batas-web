@@ -18,6 +18,15 @@ export const sitio = {
   enviosNacionales: ['MRW', 'Zoom', 'Domesa'],
 };
 
+// Analítica con Umami (sin cookies). Mientras falte alguno de los dos datos no
+// se carga ningún script. Ambos son públicos: salen del panel de Umami
+// (Settings > Websites > Edit > Tracking code).
+export const analitica = {
+  // Ej.: 'https://analitica.ubbedigital.com/script.js' o 'https://cloud.umami.is/script.js'
+  scriptUrl: '',
+  websiteId: '',
+};
+
 // Decisión del 2026-10-05: la v1 no publica precios ("Consultar precio").
 // Para publicarlos basta con poner true; las páginas ya leen esta tabla.
 export const mostrarPrecios = false;
