@@ -43,7 +43,7 @@ son pedidos ya entregados.
 | Carrusel de la portada | `src/content/portada/principal.md` (lista `fotos`) y `src/assets/portada/`. La primera foto también es la imagen al compartir `/` y `/catalogo/` |
 | Categorías | `src/content/categorias.json` |
 | Tipos de bordado | `src/content/bordados/*.md` (reusan fotos de los modelos) |
-| Contacto, envíos, pagos, tallas y precios | `src/data/sitio.ts` |
+| Contacto, envíos, pagos, tallas y precios | `src/data/sitio.ts` (también los textos de WhatsApp de la ficha: `mensajeConsulta` y `mensajeCompartir`) |
 | Material crudo de Makk | `recursos/` (las fotos de `recursos/Galeria/` no se versionan) |
 | Clasificación de las fotos recibidas | `recursos/CATALOGO.md` |
 

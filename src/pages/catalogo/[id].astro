@@ -6,7 +6,16 @@ import IconoChat from '../../components/IconoChat.astro';
 import ModeloCard from '../../components/ModeloCard.astro';
 import Base from '../../layouts/Base.astro';
 import { colores, getModelos, type Modelo } from '../../lib/catalogo';
-import { enlaceCompartirWhatsApp, enlaceWhatsApp, gruposDeTalla, mostrarPrecios, sitio, tallas } from '../../data/sitio';
+import {
+  enlaceCompartirWhatsApp,
+  enlaceWhatsApp,
+  gruposDeTalla,
+  mensajeCompartir,
+  mensajeConsulta,
+  mostrarPrecios,
+  sitio,
+  tallas,
+} from '../../data/sitio';
 
 export const getStaticPaths = (async () => {
   const modelos = await getModelos();
@@ -26,12 +35,12 @@ const { Content } = await render(modelo);
 const categoria = await getEntry(modelo.data.categoria);
 const nombreCategoria = categoria?.data.nombre ?? '';
 const url = new URL(`/catalogo/${modelo.id}/`, Astro.site).href;
-const mensajeBase = `Hola MAKK, me interesa la bata "${modelo.data.nombre}" (${url}). ¿Me pueden dar el precio?`;
+const consulta = { nombre: modelo.data.nombre, url };
 // El enlace va solo en la última línea para que WhatsApp arme la vista previa con la foto.
 // WhatsApp no envía referente: el utm_source es la única forma de que Umami distinga las visitas
 // que llegan por un enlace compartido. El enlace de la consulta (arriba) va a MAKK, no lleva utm.
 const urlCompartida = `${url}?utm_source=whatsapp&utm_medium=compartir`;
-const mensajeCompartir = `Mira esta bata de ${sitio.nombre}: ${modelo.data.nombre}\n${urlCompartida}`;
+const textoCompartir = mensajeCompartir({ nombre: modelo.data.nombre, colores: colores(modelo), url: urlCompartida });
 const { fotos } = modelo.data;
 // Versión a tamaño completo para el visor con zoom; la galería usa las reducidas.
 const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, format: 'webp', quality: 85 })));
@@ -105,7 +114,7 @@ const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, fo
           <Content />
         </div>
         <a
-          href={enlaceCompartirWhatsApp(mensajeCompartir)}
+          href={enlaceCompartirWhatsApp(textoCompartir)}
           class="boton-secundario mt-5 py-2"
           data-umami-event="compartir-whatsapp"
           data-umami-event-modelo={modelo.data.nombre}>
@@ -162,7 +171,7 @@ const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, fo
           )
         }
 
-        <form id="pedido" class="mt-8 space-y-4 rounded-2xl bg-arena/70 p-5" data-mensaje={mensajeBase}>
+        <form id="pedido" class="mt-8 space-y-4 rounded-2xl bg-arena/70 p-5" data-modelo={consulta.nombre} data-url={consulta.url}>
           <p class="font-display text-lg font-semibold">Personaliza tu pedido</p>
           <div class="grid gap-4 sm:grid-cols-2">
             <label class="block text-sm">
@@ -188,7 +197,7 @@ const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, fo
           </label>
           <a
             id="enviar"
-            href={enlaceWhatsApp(mensajeBase)}
+            href={enlaceWhatsApp(mensajeConsulta(consulta))}
             class="boton-principal w-full"
             data-umami-event="consultar-precio"
             data-umami-event-modelo={modelo.data.nombre}>
@@ -218,7 +227,7 @@ const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, fo
 <script>
   import PhotoSwipeLightbox from 'photoswipe/lightbox';
   import 'photoswipe/style.css';
-  import { enlaceWhatsApp } from '../../data/sitio';
+  import { enlaceWhatsApp, mensajeConsulta } from '../../data/sitio';
 
   // Arma el mensaje de WhatsApp con lo que el cliente va completando.
   const form = document.querySelector<HTMLFormElement>('#pedido')!;
@@ -226,14 +235,13 @@ const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, fo
 
   function actualizar() {
     const datos = new FormData(form);
-    const partes = [form.dataset.mensaje ?? ''];
-    const talla = String(datos.get('talla') ?? '').trim();
-    const nombre = String(datos.get('nombre') ?? '').trim();
-    const colores = String(datos.get('colores') ?? '').trim();
-    if (talla) partes.push(`Talla: ${talla}.`);
-    if (colores) partes.push(`Colores: ${colores}.`);
-    if (nombre) partes.push(`Nombre a bordar: ${nombre}.`);
-    enviar.href = enlaceWhatsApp(partes.join(' '));
+    const campo = (nombre: string) => String(datos.get(nombre) ?? '').trim();
+    enviar.href = enlaceWhatsApp(
+      mensajeConsulta(
+        { nombre: form.dataset.modelo ?? '', url: form.dataset.url ?? '' },
+        { talla: campo('talla'), colores: campo('colores'), bordado: campo('nombre') },
+      ),
+    );
   }
 
   form.addEventListener('input', actualizar);
