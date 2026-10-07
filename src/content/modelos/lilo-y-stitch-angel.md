@@ -5,9 +5,9 @@ color: azul
 contraste: rosa
 bordado: Logo de Ángel
 fotos:
-  - ../../assets/modelos/muyn5d2f-wg466ztn.jpeg
-  - ../../assets/modelos/muyn5is3-d57777be.jpeg
-  - ../../assets/modelos/muyn5no5-3kcj0ega.jpeg
+  - ../../assets/modelos/lilo-y-stitch-angel/01.jpeg
+  - ../../assets/modelos/lilo-y-stitch-angel/02.jpeg
+  - ../../assets/modelos/lilo-y-stitch-angel/03.jpeg
 destacado: false
 disponible: true
 orden: 100
