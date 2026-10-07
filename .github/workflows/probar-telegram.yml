@@ -1,0 +1,30 @@
+# Prueba manual del aviso por Telegram: manda un mensaje neutro al mismo chat
+# que usan los avisos de fallo (publicar-contenido.yml y avisar-cms-en-main.yml).
+# Sirve para comprobar los secretos TELEGRAM_BOT_TOKEN y TELEGRAM_CHAT_ID sin
+# provocar un fallo real. Actions > Probar Telegram > Run workflow.
+name: Probar Telegram
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    steps:
+      - name: Enviar mensaje de prueba
+        run: |
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "Faltan los secretos de Telegram." >&2
+            exit 1
+          fi
+          curl --silent --show-error --fail \
+            --data-urlencode "chat_id=$TELEGRAM_CHAT_ID" \
+            --data-urlencode "text=✅ Prueba del bot de MAKK: los avisos de publicación llegan a este chat. No hace falta hacer nada." \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" > /dev/null
+          echo "Mensaje enviado"
