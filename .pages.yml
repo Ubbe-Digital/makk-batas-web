@@ -60,7 +60,7 @@ content:
     format: yaml-frontmatter
     view:
       primary: nombre
-      fields: [nombre, categoria, color, disponible, destacado]
+      fields: [nombre, categoria, para, color, disponible, destacado]
       sort: [orden]
     fields:
       - name: nombre
@@ -90,6 +90,17 @@ content:
         label: Bordado
         type: string
         required: true
+      - name: para
+        label: Para quien es
+        type: select
+        required: true
+        options:
+          multiple: true
+          min: 1
+          values:
+            - { value: hombre, label: Hombre }
+            - { value: mujer, label: Mujer }
+        description: 'Marca las dos si sirve para ambos. Alimenta el filtro "Para" del catalogo.'
       - name: fotos
         label: Fotos
         type: image

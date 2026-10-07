@@ -16,6 +16,9 @@ const modelos = defineCollection({
       // Color de cuello, puños y cinturón.
       contraste: z.string().trim().toLowerCase(),
       bordado: z.string(),
+      // Para quién es; alimenta el filtro "Para" del catálogo. Si falta, se muestra
+      // en ambos (así un modelo nuevo sin clasificar no rompe la publicación).
+      para: z.array(z.enum(['hombre', 'mujer'])).min(1).default(['hombre', 'mujer']),
       // La primera es la portada.
       fotos: z.array(image()).min(1),
       destacado: z.boolean().default(false),

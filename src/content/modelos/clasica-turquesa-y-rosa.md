@@ -4,6 +4,8 @@ categoria: clasicas
 color: turquesa
 contraste: rosa
 bordado: Nombre en letra cursiva
+para:
+  - mujer
 fotos:
   - ../../assets/modelos/clasica-turquesa-y-rosa/01.jpeg
 orden: 30

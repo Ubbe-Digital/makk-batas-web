@@ -4,6 +4,8 @@ categoria: personajes
 color: rosa
 contraste: lila, con cinturón verde
 bordado: Logo de la cápsula y nombre en el pecho
+para:
+  - mujer
 fotos:
   - ../../assets/modelos/dragon-ball-corporacion-capsula/01.jpeg
 orden: 20

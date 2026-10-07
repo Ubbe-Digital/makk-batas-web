@@ -4,6 +4,8 @@ categoria: personajes
 color: azul
 contraste: rojo
 bordado: Ojos de Spiderman y araña en la espalda
+para:
+  - hombre
 fotos:
   - ../../assets/modelos/spiderman-diseno-ojos/07.jpeg
   - ../../assets/modelos/spiderman-diseno-ojos/04.jpeg

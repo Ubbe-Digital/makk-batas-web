@@ -18,7 +18,7 @@ const Titulo = `h${nivel}` as 'h2' | 'h3';
 const [portada] = modelo.data.fotos;
 ---
 
-<li data-categoria={modelo.data.categoria.id} data-color={modelo.data.color}>
+<li data-categoria={modelo.data.categoria.id} data-color={modelo.data.color} data-para={modelo.data.para.join(' ')}>
   <a href={`/catalogo/${modelo.id}/`} class="group block">
     <div class="aspect-[3/4] overflow-hidden rounded-2xl bg-arena">
       <Image

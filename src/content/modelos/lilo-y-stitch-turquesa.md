@@ -4,6 +4,8 @@ categoria: personajes
 color: turquesa
 contraste: rosa
 bordado: Logo de la película en fucsia
+para:
+  - mujer
 fotos:
   - ../../assets/modelos/lilo-y-stitch-turquesa/01.jpeg
 orden: 41

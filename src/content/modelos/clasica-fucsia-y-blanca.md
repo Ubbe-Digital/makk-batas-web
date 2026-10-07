@@ -4,6 +4,8 @@ categoria: clasicas
 color: fucsia
 contraste: blanco
 bordado: Nombre en letra cursiva
+para:
+  - mujer
 fotos:
   - ../../assets/modelos/clasica-fucsia-y-blanca/01.jpeg
 orden: 40

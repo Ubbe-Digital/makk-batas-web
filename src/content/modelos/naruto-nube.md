@@ -4,6 +4,8 @@ categoria: personajes
 color: Negro
 contraste: Rojo
 bordado: Naruto
+para:
+  - hombre
 fotos:
   - ../../assets/modelos/naruto-nube/01.jpg
   - ../../assets/modelos/naruto-nube/02.jpg
