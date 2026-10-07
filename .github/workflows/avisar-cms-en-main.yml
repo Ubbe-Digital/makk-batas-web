@@ -1,9 +1,8 @@
 # Avisa si alguien edita desde Pages CMS sobre `main` en vez de `contenido`.
 #
-# Este repo es privado en el plan gratuito de GitHub, que no permite proteger
-# ramas. Pages CMS abre `main` por defecto, y un cambio ahi se salta el orden
-# de fotos y la validacion de publicar-contenido.yml. Esto no lo impide: abre
-# un issue para que Kevin mueva el cambio a `contenido`.
+# Pages CMS abre `main` por defecto, y un cambio ahi se salta el orden de fotos
+# y la validacion de publicar-contenido.yml. Esto no lo impide: abre un issue
+# para que Kevin mueva el cambio a `contenido`.
 name: Avisar CMS sobre main
 
 on:
@@ -32,7 +31,7 @@ jobs:
           cuerpo=$(printf '%s\n\n%s\n\n%s' \
             "Un commit del CMS llego directo a \`main\`: $COMMIT_URL" \
             "Mensaje: $MENSAJE" \
-            "Ese cambio no paso por la validacion ni por el orden de fotos de \`publicar-contenido.yml\`. Hay que moverlo a la rama \`contenido\` y pedir que el CMS se use ahi: https://app.pagescms.org/ubbe-digital/makk-batas/contenido")
+            "Ese cambio no paso por la validacion ni por el orden de fotos de \`publicar-contenido.yml\`. Hay que moverlo a la rama \`contenido\` y pedir que el CMS se use ahi: https://app.pagescms.org/ubbe-digital/makk-batas-web/contenido")
           existente=$(gh issue list --state open --search "\"$titulo\" in:title" --json number --jq '.[0].number')
           if [ -n "$existente" ]; then
             gh issue comment "$existente" --body "$cuerpo"
@@ -53,7 +52,7 @@ jobs:
           fi
           texto=$(printf '%s\n\n%s\n\n%s' \
             "⚠️ Catálogo MAKK: un cambio del panel se guardó en la rama principal (main) en vez de contenido." \
-            "Hay que entrar siempre por: https://app.pagescms.org/ubbe-digital/makk-batas/contenido" \
+            "Hay que entrar siempre por: https://app.pagescms.org/ubbe-digital/makk-batas-web/contenido" \
             "Detalle técnico (Kevin): $COMMIT_URL")
           curl --silent --show-error --fail \
             --data-urlencode "chat_id=$TELEGRAM_CHAT_ID" \

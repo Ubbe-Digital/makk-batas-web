@@ -112,15 +112,12 @@ Clarity (mapas de calor; complemento opcional más adelante) y Twilio Segment
       100 en las tres páginas medidas, contraste AA, puntos del carrusel
       tocables, fuentes precargadas, `robots.txt`, datos estructurados y
       `utm_source=whatsapp` al compartir un modelo.
-- [x] **nginx con cabeceras de seguridad** (`infrastructure` #1, aplicado el
+- [x] (obsoleto tras Pages) **nginx con cabeceras de seguridad** (`infrastructure` #1, aplicado el
       2026-10-07): HSTS, `nosniff`, `Referrer-Policy`, `X-Frame-Options`,
       `Permissions-Policy` y una CSP, más caché de sesiones TLS (de 0 a 5
       conexiones reutilizadas de 6), `server_tokens off`, `Vary` y
       `/favicon.ico`. Verificado en producción con Chrome: 0 violaciones de la
       CSP en 5 páginas y Umami enviando datos (`gateway.umami.is`, 200).
-- [ ] **Subir el HSTS de 30 días a un año** (`max-age=31536000` en
-      `seguridad-estatico.inc`, repo `infrastructure`) cuando lleve unas
-      semanas sin problemas.
 - [ ] **Subir las fotos originales** (no las reenviadas por WhatsApp): varias
       miden 563 px y el zoom del visor se pixela. Es un tema de contenido.
 - [ ] Opcional: **CLS de la portada** (0,094, "bueno" pero justo): el cambio de
@@ -143,20 +140,17 @@ Clarity (mapas de calor; complemento opcional más adelante) y Twilio Segment
 
 ## Notas de infraestructura
 
-- `main` no se puede proteger: el repo es privado en el plan gratuito de
-  GitHub (sin protección de ramas ni rulesets). `avisar-cms-en-main.yml` abre un
-  issue si el CMS escribe en `main`. Si el repo pasa a un plan de pago, proteger
+- **Migración a GitHub Pages** (2026-10-07): el sitio sale del VPS. El repo es
+  público (historial reescrito para quitar correo personal y precios; repo
+  nuevo `makk-batas-web`). Se pierden las cabeceras que ponía nginx (HSTS,
+  `X-Frame-Options`, CSP, `Cache-Control` largo para `/_astro/*`): Pages pone su
+  propio caché de 10 minutos y no deja cambiarlo. Opcional: una CSP por
+  `<meta http-equiv>` en `Base.astro`. Con el repo público se puede proteger
   `main` y hacer que `publicar-contenido.yml` fusione por PR.
-- **Caché de nginx** (vhost `batas.ubbedigital.com.conf` en `infrastructure`).
-  No usa `proxy_cache`: sirve los archivos estáticos desde disco con
-  `Cache-Control`. HTML: `max-age=0, must-revalidate` (cada visita revalida con
-  ETag y recibe 304 si no cambió, así que un deploy se ve de inmediato).
-  `/_astro/*` (CSS, JS y todas las fotos optimizadas, con hash en el nombre):
-  `max-age=31536000, immutable`. Compresión gzip para texto; no hay brotli.
-- **Mejora posible:** servir las redirecciones de modelos renombrados como 301
-  desde nginx en vez de páginas con meta-refresh, para que las vistas previas
-  de enlaces viejos en WhatsApp las sigan. Ojo: los navegadores cachean un 301
-  por mucho tiempo, así que solo para renombres definitivos.
+- **Pasos de la migración:** secretos de Telegram en el repo nuevo → activar
+  Actions → Settings > Pages (fuente "GitHub Actions") → repo público →
+  invitar al CMS → CNAME en Namecheap → "Enforce HTTPS" → archivar
+  `MAKK-Batas` y quitar el vhost del VPS con `sitio`.
 - El 2026-10-19 `ubuntu-latest` pasa a Ubuntu 26: revisar la primera corrida de
   los workflows después de esa fecha.
 

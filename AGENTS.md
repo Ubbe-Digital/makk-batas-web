@@ -82,14 +82,12 @@ configuración está en `.pages.yml` y debe mantenerse alineada con
   `src/assets/modelos/<slug>/01.jpeg`, `02.jpeg`… y corrige las rutas en los
   `.md`; si solo las usa un bordado, van a `modelos/_bordados/<slug>.<ext>`.
   Así el repo queda con una carpeta por modelo sin que Makk lo cuide.
-- `main` no se puede proteger: el repo es privado en el plan gratuito de GitHub
-  (no hay protección de ramas ni rulesets). Para que Makk no abra `main` por
-  error, usar el enlace directo a la rama:
-  https://app.pagescms.org/ubbe-digital/makk-batas/contenido
+- Para que Makk no abra `main` por error, usar el enlace directo a la rama:
+  https://app.pagescms.org/ubbe-digital/makk-batas-web/contenido
   Si un commit "(via Pages CMS)" llega a `main`, `avisar-cms-en-main.yml` abre
-  un issue. Si el repo pasa a un plan de pago, proteger `main` exigiendo PR y
-  hacer que `publicar-contenido.yml` fusione por PR (el `GITHUB_TOKEN` no puede
-  saltarse la protección).
+  un issue. Como el repo es público se puede proteger `main` (ruleset que exija
+  PR); pendiente: `publicar-contenido.yml` tendría que fusionar por PR, porque
+  el `GITHUB_TOKEN` no puede saltarse la protección.
 - La URL de un modelo es el nombre de su archivo (`<slug>.md` →
   `/catalogo/<slug>/`) y se crea a partir del nombre del modelo. Si se renombra
   el archivo (desde el CMS o con `git mv`), `scripts/redirecciones.mjs` lee el
@@ -118,16 +116,20 @@ no carga nada. Los eventos se declaran con atributos (ver `TAREAS.md`):
 
 ## Deploy
 
-Push a `main` (merge de un PR) → `deploy.yml` → SSH al VPS como `deploy` →
-`git reset --hard origin/main` en `/opt/makk_batas/app` → `npm ci` si cambió el
-lock → `npm run build` → `rsync` de `dist/` a `/opt/web_apps/makk-batas` →
-`nginx -s reload`. Guarda la versión anterior en
-`/opt/web_apps/makk-batas.prev`; el workflow **Rollback** la restaura.
+Sitio en **GitHub Pages**, con dominio propio. Push a `main` (merge de un PR) →
+`deploy.yml` → `npm ci` + `npm run build` → `actions/deploy-pages`. En
+Settings > Pages la fuente es "GitHub Actions" y el dominio es
+`batas.ubbedigital.com`; en Namecheap, `batas` es un CNAME a
+`ubbe-digital.github.io`. GitHub emite el certificado HTTPS.
 
+- **Vuelta atrás:** Actions > Deploy > Run workflow, con el SHA de un commit
+  bueno en `ref` (recompila ese commit), o revertir el commit en `main`.
 - `deploy.yml` ignora solo la documentación por nombre. **No ignorar `**/*.md`**:
   el catálogo es Markdown.
 - `<meta name="app-version">` lleva la versión de `package.json`; sirve para
   comprobar qué hay publicado: `curl -s https://batas.ubbedigital.com/ | grep app-version`.
-- El vhost de nginx y el certificado HTTPS se gestionan con `sitio` del repo
-  `Ubbe-Digital/infrastructure` (en el VPS: `/opt/base-ci-cd`). Nada de eso vive
-  en este repo.
+- Pages no deja configurar cabeceras HTTP (caché, CSP, HSTS). HTTPS forzado sí
+  se activa en Settings > Pages.
+- **El repo es público**: no subir secretos, datos de clientes ni precios. Los
+  secretos de Actions (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`) viven en
+  Settings > Secrets, no en el código.
