@@ -3,7 +3,7 @@ nombre: Dragon Ball - Gokú Kanji Go
 categoria: personajes
 color: naranja
 contraste: azul
-bordado: Símbolo del personaje y nombre en el pecho
+bordado: Kanji Go
 fotos:
   - ../../assets/modelos/dragon-ball-goku-kanji-go/04.jpeg
   - ../../assets/modelos/dragon-ball-goku-kanji-go/05.jpeg
