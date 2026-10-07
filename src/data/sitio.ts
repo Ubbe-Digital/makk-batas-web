@@ -18,6 +18,17 @@ export const sitio = {
   enviosNacionales: ['MRW', 'Zoom', 'Domesa'],
 };
 
+// Pasos para pedir: los usan el inicio (resumen) y /como-pedir/ (detalle).
+export const pasosPedido = [
+  { titulo: 'Elige el modelo', texto: 'Mira el catálogo y escoge la bata que más te guste, o cuéntanos tu idea.' },
+  {
+    titulo: 'Personalízala',
+    texto: 'Escríbenos por WhatsApp con la talla, los dos colores y el nombre o las iniciales a bordar.',
+  },
+  { titulo: 'Confirma', texto: 'Te damos el precio y, con el pago, comenzamos la confección.' },
+  { titulo: 'Recíbela', texto: `En ${sitio.confeccion} está lista para entregar o enviar.` },
+];
+
 // Analítica con Umami (sin cookies). Mientras falte alguno de los dos datos no
 // se carga ningún script. Ambos son públicos: salen del panel de Umami
 // (Settings > Websites > Edit > Tracking code).

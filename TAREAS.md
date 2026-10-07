@@ -54,9 +54,10 @@ https://claude.ai/code/artifact/c9f6888c-6041-4155-a5e6-9b2c5a51936d
 - [x] **Código del sitio listo para Umami** (2026-10-07). `Base.astro` carga
       el script solo si `analitica` (en `src/data/sitio.ts`) tiene `scriptUrl` y
       `websiteId`; mide solo el dominio publicado y respeta "No rastrear". Los
-      botones llevan `data-umami-event`: `consultar-precio` (con el modelo),
+      botones llevan `data-evento` (enlaces, con un script propio que no frena la
+      navegación) o `data-umami-event` (filtros): `consultar-precio` (con el modelo),
       `compartir-whatsapp` (con el modelo), `whatsapp` (con el origen: cabecera,
-      flotante, portada, contacto, como-pedir, bordado-personalizado) y
+      flotante, portada, como-pedir, bordado-personalizado) y
       `filtro` (con tipo y valor). Con la analítica activa, el pie dice qué se
       mide.
 - [x] **Umami activado en la nube** (2026-10-07), plan Hobby gratis: hasta 100
@@ -101,6 +102,11 @@ Clarity (mapas de calor; complemento opcional más adelante) y Twilio Segment
 
 ## Mejoras de la web (auditoría del 2026-10-07)
 
+- [x] **Contacto fundido con "Cómo pedir"** (2026-10-07). Una sola página
+      (`/como-pedir/`: pasos, tallas, confección, pago, envíos y una sección
+      "Contacto"); `/contacto/` redirige a esa sección. Los pasos salen de una
+      sola lista (`pasosPedido` en `sitio.ts`) y el pie perdió la columna de
+      envíos. El menú queda en 3 enlaces.
 - [x] **Auditoría con Lighthouse y correcciones del sitio** (PR #24): catálogo
       sin saltos de diseño (CLS 0,21 a 0, rendimiento 82 a 96), accesibilidad
       100 en las tres páginas medidas, contraste AA, puntos del carrusel

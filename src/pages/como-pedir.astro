@@ -1,14 +1,7 @@
 ---
 import IconoChat from '../components/IconoChat.astro';
 import Base from '../layouts/Base.astro';
-import { enlaceWhatsApp, gruposDeTalla, mostrarPrecios, sitio } from '../data/sitio';
-
-const pasos = [
-  'Elige un modelo del catálogo, o cuéntanos tu idea.',
-  'Escríbenos por WhatsApp con la talla, los dos colores y el nombre o las iniciales a bordar.',
-  'Te confirmamos el precio y, con el pago, comenzamos la confección.',
-  `En ${sitio.confeccion} la bata está lista para entregar o enviar.`,
-];
+import { enlaceWhatsApp, gruposDeTalla, mostrarPrecios, pasosPedido, sitio } from '../data/sitio';
 
 // Tallas agrupadas como en el mensaje de MAKK: niños, juvenil y adulto.
 const grupos = Object.entries(Object.groupBy(gruposDeTalla, (g) => g.nombre)).map(([nombre, filas]) => ({
@@ -17,23 +10,37 @@ const grupos = Object.entries(Object.groupBy(gruposDeTalla, (g) => g.nombre)).ma
 }));
 ---
 
-<Base titulo="Cómo pedir" descripcion="Cómo pedir tu bata de baño de MAKK Creaciones: tallas, confección, formas de pago y envíos.">
+<Base
+  titulo="Cómo pedir"
+  descripcion="Cómo pedir tu bata de baño de MAKK Creaciones: tallas, confección, formas de pago, envíos y contacto en Los Teques, Miranda.">
   <section class="contenedor max-w-3xl pt-10">
     <h1 class="text-4xl font-semibold">Cómo pedir</h1>
     <p class="mt-3 text-tinta-suave">Trabajamos por pedido: tú eliges el modelo y la talla que desees.</p>
 
     <ol class="mt-10 space-y-5">
       {
-        pasos.map((p, i) => (
+        pasosPedido.map((p, i) => (
           <li class="flex gap-4">
             <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-verde font-display text-lg text-white">
               {i + 1}
             </span>
-            <p class="pt-1.5">{p}</p>
+            <p class="pt-1.5">
+              <strong class="font-semibold">{p.titulo}.</strong>{' '}
+              {p.texto}
+            </p>
           </li>
         ))
       }
     </ol>
+
+    <a
+      href={enlaceWhatsApp('Hola MAKK, quiero hacer un pedido.')}
+      class="boton-principal mt-8"
+      data-evento="whatsapp"
+      data-evento-origen="como-pedir">
+      <IconoChat class="size-4" />
+      Hacer un pedido por WhatsApp
+    </a>
 
     <h2 class="mt-16 text-2xl font-semibold">Tallas</h2>
     <table class="mt-4 w-full text-left text-sm">
@@ -82,13 +89,35 @@ const grupos = Object.entries(Object.groupBy(gruposDeTalla, (g) => g.nombre)).ma
       </div>
     </div>
 
-    <a
-      href={enlaceWhatsApp('Hola MAKK, quiero hacer un pedido.')}
-      class="boton-principal mt-14"
-      data-umami-event="whatsapp"
-      data-umami-event-origen="como-pedir">
-      <IconoChat class="size-4" />
-      Hacer un pedido por WhatsApp
-    </a>
+    <section id="contacto" class="mt-16 scroll-mt-24">
+      <h2 class="text-2xl font-semibold">Contacto</h2>
+      <p class="mt-2 text-sm text-tinta-suave">
+        {sitio.nombre}: batas de baño hechas a mano en {sitio.ubicacion}. {sitio.lema}.
+      </p>
+      <dl class="mt-6 grid gap-6 text-sm sm:grid-cols-3">
+        <div>
+          <dt class="etiqueta">WhatsApp y teléfonos</dt>
+          {
+            sitio.telefonos.map((t) => (
+              <dd class="mt-1">
+                <a href={`tel:+58${t.replace(/\D/g, '').slice(1)}`} class="hover:text-verde-oscuro">
+                  {t}
+                </a>
+              </dd>
+            ))
+          }
+        </div>
+        <div>
+          <dt class="etiqueta">Instagram</dt>
+          <dd class="mt-1">
+            <a href={sitio.instagram} class="hover:text-verde-oscuro">{sitio.instagramUsuario}</a>
+          </dd>
+        </div>
+        <div>
+          <dt class="etiqueta">Ubicación</dt>
+          <dd class="mt-1">{sitio.ubicacion}. Tienda virtual.</dd>
+        </div>
+      </dl>
+    </section>
   </section>
 </Base>
