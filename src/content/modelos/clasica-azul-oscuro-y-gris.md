@@ -5,10 +5,10 @@ color: azul oscuro
 contraste: gris
 bordado: Nombre
 fotos:
-  - ../../assets/modelos/muxd9nhb-onqs4u8n.jpeg
-  - ../../assets/modelos/muxd9wv4-zhexd6ro.jpeg
-  - ../../assets/modelos/muxda53j-riz822ls.jpeg
-  - ../../assets/modelos/muxdaa49-54kstqc1.jpeg
+  - ../../assets/modelos/clasica-azul-oscuro-y-gris/01.jpeg
+  - ../../assets/modelos/clasica-azul-oscuro-y-gris/02.jpeg
+  - ../../assets/modelos/clasica-azul-oscuro-y-gris/03.jpeg
+  - ../../assets/modelos/clasica-azul-oscuro-y-gris/04.jpeg
 destacado: false
 disponible: true
 orden: 100
