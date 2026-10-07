@@ -32,9 +32,8 @@ https://claude.ai/code/artifact/c9f6888c-6041-4155-a5e6-9b2c5a51936d
       `@makk_batas_bot`, secretos `TELEGRAM_BOT_TOKEN` y `TELEGRAM_CHAT_ID`).
       Probado con un fallo controlado: `main` quedó intacta, se abrió el issue,
       llegó el aviso y la publicación siguiente lo cerró sola.
-- [ ] **Rotar el token del bot de Telegram.** Se pegó en un chat durante la
-      configuración: `/revoke` en @BotFather y guardar el nuevo con
-      `gh secret set TELEGRAM_BOT_TOKEN`.
+- [x] **Rotar el token del bot de Telegram** (2026-10-07): el anterior se revocó
+      en @BotFather y el vigente está en el secreto `TELEGRAM_BOT_TOKEN`.
 - [ ] **Terminar de probar el CMS** (pruebas manuales, sin urgencia). Ya hecho:
       deploy confirmado, contenido de prueba limpiado, colaborador por correo
       probado, app de Pages CMS instalada solo en este repo y resto de
@@ -72,7 +71,7 @@ https://claude.ai/code/artifact/c9f6888c-6041-4155-a5e6-9b2c5a51936d
 - [ ] **Verificar la analítica y usarla.**
   - [ ] Comprobar en Umami que llegan visitas y los eventos (`consultar-precio`,
         `whatsapp`, `compartir-whatsapp`, `filtro`) tras el primer deploy.
-  - [ ] Cambiar el enlace del perfil de Instagram a
+  - [x] Cambiar el enlace del perfil de Instagram a
         `https://batas.ubbedigital.com/?utm_source=instagram` (Umami lo
         registra solo).
   - [ ] En ~2 semanas, revisar qué modelos reciben más "consultar precio".
@@ -158,11 +157,24 @@ Clarity (mapas de calor; complemento opcional más adelante) y Twilio Segment
       ni `/opt/web_apps/makk-batas*`, y dejar `MAKK-Batas` (repo viejo,
       privado) archivado, **nunca público** (tiene un correo personal y la
       tabla de precios en el historial).
-  - [ ] Secretos de Telegram en este repo.
-  - [ ] Probar una edición del CMS de punta a punta (`contenido` →
-        `publicar-contenido.yml` → `deploy.yml`) y que Makk use el enlace nuevo.
-  - [ ] Archivar `MAKK-Batas`.
-  - [ ] Confirmar que Umami registra visitas y eventos desde el dominio.
+  - [x] Secretos de Telegram en este repo (probados con `probar-telegram.yml`, 2026-10-07).
+  - [x] Probar una edición del CMS de punta a punta (`contenido` →
+        `publicar-contenido.yml` → `deploy.yml`) y que Makk use el enlace nuevo
+        (hecho: ediciones reales de colaboradores publicadas por PR).
+  - [x] Archivar `MAKK-Batas` (archivado y privado).
+  - [x] Confirmar que Umami registra visitas y eventos desde el dominio.
+  - [ ] Decidir si se desmantela el VPS (ver arriba; mientras tanto no se toca).
+- [ ] **Quitar el ❌ del CI en los PR del bot.** `ci.yml` corre en los PR que abre
+      `publicar-contenido.yml` y termina en fallo sin jobs ni logs. No bloquea
+      nada (el check `build` que exige el ruleset lo publica el workflow), pero
+      ensucia la lista de Actions. Idea: `if: github.actor != 'github-actions[bot]'`
+      en el job (puede no bastar si falla antes de crear jobs).
+- [x] **Seguridad del repo** (2026-10-07): secret scanning, push protection y
+      Dependabot security updates activados.
+- [x] **Ramas:** "Automatically delete head branches" activado (las ramas de los PR
+      se borran al fusionar) y ruleset **Proteger contenido** (no se puede borrar
+      ni reescribir). `main` y `contenido` son las únicas ramas permanentes.
+- [ ] **Subir Astro 7.3.5 → 7.3.7** (PR abierto; `npm audit` sin vulnerabilidades).
 - **Volver al VPS** (si Pages no convence): (1) restaurar `deploy.yml` y
   `rollback.yml` desde el commit `df70a2e` (`git checkout df70a2e -- .github/workflows/deploy.yml .github/workflows/rollback.yml`)
   y los secretos `VPS_SSH_*`/`VPS_KNOWN_HOSTS`; (2) en Namecheap, reemplazar el
