@@ -12,6 +12,11 @@ import logo from '../assets/logo.png';
 import { analitica, enlaceWhatsApp, sitio } from '../data/sitio';
 import { version } from '../../package.json';
 
+// Commit publicado: el CI lo da en GITHUB_SHA. Sirve para saber a simple vista
+// si un cambio ya se desplegó (la versión de package.json solo cambia a mano).
+const commit = process.env.GITHUB_SHA?.slice(0, 7) ?? 'dev';
+const build = `v${version} · ${commit}`;
+
 interface Props {
   titulo?: string;
   descripcion?: string;
@@ -47,7 +52,7 @@ const enlaces = [
     {/* Se precargan para que el texto no cambie de tipografía (y de alto) después de pintar. */}
     <link rel="preload" as="font" type="font/woff2" href={frauncesUrl} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={interUrl} crossorigin />
-    <meta name="app-version" content={version} />
+    <meta name="app-version" content={build} />
     <meta name="generator" content={Astro.generator} />
     <title>{tituloCompleto}</title>
     <meta name="description" content={descripcion} />
@@ -174,6 +179,7 @@ const enlaces = [
             <span> · Medimos las visitas y los clics de forma anónima y sin cookies.</span>
           )
         }
+        <span class="ml-2 whitespace-nowrap" data-build>{build}</span>
       </p>
     </footer>
 
