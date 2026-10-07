@@ -72,7 +72,7 @@ https://claude.ai/code/artifact/c9f6888c-6041-4155-a5e6-9b2c5a51936d
 - [ ] **Verificar la analítica y usarla.**
   - [ ] Comprobar en Umami que llegan visitas y los eventos (`consultar-precio`,
         `whatsapp`, `compartir-whatsapp`, `filtro`) tras el primer deploy.
-  - [ ] Cambiar el enlace del perfil de Instagram a
+  - [x] Cambiar el enlace del perfil de Instagram a
         `https://batas.ubbedigital.com/?utm_source=instagram` (Umami lo
         registra solo).
   - [ ] En ~2 semanas, revisar qué modelos reciben más "consultar precio".
@@ -158,11 +158,22 @@ Clarity (mapas de calor; complemento opcional más adelante) y Twilio Segment
       ni `/opt/web_apps/makk-batas*`, y dejar `MAKK-Batas` (repo viejo,
       privado) archivado, **nunca público** (tiene un correo personal y la
       tabla de precios en el historial).
-  - [ ] Secretos de Telegram en este repo.
-  - [ ] Probar una edición del CMS de punta a punta (`contenido` →
-        `publicar-contenido.yml` → `deploy.yml`) y que Makk use el enlace nuevo.
-  - [ ] Archivar `MAKK-Batas`.
-  - [ ] Confirmar que Umami registra visitas y eventos desde el dominio.
+  - [x] Secretos de Telegram en este repo (probados con `probar-telegram.yml`, 2026-10-07).
+  - [x] Probar una edición del CMS de punta a punta (`contenido` →
+        `publicar-contenido.yml` → `deploy.yml`) y que Makk use el enlace nuevo
+        (hecho: ediciones reales de colaboradores publicadas por PR).
+  - [x] Archivar `MAKK-Batas` (archivado y privado).
+  - [x] Confirmar que Umami registra visitas y eventos desde el dominio.
+  - [ ] Decidir si se desmantela el VPS (ver arriba; mientras tanto no se toca).
+- [ ] **Quitar el ❌ del CI en los PR del bot.** `ci.yml` corre en los PR que abre
+      `publicar-contenido.yml` y termina en fallo sin jobs ni logs. No bloquea
+      nada (el check `build` que exige el ruleset lo publica el workflow), pero
+      ensucia la lista de Actions. Idea: `if: github.actor != 'github-actions[bot]'`
+      en el job (puede no bastar si falla antes de crear jobs).
+- [ ] **Activar en el repo** (ahora público, es gratis): secret scanning,
+      push protection y Dependabot security updates (hoy los tres están en
+      `disabled`).
+- [ ] **Subir Astro 7.3.5 → 7.3.7** (parche; `npm audit` sin vulnerabilidades).
 - **Volver al VPS** (si Pages no convence): (1) restaurar `deploy.yml` y
   `rollback.yml` desde el commit `df70a2e` (`git checkout df70a2e -- .github/workflows/deploy.yml .github/workflows/rollback.yml`)
   y los secretos `VPS_SSH_*`/`VPS_KNOWN_HOSTS`; (2) en Namecheap, reemplazar el
