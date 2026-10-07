@@ -27,17 +27,18 @@ https://claude.ai/code/artifact/c9f6888c-6041-4155-a5e6-9b2c5a51936d
       portafolio crece mucho y Makk quiere bajar el nivel de detalle, se puede
       cambiar (por ejemplo una colección `personajes` y un filtro por
       personaje).
-- [ ] **Terminar de poner en marcha el CMS.** Ya hecho: deploy confirmado,
-      contenido de prueba limpiado, colaborador por correo probado, app de
-      Pages CMS instalada solo en este repo y resto de colaboradores invitados
-      con el enlace directo a `contenido` (2026-10-07). Falta:
-  - [ ] **Avisos por Telegram.** Los pasos ya están en `publicar-contenido.yml`
-        y `avisar-cms-en-main.yml` y se activan con dos secretos del repo:
-        crear el bot con @BotFather (`TELEGRAM_BOT_TOKEN`), crear un grupo con
-        Makk y Kevin, agregar el bot y sacar el id del grupo
-        (`TELEGRAM_CHAT_ID`, un número negativo). Probar con un mensaje
-        manual: `curl -d chat_id=<ID> -d text=prueba https://api.telegram.org/bot<TOKEN>/sendMessage`.
-        Mientras tanto el aviso es un issue que solo ve Kevin.
+- [x] **Avisos por Telegram** (2026-10-07). Si falla una publicación o el CMS
+      escribe en `main`, llega un mensaje al canal "Makk Batas" (bot
+      `@makk_batas_bot`, secretos `TELEGRAM_BOT_TOKEN` y `TELEGRAM_CHAT_ID`).
+      Probado con un fallo controlado: `main` quedó intacta, se abrió el issue,
+      llegó el aviso y la publicación siguiente lo cerró sola.
+- [ ] **Rotar el token del bot de Telegram.** Se pegó en un chat durante la
+      configuración: `/revoke` en @BotFather y guardar el nuevo con
+      `gh secret set TELEGRAM_BOT_TOKEN`.
+- [ ] **Terminar de probar el CMS** (pruebas manuales, sin urgencia). Ya hecho:
+      deploy confirmado, contenido de prueba limpiado, colaborador por correo
+      probado, app de Pages CMS instalada solo en este repo y resto de
+      colaboradores invitados con el enlace directo a `contenido`. Falta:
   - [ ] Probar **renombrar un archivo desde el panel** y comprobar que la URL
         vieja redirige (si Pages CMS lo hace como borrar y crear, no habrá
         redirección).
