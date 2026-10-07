@@ -15,7 +15,6 @@ fotos:
   - ../../assets/modelos/dragon-ball-goku-kanji-go/10.jpeg
   - ../../assets/modelos/dragon-ball-goku-kanji-go/11.jpeg
   - ../../assets/modelos/dragon-ball-goku-kanji-go/09.jpeg
-  - ../../assets/modelos/dragon-ball-goku-kanji-go/01.jpeg
 destacado: true
 orden: 10
 disponible: true
