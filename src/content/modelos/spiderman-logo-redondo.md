@@ -9,7 +9,7 @@ fotos:
   - ../../assets/modelos/muyef2uf-gsqftngy.jpeg
   - ../../assets/modelos/muyefaoq-jxjjm7oe.jpeg
 orden: 51
-destacado: false
+destacado: true
 disponible: true
 ---
 Azul claro o azul marino, con cuello, puños y cinturón rojos. Ojos de spiderman en el pecho y araña en la espalda
