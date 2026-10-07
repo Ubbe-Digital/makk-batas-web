@@ -38,17 +38,13 @@ export const analitica = {
   websiteId: 'c8ea129f-299e-4445-b346-f14c7ba89615',
 };
 
-// Decisión del 2026-10-05: la v1 no publica precios ("Consultar precio").
-// Para publicarlos basta con poner true; las páginas ya leen esta tabla.
-export const mostrarPrecios = false;
-
-// El precio depende solo de la talla, no del modelo.
+// Los precios no se publican (ni aquí ni en el sitio): se dan por WhatsApp.
 export const gruposDeTalla = [
-  { nombre: 'Niños', tallas: ['2', '4', '6', '8', '10'], precioUsd: 0 },
-  { nombre: 'Juvenil', tallas: ['12', '14', '16'], precioUsd: 0 },
-  { nombre: 'Adulto', tallas: ['S', 'M'], precioUsd: 0 },
-  { nombre: 'Adulto', tallas: ['L', 'XL'], precioUsd: 0 },
-  { nombre: 'Adulto', tallas: ['XXL', 'XXXL'], precioUsd: 0 },
+  { nombre: 'Niños', tallas: ['2', '4', '6', '8', '10'] },
+  { nombre: 'Juvenil', tallas: ['12', '14', '16'] },
+  { nombre: 'Adulto', tallas: ['S', 'M'] },
+  { nombre: 'Adulto', tallas: ['L', 'XL'] },
+  { nombre: 'Adulto', tallas: ['XXL', 'XXXL'] },
 ];
 
 export const tallas = gruposDeTalla.flatMap((g) => g.tallas);

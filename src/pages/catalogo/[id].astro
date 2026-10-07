@@ -9,10 +9,8 @@ import { colores, getModelos, type Modelo } from '../../lib/catalogo';
 import {
   enlaceCompartirWhatsApp,
   enlaceWhatsApp,
-  gruposDeTalla,
   mensajeCompartir,
   mensajeConsulta,
-  mostrarPrecios,
   sitio,
   tallas,
 } from '../../data/sitio';
@@ -181,22 +179,6 @@ const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, fo
             <dd class="text-right font-medium">{sitio.confeccion}</dd>
           </div>
         </dl>
-
-        {
-          mostrarPrecios && (
-            <table class="mt-6 w-full text-sm">
-              <caption class="mb-2 text-left font-semibold">Precio por talla</caption>
-              <tbody class="divide-y divide-tinta/10">
-                {gruposDeTalla.map((g) => (
-                  <tr>
-                    <td class="py-2">{g.tallas.join(', ')}</td>
-                    <td class="py-2 text-right font-medium">${g.precioUsd}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )
-        }
 
         <form id="pedido" class="mt-8 space-y-4 rounded-2xl bg-arena/70 p-5" data-modelo={consulta.nombre} data-url={consulta.url}>
           <p class="font-display text-lg font-semibold">Personaliza tu pedido</p>

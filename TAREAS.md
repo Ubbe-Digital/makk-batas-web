@@ -132,9 +132,9 @@ Clarity (mapas de calor; complemento opcional más adelante) y Twilio Segment
 
 ## Más adelante (sin fase asignada)
 
-- [ ] **Precios visibles.** En la v1 cada modelo dice "Consultar precio". La
-      tabla por talla ya está en `src/data/sitio.ts`; publicarla es poner
-      `mostrarPrecios = true`.
+- [ ] **Precios visibles.** En la v1 cada modelo dice "Consultar precio" y el
+      repo no guarda la tabla de precios (es público). Publicarlos implica
+      decidir dónde viven y agregar la tabla por talla al código.
 - [ ] **Carrito y pago en línea**, si los datos de uso lo justifican.
 - [ ] **Cotizador de bordado personalizado.**
 - [ ] **Reseñas de clientes.**

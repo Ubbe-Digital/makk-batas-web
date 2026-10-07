@@ -24,8 +24,9 @@ npm run preview          # sirve dist/
    workflow `publicar-contenido.yml` fusiona la rama `contenido` (donde escribe
    Pages CMS) en `main` cuando el sitio compila; ver "Pages CMS".
 2. **No se publican precios** (decisión del 2026-10-05). Cada modelo dice
-   "Consultar precio" y el precio se da por WhatsApp. La tabla por talla ya
-   existe en `src/data/sitio.ts`; para publicarla basta `mostrarPrecios = true`.
+   "Consultar precio" y el precio se da por WhatsApp. **Los precios tampoco van
+   en el repo** (es público): ni en el código, ni en los `.md`, ni en los
+   mensajes de commit o PR.
 3. **Nunca deshagas trabajo ajeno** (`git reset --hard`, `git clean`,
    `git checkout -- .` sobre cambios que no hiciste).
 
@@ -43,7 +44,7 @@ son pedidos ya entregados.
 | Carrusel de la portada | `src/content/portada/principal.md` (lista `fotos`) y `src/assets/portada/`. La primera foto también es la imagen al compartir `/` y `/catalogo/` |
 | Categorías | `src/content/categorias.json` |
 | Tipos de bordado | `src/content/bordados/*.md` (reusan fotos de los modelos) |
-| Contacto, envíos, pagos, tallas y precios | `src/data/sitio.ts` (también los textos de WhatsApp de la ficha: `mensajeConsulta` y `mensajeCompartir`) |
+| Contacto, envíos, pagos y tallas | `src/data/sitio.ts` (también los textos de WhatsApp de la ficha: `mensajeConsulta` y `mensajeCompartir`) |
 | Material crudo de Makk | `recursos/` (las fotos de `recursos/Galeria/` no se versionan) |
 | Clasificación de las fotos recibidas | `recursos/CATALOGO.md` |
 
