@@ -21,6 +21,7 @@ const { fotos, alt } = Astro.props;
             sizes="(min-width: 768px) 50vw, 100vw"
             class="h-[26rem] w-full object-contain sm:h-[32rem]"
             loading={i === 0 ? 'eager' : 'lazy'}
+            fetchpriority={i === 0 ? 'high' : undefined}
           />
         </li>
       ))
@@ -28,15 +29,16 @@ const { fotos, alt } = Astro.props;
   </ul>
   {
     fotos.length > 1 && (
-      <div class="flex justify-center gap-2 pt-1 pb-4">
+      <div class="flex justify-center pb-2">
         {fotos.map((_, i) => (
           <button
             type="button"
             data-punto
             aria-label={`Ver foto ${i + 1}`}
             aria-current={i === 0 ? 'true' : undefined}
-            class="size-2.5 rounded-full bg-tinta/20 transition-colors hover:bg-tinta/40 aria-[current=true]:bg-verde"
-          />
+            class="group flex size-6 items-center justify-center">
+            <span class="size-2.5 rounded-full bg-tinta/20 transition-colors group-hover:bg-tinta/40 group-aria-[current=true]:bg-verde" />
+          </button>
         ))}
       </div>
     )
