@@ -1,5 +1,5 @@
 ---
-nombre: Lilo y Stich azul y rosa
+nombre: Lilo y Stitch azul y rosa
 categoria: personajes
 color: azul
 contraste: rosa
