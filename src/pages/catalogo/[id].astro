@@ -38,6 +38,9 @@ const consulta = { nombre: modelo.data.nombre, url };
 // WhatsApp no envía referente: el utm_source es la única forma de que Umami distinga las visitas
 // que llegan por un enlace compartido. El enlace de la consulta (arriba) va a MAKK, no lleva utm.
 const urlCompartida = `${url}?utm_source=whatsapp&utm_medium=compartir`;
+// Enlace para pegar donde sea (Facebook, Instagram, un correo...). No sabemos adónde irá: el origen es
+// "enlace"; en Umami la red sale del referente cuando la hay (Facebook lo envía; WhatsApp no).
+const urlCopiada = `${url}?utm_source=enlace&utm_medium=compartir`;
 const textoCompartir = mensajeCompartir({ nombre: modelo.data.nombre, colores: colores(modelo), url: urlCompartida });
 const { fotos } = modelo.data;
 // Versión a tamaño completo para el visor con zoom; la galería usa las reducidas.
@@ -138,28 +141,53 @@ const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, fo
         <div class="mt-4 text-tinta-suave">
           <Content />
         </div>
-        <a
-          href={enlaceCompartirWhatsApp(textoCompartir)}
-          class="boton-secundario mt-5 py-2"
-          data-evento="compartir-whatsapp"
-          data-evento-modelo={modelo.data.nombre}>
-          <svg
-            class="size-4"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <circle cx="18" cy="5" r="3"></circle>
-            <circle cx="6" cy="12" r="3"></circle>
-            <circle cx="18" cy="19" r="3"></circle>
-            <path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"></path>
-          </svg>
-          Compartir por WhatsApp
-        </a>
+        <div class="mt-5 flex flex-wrap gap-2">
+          <a
+            href={enlaceCompartirWhatsApp(textoCompartir)}
+            class="boton-secundario py-2"
+            data-evento="compartir-whatsapp"
+            data-evento-modelo={modelo.data.nombre}>
+            <svg
+              class="size-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"></path>
+            </svg>
+            Compartir por WhatsApp
+          </a>
+          <button
+            type="button"
+            id="copiar-enlace"
+            class="boton-secundario py-2"
+            data-evento="copiar-enlace"
+            data-evento-modelo={modelo.data.nombre}
+            data-url={urlCopiada}>
+            <svg
+              class="size-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span data-texto>Copiar enlace</span>
+          </button>
+          <span class="sr-only" role="status" id="copiar-estado"></span>
+        </div>
 
         <dl class="mt-6 divide-y divide-tinta/10 border-y border-tinta/10 text-sm">
           <div class="flex justify-between gap-4 py-3">
@@ -252,6 +280,43 @@ const ampliadas = await Promise.all(fotos.map((foto) => getImage({ src: foto, fo
       ),
     );
   }
+
+  // Copia el enlace del modelo (con utm) para pegarlo en Facebook u otra red.
+  const copiar = document.querySelector<HTMLButtonElement>('#copiar-enlace')!;
+  const copiarTexto = copiar.querySelector<HTMLElement>('[data-texto]')!;
+  const copiarEstado = document.querySelector<HTMLElement>('#copiar-estado')!;
+  let copiarTimer: ReturnType<typeof setTimeout>;
+
+  async function escribirEnPortapapeles(texto: string) {
+    try {
+      await navigator.clipboard.writeText(texto);
+      return true;
+    } catch {
+      // Sin permiso o contexto no seguro: respaldo con un campo oculto.
+      const campo = document.createElement('textarea');
+      campo.value = texto;
+      campo.setAttribute('readonly', '');
+      campo.style.position = 'fixed';
+      campo.style.opacity = '0';
+      document.body.append(campo);
+      campo.select();
+      const ok = document.execCommand('copy');
+      campo.remove();
+      return ok;
+    }
+  }
+
+  copiar.addEventListener('click', async () => {
+    const ok = await escribirEnPortapapeles(copiar.dataset.url ?? '');
+    const mensaje = ok ? '¡Enlace copiado!' : 'No se pudo copiar';
+    copiarTexto.textContent = mensaje;
+    copiarEstado.textContent = mensaje;
+    clearTimeout(copiarTimer);
+    copiarTimer = setTimeout(() => {
+      copiarTexto.textContent = 'Copiar enlace';
+      copiarEstado.textContent = '';
+    }, 2500);
+  });
 
   form.addEventListener('input', actualizar);
   form.addEventListener('submit', (e) => e.preventDefault());

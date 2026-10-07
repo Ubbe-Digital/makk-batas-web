@@ -56,7 +56,8 @@ https://claude.ai/code/artifact/c9f6888c-6041-4155-a5e6-9b2c5a51936d
       `websiteId`; mide solo el dominio publicado y respeta "No rastrear". Los
       botones llevan `data-evento` (enlaces, con un script propio que no frena la
       navegación) o `data-umami-event` (filtros): `consultar-precio` (con el modelo),
-      `compartir-whatsapp` (con el modelo), `whatsapp` (con el origen: cabecera,
+      `compartir-whatsapp` y `copiar-enlace` (con el modelo; el enlace copiado lleva
+      `utm_source=enlace&utm_medium=compartir`), `whatsapp` (con el origen: cabecera,
       flotante, portada, como-pedir, bordado-personalizado) y
       `filtro` (con tipo y valor). Con la analítica activa, el pie dice qué se
       mide.
