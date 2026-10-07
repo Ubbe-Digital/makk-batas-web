@@ -1,5 +1,5 @@
 ---
-nombre: Chicago Bulls
+nombre: NBA - Chicago Bulls
 categoria: deportes
 color: negro
 contraste: rojo
