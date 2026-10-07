@@ -18,6 +18,11 @@ permissions:
 
 jobs:
   build:
+    # Los PR que abre publicar-contenido.yml (github-actions[bot]) ya se validan
+    # ahi y publican el estado `build` ellos mismos; aqui terminaban en fallo
+    # sin jobs ("workflow file issue"). Experimento: saltar el job en vez de
+    # fallar. Si el fallo persiste, revertir.
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
