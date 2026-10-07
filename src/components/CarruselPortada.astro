@@ -1,0 +1,82 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  fotos: ImageMetadata[];
+  alt: string;
+}
+
+const { fotos, alt } = Astro.props;
+---
+
+<div data-carrusel class="overflow-hidden rounded-3xl bg-white" role="region" aria-roledescription="carrusel" aria-label={alt}>
+  <ul data-pista class="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    {
+      fotos.map((foto, i) => (
+        <li class="w-full shrink-0 snap-center" aria-label={`Foto ${i + 1} de ${fotos.length}`}>
+          <Image
+            src={foto}
+            alt={`${alt}, foto ${i + 1} de ${fotos.length}`}
+            widths={[480, 720, 960]}
+            sizes="(min-width: 768px) 50vw, 100vw"
+            class="h-[26rem] w-full object-contain sm:h-[32rem]"
+            loading={i === 0 ? 'eager' : 'lazy'}
+          />
+        </li>
+      ))
+    }
+  </ul>
+  {
+    fotos.length > 1 && (
+      <div class="flex justify-center gap-2 pt-1 pb-4">
+        {fotos.map((_, i) => (
+          <button
+            type="button"
+            data-punto
+            aria-label={`Ver foto ${i + 1}`}
+            aria-current={i === 0 ? 'true' : undefined}
+            class="size-2.5 rounded-full bg-tinta/20 transition-colors hover:bg-tinta/40 aria-[current=true]:bg-verde"
+          />
+        ))}
+      </div>
+    )
+  }
+</div>
+
+<script>
+  // Carrusel de la portada: desliza, tiene puntos y avanza solo cada 5 s. Se
+  // detiene al pasar el mouse, al enfocarlo, al tocarlo o si el sistema pide
+  // menos movimiento.
+  for (const carrusel of document.querySelectorAll<HTMLElement>('[data-carrusel]')) {
+    const pista = carrusel.querySelector<HTMLElement>('[data-pista]')!;
+    const fotos = [...pista.children] as HTMLElement[];
+    if (fotos.length < 2) continue;
+    const puntos = [...carrusel.querySelectorAll<HTMLButtonElement>('[data-punto]')];
+    let actual = 0;
+
+    const ir = (i: number) => pista.scrollTo({ left: fotos[i].offsetLeft - pista.offsetLeft, behavior: 'smooth' });
+    puntos.forEach((p, i) => p.addEventListener('click', () => ir(i)));
+
+    const visible = new IntersectionObserver(
+      (entradas) => {
+        for (const e of entradas) {
+          if (!e.isIntersecting) continue;
+          actual = fotos.indexOf(e.target as HTMLElement);
+          puntos.forEach((p, i) => (i === actual ? p.setAttribute('aria-current', 'true') : p.removeAttribute('aria-current')));
+        }
+      },
+      { root: pista, threshold: 0.6 },
+    );
+    fotos.forEach((f) => visible.observe(f));
+
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) continue;
+    let pausa = false;
+    for (const ev of ['pointerenter', 'focusin', 'touchstart']) carrusel.addEventListener(ev, () => (pausa = true));
+    for (const ev of ['pointerleave', 'focusout']) carrusel.addEventListener(ev, () => (pausa = false));
+    // En el celular no hay pointerleave: se retoma un rato despues de soltar.
+    carrusel.addEventListener('touchend', () => setTimeout(() => (pausa = false), 8000));
+    setInterval(() => {
+      if (!pausa && !document.hidden) ir((actual + 1) % fotos.length);
+    }, 5000);
+  }
+</script>

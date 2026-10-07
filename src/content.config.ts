@@ -45,4 +45,11 @@ const bordados = defineCollection({
     }),
 });
 
-export const collections = { modelos, categorias, bordados };
+// Fotos del carrusel de la portada. Es una sola entrada (principal.md): la
+// primera foto tambien es la imagen que sale al compartir el sitio.
+const portada = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/portada' }),
+  schema: ({ image }) => z.object({ fotos: z.array(image()).min(1) }),
+});
+
+export const collections = { modelos, categorias, bordados, portada };

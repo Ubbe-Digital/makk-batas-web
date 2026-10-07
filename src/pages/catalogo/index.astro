@@ -1,4 +1,5 @@
 ---
+import { getEntry } from 'astro:content';
 import ModeloCard from '../../components/ModeloCard.astro';
 import Base from '../../layouts/Base.astro';
 import { capitalizar, getCategorias, getModelos } from '../../lib/catalogo';
@@ -6,7 +7,7 @@ import { capitalizar, getCategorias, getModelos } from '../../lib/catalogo';
 const categorias = await getCategorias();
 const modelos = await getModelos();
 const nombreCategoria = new Map(categorias.map((c) => [c.id, c.data.nombre]));
-const portada = modelos.find((m) => m.id === 'spiderman-clasico') ?? modelos[0];
+const portada = (await getEntry('portada', 'principal'))!.data.fotos[0];
 const colores = [...new Set(modelos.map((m) => m.data.color))].sort((a, b) => a.localeCompare(b, 'es'));
 
 const chip =
@@ -15,7 +16,7 @@ const chip =
 
 <Base
   titulo="Catálogo"
-  imagen={portada?.data.fotos[0]}
+  imagen={portada}
   imagenAlt="Batas de baño bordadas de MAKK Creaciones"
   descripcion="Todos los modelos de batas de baño de MAKK Creaciones, hechas a pedido en tallas 2 a XXXL.">
   <section class="contenedor pt-10">
