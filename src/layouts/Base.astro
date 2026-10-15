@@ -40,13 +40,15 @@ const vistaPreviaAlt = imagen ? (imagenAlt ?? tituloCompleto) : `Logo de ${sitio
 // Política de seguridad de contenido (CSP). Pages no deja poner cabeceras HTTP, así que va en un <meta>
 // (que ignora frame-ancestors). Solo se permite lo propio y Umami; el sitio no tiene scripts en línea.
 // Si se agrega un servicio externo (mapa, video, fuente), hay que sumarlo aquí o el navegador lo bloquea.
+// El origen de Umami sale de analitica.scriptUrl: al cambiar de instancia, la CSP la sigue sola.
+const umami = analitica.scriptUrl ? new URL(analitica.scriptUrl).origin : '';
 const csp = [
   "default-src 'self'",
-  "script-src 'self' https://cloud.umami.is",
+  `script-src 'self' ${umami}`.trim(),
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data:",
   "font-src 'self'",
-  "connect-src 'self' https://gateway.umami.is",
+  `connect-src 'self' ${umami}`.trim(),
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
