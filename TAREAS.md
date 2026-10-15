@@ -72,10 +72,8 @@ https://claude.ai/code/artifact/c9f6888c-6041-4155-a5e6-9b2c5a51936d
       segundo sitio (ubbedigital.com), así que Ubbe Digital tiene su propio Umami
       en https://analitica.ubbedigital.com. Batas mide ahí desde este cambio; los
       días medidos en la nube (desde el 2026-10-07) se quedan allá, visibles
-      hasta 6 meses. La CSP de batas admite la instancia nueva.
-  - [ ] Quitar `cloud.umami.is` y `gateway.umami.is` de la CSP
-        (`seguridad-estatico.inc`, repo `infrastructure`) cuando batas mida bien
-        en la instancia nueva.
+      hasta 6 meses. La CSP de `Base.astro` toma el dominio de
+      `analitica.scriptUrl`.
   - [ ] Cerrar la cuenta de Umami Cloud cuando ya no hagan falta esos datos.
 - [ ] **Verificar la analítica y usarla.**
   - [ ] Comprobar en Umami que llegan visitas y los eventos (`consultar-precio`,
