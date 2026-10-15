@@ -120,6 +120,12 @@ no carga nada. Los eventos se declaran con atributos (ver `TAREAS.md`):
 - Al agregar un botón de WhatsApp nuevo: `data-evento="whatsapp"` y
   `data-evento-origen="..."`.
 
+Umami es el propio de Ubbe Digital: https://analitica.ubbedigital.com (vps2,
+sección "Analitica (Umami)" del repo `infrastructure`). La CSP de batas
+(`seguridad-estatico.inc` en ese repo) debe admitir ese dominio en `script-src`
+y `connect-src`; si se cambia de instancia sin ajustarla, el navegador bloquea el
+script y no se mide nada.
+
 ## Deploy
 
 Sitio en **GitHub Pages**, con dominio propio. Push a `main` (merge de un PR) →

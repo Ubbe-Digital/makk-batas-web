@@ -68,6 +68,15 @@ https://claude.ai/code/artifact/c9f6888c-6041-4155-a5e6-9b2c5a51936d
       existente (solo admite PostgreSQL >= 12.14), publicado con
       `sitio nuevo <dominio> proxy umami:3000` desde el repo `infrastructure` y
       un subdominio nuevo en Namecheap. Los datos de la nube se quedan allá.
+- [x] **Umami movido al vps2** (2026-10-15): el plan Hobby no admitía un
+      segundo sitio (ubbedigital.com), así que Ubbe Digital tiene su propio Umami
+      en https://analitica.ubbedigital.com. Batas mide ahí desde este cambio; los
+      días medidos en la nube (desde el 2026-10-07) se quedan allá, visibles
+      hasta 6 meses. La CSP de batas admite la instancia nueva.
+  - [ ] Quitar `cloud.umami.is` y `gateway.umami.is` de la CSP
+        (`seguridad-estatico.inc`, repo `infrastructure`) cuando batas mida bien
+        en la instancia nueva.
+  - [ ] Cerrar la cuenta de Umami Cloud cuando ya no hagan falta esos datos.
 - [ ] **Verificar la analítica y usarla.**
   - [ ] Comprobar en Umami que llegan visitas y los eventos (`consultar-precio`,
         `whatsapp`, `compartir-whatsapp`, `filtro`) tras el primer deploy.
