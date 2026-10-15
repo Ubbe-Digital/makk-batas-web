@@ -29,13 +29,13 @@ export const pasosPedido = [
   { titulo: 'Recíbela', texto: `En ${sitio.confeccion} está lista para entregar o enviar.` },
 ];
 
-// Analítica con Umami (sin cookies). Mientras falte alguno de los dos datos no
-// se carga ningún script. Ambos son públicos: salen del panel de Umami
-// (Settings > Websites > Edit > Tracking code).
+// Analítica con Umami (sin cookies), el propio de Ubbe Digital en el vps2.
+// Mientras falte alguno de los dos datos no se carga ningún script. Ambos son
+// públicos: salen del panel (Websites > MAKK Batas > Edit > Tracking code).
+// Cambiar de instancia exige ajustar la CSP de batas (repo `infrastructure`).
 export const analitica = {
-  // Ej.: 'https://analitica.ubbedigital.com/script.js' o 'https://cloud.umami.is/script.js'
-  scriptUrl: 'https://cloud.umami.is/script.js',
-  websiteId: 'c8ea129f-299e-4445-b346-f14c7ba89615',
+  scriptUrl: 'https://analitica.ubbedigital.com/script.js',
+  websiteId: 'fc277cd2-7e7a-4d98-82f8-e9f27c3b1f10',
 };
 
 // Los precios no se publican (ni aquí ni en el sitio): se dan por WhatsApp.
