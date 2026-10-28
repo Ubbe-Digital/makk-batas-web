@@ -106,18 +106,30 @@ jobs:
         env:
           NTFY_TOKEN: ${{ secrets.NTFY_DEPLOYS_TOKEN }}
           FALLO: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
-          REPO: ${{ github.event.repository.name }}
+          SISTEMA: MAKK Batas (web)
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
           URL_RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           [ -n "$NTFY_TOKEN" ] || { echo "sin NTFY_DEPLOYS_TOKEN: no se avisa"; exit 0; }
           if [ "$FALLO" = true ]; then
-            prio=4; tag=x; msg="Deploy falló"
+            prio=4; tag=x; estado="deploy fallido"
           else
-            prio=2; tag=white_check_mark; msg="Deploy OK"
+            prio=2; tag=white_check_mark; estado="deploy OK"
           fi
+          # Qué se desplegó: el título del PR si es un merge, si no el asunto del commit.
+          # El sistema va en el título y en el cuerpo: según el teléfono, una
+          # notificación silenciosa o agrupada muestra solo una de las dos líneas.
+          asunto=$(printf '%s\n' "$COMMIT_MSG" | head -n 1)
+          case "$asunto" in
+            "Merge pull request #"*)
+              pr=$(printf '%s\n' "$asunto" | grep -o '#[0-9]*' | head -n 1)
+              titulo_pr=$(printf '%s\n' "$COMMIT_MSG" | sed -n '3p')
+              [ -z "$titulo_pr" ] || asunto="$titulo_pr ($pr)" ;;
+            "") asunto="lanzado a mano" ;;
+          esac
           curl -fsS --max-time 15 -o /dev/null \
             -H "Authorization: Bearer $NTFY_TOKEN" \
-            -H "Title: $REPO" -H "Priority: $prio" -H "Tags: $tag" -H "Click: $URL_RUN" \
-            -d "$msg · ${GITHUB_SHA::7} · $GITHUB_ACTOR" \
+            -H "Title: $SISTEMA: $estado" -H "Priority: $prio" -H "Tags: $tag" -H "Click: $URL_RUN" \
+            --data-binary "$SISTEMA · $asunto · ${GITHUB_SHA::7} por $GITHUB_ACTOR" \
             https://push.ubbedigital.com/sys-deploys \
             || echo "no se pudo avisar: ntfy no respondio"
