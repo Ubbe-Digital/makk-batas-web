@@ -7,10 +7,10 @@ bordado: Si
 para:
   - hombre
 fotos:
-  - ../../assets/modelos/mwoehgg2-zy16txjp.jpg
-  - ../../assets/modelos/mwoeisvi-lwb9lxwh.jpg
-  - ../../assets/modelos/mwoejfbf-3tv93h2o.jpg
-  - ../../assets/modelos/mwoejs0m-1plb89yh.jpg
+  - ../../assets/modelos/bata-negra-personalizada-con-bordado/01.jpg
+  - ../../assets/modelos/bata-negra-personalizada-con-bordado/02.jpg
+  - ../../assets/modelos/bata-negra-personalizada-con-bordado/03.jpg
+  - ../../assets/modelos/bata-negra-personalizada-con-bordado/04.jpg
 destacado: false
 disponible: true
 orden: 101
