@@ -11,6 +11,7 @@ fotos:
   - ../../assets/modelos/bata-negra-personalizada-con-bordado/02.jpg
   - ../../assets/modelos/bata-negra-personalizada-con-bordado/03.jpg
   - ../../assets/modelos/bata-negra-personalizada-con-bordado/04.jpg
+  - ../../assets/modelos/mwqc5tle-mr18igzk.jpg
 destacado: false
 disponible: true
 orden: 101
