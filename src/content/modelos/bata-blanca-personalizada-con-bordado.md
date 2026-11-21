@@ -7,11 +7,11 @@ bordado: Si
 para:
   - mujer
 fotos:
-  - ../../assets/modelos/mwqcfwln-sadgv2wj.jpg
-  - ../../assets/modelos/mwqcg82r-p53e0do3.jpg
-  - ../../assets/modelos/mwqci2tu-ig79hopj.jpg
-  - ../../assets/modelos/mwqcipr2-hw4oyigz.jpg
-  - ../../assets/modelos/mwqcj2t9-yslfgive.jpg
+  - ../../assets/modelos/bata-blanca-personalizada-con-bordado/01.jpg
+  - ../../assets/modelos/bata-blanca-personalizada-con-bordado/02.jpg
+  - ../../assets/modelos/bata-blanca-personalizada-con-bordado/03.jpg
+  - ../../assets/modelos/bata-blanca-personalizada-con-bordado/04.jpg
+  - ../../assets/modelos/bata-blanca-personalizada-con-bordado/05.jpg
 destacado: false
 disponible: true
 orden: 100
